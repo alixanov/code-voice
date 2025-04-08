@@ -211,7 +211,7 @@ jsx\nfunction Button() {\n  const handleClick = () => alert("Кнопка наж
 
 // Стилизация
 const ScrollContainer = styled(Box)(({ theme }) => ({
-  background: '#000000', // Чёрный фон, как у навбара
+  background: 'linear-gradient(135deg, #000000 10%,rgb(18, 18, 18) 90%)', // Чёрно-белый градиент
   maxHeight: 'calc(100vh - 145px)', // Учитываем высоту навбара/футера
   overflowY: 'auto',
   padding: theme.breakpoints.down('sm') ? '8px' : '15px', // Ещё меньше padding в мобильном режиме

@@ -9,7 +9,7 @@ import LanguageIcon from '@mui/icons-material/Language';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 
 const colors = {
-  background: 'linear-gradient(135deg, #000000 10%, #333333 90%)', // Чёрно-белый градиент
+  background: 'linear-gradient(135deg, #000000 10%,rgb(18, 18, 18) 90%)', // Чёрно-белый градиент
   accent: '#000000',
   glow: 'rgba(255, 255, 255, 0.3)',
   subtleGlow: 'rgba(255, 255, 255, 0.1)',
@@ -21,7 +21,7 @@ const NavbarContainer = styled(Box)(({ theme }) => ({
   top: 0,
   left: 0,
   width: 'calc(100% - 40px)', // Учитываем margin
-  background: 'rgba(0, 0, 0, 0.9)', // Чёрный фон
+  background: 'linear-gradient(135deg, #000000 10%,rgb(18, 18, 18) 90%)', // Чёрно-белый градиент
   backdropFilter: 'blur(15px)',
   WebkitBackdropFilter: 'blur(15px)',
   padding: '20px',
@@ -38,7 +38,8 @@ const NavbarContainer = styled(Box)(({ theme }) => ({
     duration: theme.transitions.duration.short,
   }),
   '&:hover': {
-    background: 'rgba(20, 20, 20, 0.95)',
+    background: 'linear-gradient(135deg,rgba(0, 0, 0, 0.97) 10%,rgba(18, 18, 18, 0.96) 90%)', // Чёрно-белый градиент
+
   },
 }));
 
@@ -48,7 +49,7 @@ const FooterContainer = styled(Box)(({ theme }) => ({
   bottom: 0,
   left: 0,
   width: 'calc(100% - 40px)', // Учитываем margin
-  background: 'rgba(0, 0, 0, 0.9)', // Чёрный фон
+  background: 'linear-gradient(135deg, #000000 10%,rgb(18, 18, 18) 90%)', // Чёрно-белый градиент
   backdropFilter: 'blur(15px)',
   WebkitBackdropFilter: 'blur(15px)',
   padding: '20px',
@@ -64,7 +65,7 @@ const FooterContainer = styled(Box)(({ theme }) => ({
     duration: theme.transitions.duration.short,
   }),
   '&:hover': {
-    background: 'rgba(20, 20, 20, 0.95)',
+    background: 'linear-gradient(135deg,rgba(0, 0, 0, 0.97) 10%,rgba(18, 18, 18, 0.96) 90%)', // Чёрно-белый градиент
   },
 }));
 

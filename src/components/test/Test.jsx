@@ -14,27 +14,30 @@ import python from "../../assets/icons8-python-144.png";
 import roboto from "../../assets/icons8-robot-94.png";
 import react from "../../assets/icons8-react-100.png";
 
-// Анимация волны для прогресс-бара
+// Анимации
 const waveAnimation = keyframes`
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 `;
 
-// Анимация взрыва хлопушки
 const burstAnimation = keyframes`
   0% { transform: scale(0) rotate(0deg); opacity: 1; }
-  50% { transform: scale(1.5) rotate(180deg); opacity: 0.8; }
+  50% { transform: scale(1.2) rotate(180deg); opacity: 0.8; }
   100% { transform: scale(0) rotate(360deg); opacity: 0; }
 `;
 
-// Анимация появления
 const fadeIn = keyframes`
-  0% { opacity: 0, transform: 'translateY(20px)' }
-  100% { opacity: 1, transform: 'translateY(0)' }
+  0% { opacity: 0; transform: translateY(15px); }
+  100% { opacity: 1; transform: translateY(0); }
 `;
 
-// Данные тестов
+const scaleIn = keyframes`
+  0% { transform: scale(0.95); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+`;
+
+// Данные тестов (без изменений)
 const subjectsData = {
   javascript: {
     title: 'JavaScript',
@@ -76,37 +79,42 @@ const subjectsData = {
 
 // Стилизация
 const TestContainer = styled(Box)(({ theme }) => ({
-  background: '#000000', // Чёрный фон, как в Main
+  background: '#000000',
   minHeight: '80vh',
-  borderRadius: '25px',
-
+  borderRadius: theme.breakpoints.down('sm') ? '0' : '25px',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  padding: theme.breakpoints.down('sm') ? '10px' : '20px',
-  gap: '20px',
+  padding: theme.breakpoints.down('sm') ? '15px' : '20px',
+  gap: theme.breakpoints.down('sm') ? '15px' : '20px',
   position: 'relative',
   overflow: 'hidden',
-  animation: `${fadeIn} 1s ease-in-out`,
+  animation: `${fadeIn} 0.8s ease-in-out`,
+  width: '100%',
+  boxSizing: 'border-box',
+  borderRadius: '25px',
+  maxHeight: 'calc(100vh - 127px)', // Учитываем высоту навбара/футера
 }));
 
-const SubjectsContainer = styled(Box)({
+const SubjectsContainer = styled(Box)(({ theme }) => ({
   display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-  gap: '20px',
+  gridTemplateColumns: theme.breakpoints.down('sm')
+    ? 'repeat(auto-fit, minmax(160px, 1fr))'
+    : 'repeat(auto-fit, minmax(220px, 1fr))',
+  gap: theme.breakpoints.down('sm') ? '10px' : '20px',
   maxWidth: '1000px',
   width: '100%',
-});
+}));
 
 const SubjectCard = styled(Card)(({ theme }) => ({
-  background: '#1A1A1A', // Чуть светлее чёрный, как в Main
-  borderRadius: '20px',
-  padding: '15px',
+  background: '#1A1A1A',
+  borderRadius: '15px',
+  padding: theme.breakpoints.down('sm') ? '10px' : '15px',
   textAlign: 'center',
   border: '1px solid rgba(255, 255, 255, 0.1)',
-  boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)',
+  boxShadow: '0 8px 20px rgba(0, 0, 0, 0.4)',
   backdropFilter: 'blur(10px)',
-  transition: 'all 0.4s cubic-bezier(0.1, 0.82, 0.25, 1)',
+  transition: 'all 0.3s cubic-bezier(0.1, 0.82, 0.25, 1)',
   cursor: 'pointer',
   position: 'relative',
   overflow: 'hidden',
@@ -116,9 +124,9 @@ const SubjectCard = styled(Card)(({ theme }) => ({
     top: 0,
     left: 0,
     right: 0,
-    height: '5px',
-    background: 'linear-gradient(90deg, #FFFFFF, #FFFFFF)', // Чисто белый градиент
-    borderRadius: '20px 20px 0 0',
+    height: '4px',
+    background: 'linear-gradient(90deg, #FFFFFF, #FFFFFFcc)',
+    borderRadius: '15px 15px 0 0',
     zIndex: 1,
   },
   '&:after': {
@@ -133,82 +141,102 @@ const SubjectCard = styled(Card)(({ theme }) => ({
     opacity: 0.8,
   },
   '&:hover': {
-    transform: 'translateY(-8px)',
-    boxShadow: '0 20px 40px rgba(0, 0, 0, 0.7)',
+    transform: 'translateY(-5px)',
+    boxShadow: '0 15px 30px rgba(0, 0, 0, 0.6)',
     '&:before': {
-      height: '8px',
+      height: '6px',
     },
+  },
+  [theme.breakpoints.down('sm')]: {
+    padding: '8px',
+    borderRadius: '12px',
   },
 }));
 
 const TestCard = styled(Card)(({ theme }) => ({
-  background: '#1A1A1A', // Чуть светлее чёрный
-  borderRadius: '25px',
-  padding: theme.breakpoints.down('sm') ? '15px' : '25px',
+  background: '#1A1A1A',
+  borderRadius: '20px',
+  padding: theme.breakpoints.down('sm') ? '12px' : '20px',
   maxWidth: '600px',
   width: '100%',
-  boxShadow: '0 12px 35px rgba(0, 0, 0, 0.5)',
+  boxShadow: '0 10px 25px rgba(0, 0, 0, 0.5)',
   border: '1px solid rgba(255, 255, 255, 0.1)',
   backdropFilter: 'blur(8px)',
   position: 'relative',
   overflow: 'hidden',
-  animation: `${fadeIn} 0.8s ease-in-out`,
+  animation: `${scaleIn} 0.5s ease-in-out`,
   '&:before': {
     content: '""',
     position: 'absolute',
     top: 0,
     left: '0',
-    width: '8px',
+    width: '6px',
     height: '100%',
-    background: 'linear-gradient(to bottom, #FFFFFF, #FFFFFF)', // Чисто белый градиент
+    background: 'linear-gradient(to bottom, #FFFFFF, #FFFFFFcc)',
     borderRadius: '4px',
   },
   '&:hover': {
-    boxShadow: '0 15px 45px rgba(0, 0, 0, 0.7)',
+    boxShadow: '0 12px 35px rgba(0, 0, 0, 0.6)',
+  },
+  [theme.breakpoints.down('sm')]: {
+    padding: '10px',
+    borderRadius: '15px',
   },
 }));
 
 const SubjectTitle = styled(Typography)(({ theme }) => ({
-  fontSize: theme.breakpoints.down('sm') ? '20px' : '22px',
+  fontSize: theme.breakpoints.down('sm') ? '16px' : '20px',
   fontWeight: 700,
   color: '#FFFFFF',
-  textShadow: '0 0 10px rgba(255, 255, 255, 0.3)',
+  textShadow: '0 0 8px rgba(255, 255, 255, 0.3)',
   position: 'relative',
   zIndex: 1,
   marginBottom: '5px',
   '&:after': {
     content: '""',
     position: 'absolute',
-    bottom: '-8px',
+    bottom: '-6px',
     left: '50%',
     transform: 'translateX(-50%)',
-    width: '40px',
-    height: '3px',
-    background: 'linear-gradient(90deg, #FFFFFF, #FFFFFF)', // Чисто белый градиент
-    borderRadius: '3px',
+    width: '30px',
+    height: '2px',
+    background: 'linear-gradient(90deg, #FFFFFF, #FFFFFFcc)',
+    borderRadius: '2px',
+  },
+  [theme.breakpoints.down('sm')]: {
+    fontSize: '14px',
+    '&:after': {
+      width: '25px',
+      height: '1.5px',
+    },
   },
 }));
 
 const TestQuestion = styled(Typography)(({ theme }) => ({
-  fontSize: theme.breakpoints.down('sm') ? '18px' : '20px',
+  fontSize: theme.breakpoints.down('sm') ? '16px' : '18px',
   fontWeight: 600,
   color: '#FFFFFF',
-  marginBottom: '20px',
+  marginBottom: '15px',
   textAlign: 'center',
-  textShadow: '0 0 5px rgba(255, 255, 255, 0.3)',
+  textShadow: '0 0 4px rgba(255, 255, 255, 0.3)',
+  lineHeight: 1.4,
+  [theme.breakpoints.down('sm')]: {
+    fontSize: '14px',
+    marginBottom: '10px',
+  },
 }));
 
 const OptionLabel = styled(FormControlLabel)(({ isCorrect, isSelected, theme }) => ({
   background: isSelected
     ? isCorrect
-      ? 'rgba(255, 255, 255, 0.15)' // Светлее для правильного ответа
-      : 'rgba(255, 255, 255, 0.05)' // Темнее для неправильного
+      ? 'rgba(255, 255, 255, 0.15)'
+      : 'rgba(255, 255, 255, 0.05)'
     : 'rgba(255, 255, 255, 0.05)',
-  borderRadius: '12px',
-  padding: '12px',
-  margin: '5px 0',
+  borderRadius: '10px',
+  padding: theme.breakpoints.down('sm') ? '8px' : '10px',
+  margin: '3px 0',
   border: '1px solid rgba(255, 255, 255, 0.1)',
-  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+  boxShadow: '0 3px 10px rgba(0, 0, 0, 0.3)',
   backdropFilter: 'blur(5px)',
   transition: 'all 0.3s ease',
   '& .MuiTypography-root': {
@@ -217,12 +245,13 @@ const OptionLabel = styled(FormControlLabel)(({ isCorrect, isSelected, theme }) 
         ? '#FFFFFF'
         : 'rgba(255, 255, 255, 0.7)'
       : '#FFFFFF',
-    fontSize: theme.breakpoints.down('sm') ? '14px' : '16px',
+    fontSize: theme.breakpoints.down('sm') ? '12px' : '14px',
     fontWeight: 500,
     opacity: isSelected && !isCorrect ? 0.7 : 1,
   },
   '& .MuiRadio-root': {
     color: '#FFFFFF',
+    padding: theme.breakpoints.down('sm') ? '6px' : '9px',
   },
   '& .Mui-checked': {
     color: '#FFFFFF',
@@ -231,66 +260,128 @@ const OptionLabel = styled(FormControlLabel)(({ isCorrect, isSelected, theme }) 
     background: 'rgba(255, 255, 255, 0.1)',
     transform: 'scale(1.02)',
   },
+  [theme.breakpoints.down('sm')]: {
+    padding: '6px',
+    borderRadius: '8px',
+  },
 }));
 
 const ProgressContainer = styled(Box)(({ theme }) => ({
   width: '100%',
   maxWidth: '600px',
-  padding: theme.breakpoints.down('sm') ? '10px' : '15px',
+  padding: theme.breakpoints.down('sm') ? '8px' : '12px',
   background: 'rgba(255, 255, 255, 0.05)',
-  borderRadius: '15px',
-  boxShadow: '0 8px 25px rgba(0, 0, 0, 0.3)',
+  borderRadius: '12px',
+  boxShadow: '0 6px 20px rgba(0, 0, 0, 0.3)',
   border: '1px solid rgba(255, 255, 255, 0.1)',
   backdropFilter: 'blur(5px)',
+  [theme.breakpoints.down('sm')]: {
+    padding: '6px',
+    borderRadius: '10px',
+  },
 }));
 
-const ProgressLine = styled(LinearProgress)({
-  height: '12px',
-  borderRadius: '6px',
+const ProgressLine = styled(LinearProgress)(({ theme }) => ({
+  height: '10px',
+  borderRadius: '5px',
   background: 'rgba(255, 255, 255, 0.1)',
-  boxShadow: 'inset 0 2px 10px rgba(0, 0, 0, 0.3)',
+  boxShadow: 'inset 0 2px 8px rgba(0, 0, 0, 0.3)',
   '& .MuiLinearProgress-bar': {
     background: 'linear-gradient(90deg, #FFFFFF, #FFFFFF80)',
     animation: `${waveAnimation} 2s ease-in-out infinite`,
   },
-});
+  [theme.breakpoints.down('sm')]: {
+    height: '8px',
+    borderRadius: '4px',
+  },
+}));
 
 const ResultCard = styled(Card)(({ theme }) => ({
   background: '#1A1A1A',
-  borderRadius: '25px',
-  padding: theme.breakpoints.down('sm') ? '20px' : '30px',
-  maxWidth: '700px',
+  borderRadius: '20px',
+  padding: theme.breakpoints.down('sm') ? '15px' : '25px',
+  maxWidth: '600px',
   width: '100%',
-
-  boxShadow: '0 12px 35px rgba(0, 0, 0, 0.5)',
+  boxShadow: '0 10px 25px rgba(0, 0, 0, 0.5)',
   border: '1px solid rgba(255, 255, 255, 0.1)',
   backdropFilter: 'blur(8px)',
   position: 'relative',
   zIndex: 10,
-  animation: `${fadeIn} 0.8s ease-in-out`,
+  animation: `${scaleIn} 0.5s ease-in-out`,
   '&:before': {
     content: '""',
     position: 'absolute',
     top: 0,
     left: '0',
-    width: '8px',
+    width: '6px',
     height: '100%',
-    background: 'linear-gradient(to bottom, #FFFFFF, #FFFFFF)',
+    background: 'linear-gradient(to bottom, #FFFFFF, #FFFFFFcc)',
     borderRadius: '4px',
-    
+  },
+  [theme.breakpoints.down('sm')]: {
+    padding: '12px',
+    borderRadius: '15px',
   },
 }));
 
-const Confetti = styled(Box)(({ delay }) => ({
+const Confetti = styled(Box)(({ delay, theme }) => ({
   position: 'absolute',
-  width: '15px',
-  height: '15px',
+  width: '12px',
+  height: '12px',
   background: 'linear-gradient(45deg, #FFFFFF, #FFFFFFcc)',
   borderRadius: '50%',
-  animation: `${burstAnimation} 2s ease-out infinite`,
+  animation: `${burstAnimation} 1.8s ease-out infinite`,
   animationDelay: `${delay}s`,
   transformOrigin: 'center',
   zIndex: 5,
+  [theme.breakpoints.down('sm')]: {
+    width: '10px',
+    height: '10px',
+  },
+}));
+
+const StyledButton = styled(Button)(({ theme }) => ({
+  background: 'linear-gradient(135deg, #FFFFFF, #FFFFFFcc)',
+  color: '#000000',
+  padding: theme.breakpoints.down('sm') ? '8px 20px' : '10px 25px',
+  borderRadius: '12px',
+  textTransform: 'none',
+  fontSize: theme.breakpoints.down('sm') ? '12px' : '14px',
+  fontWeight: 600,
+  boxShadow: '0 6px 20px rgba(255, 255, 255, 0.2)',
+  position: 'relative',
+  overflow: 'hidden',
+  transition: 'all 0.3s ease',
+  width: '100%',
+  '&:before': {
+    content: '""',
+    position: 'absolute',
+    top: '-50%',
+    left: '-50%',
+    width: '200%',
+    height: '200%',
+    background: 'linear-gradient(45deg, transparent, rgba(0, 0, 0, 0.2), transparent)',
+    transform: 'rotate(45deg)',
+    transition: 'all 0.5s ease',
+    opacity: 0,
+  },
+  '&:hover': {
+    background: 'linear-gradient(135deg, #FFFFFF, #FFFFFF)',
+    boxShadow: '0 10px 25px rgba(255, 255, 255, 0.3)',
+    transform: 'translateY(-2px) scale(1.03)',
+    '&:before': {
+      left: '150%',
+      opacity: 1,
+    },
+  },
+  '&:active': {
+    transform: 'translateY(1px)',
+    boxShadow: '0 4px 15px rgba(255, 255, 255, 0.2)',
+  },
+  [theme.breakpoints.down('sm')]: {
+    padding: '6px 15px',
+    fontSize: '12px',
+  },
 }));
 
 const Test = () => {
@@ -328,7 +419,7 @@ const Test = () => {
         } else {
           setShowResult(true);
         }
-      }, 500);
+      }, 300);
     }
   };
 
@@ -345,10 +436,10 @@ const Test = () => {
       {/* Хлопушки при завершении */}
       {showResult && (
         <>
-          {Array.from({ length: 50 }).map((_, i) => (
+          {Array.from({ length: 40 }).map((_, i) => (
             <Confetti
               key={i}
-              delay={i * 0.05}
+              delay={i * 0.04}
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
@@ -360,24 +451,25 @@ const Test = () => {
 
       {/* Выбор предметов */}
       {!selectedSubject && (
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: '15px', alignItems: 'center', width: '100%' }}>
           <Typography
             variant="h4"
             sx={{
               color: '#FFFFFF',
               fontWeight: 800,
-              textShadow: '0 0 15px rgba(255, 255, 255, 0.3)',
+              textShadow: '0 0 12px rgba(255, 255, 255, 0.3)',
               position: 'relative',
-              animation: `${fadeIn} 1.2s ease-in-out`,
+              animation: `${fadeIn} 1s ease-in-out`,
+              fontSize: { xs: '24px', sm: '32px' },
               '&:after': {
                 content: '""',
                 position: 'absolute',
-                bottom: '-10px',
+                bottom: '-8px',
                 left: '50%',
                 transform: 'translateX(-50%)',
-                width: '80px',
-                height: '4px',
-                background: 'linear-gradient(90deg, #FFFFFF, #FFFFFF)',
+                width: '60px',
+                height: '3px',
+                background: 'linear-gradient(90deg, #FFFFFF, #FFFFFFcc)',
                 borderRadius: '2px',
               },
             }}
@@ -387,27 +479,31 @@ const Test = () => {
           <SubjectsContainer>
             {Object.keys(subjectsData).map((subject) => (
               <SubjectCard key={subject} onClick={() => handleSubjectSelect(subject)}>
-                <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+                <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
                   <Box
                     sx={{
-                      width: '60px',
-                      height: '60px',
+                      width: { xs: '50px', sm: '60px' },
+                      height: { xs: '50px', sm: '60px' },
                       display: 'flex',
                       justifyContent: 'center',
                       alignItems: 'center',
                       background: 'rgba(255, 255, 255, 0.05)',
-                      borderRadius: '15px',
+                      borderRadius: '12px',
                       padding: '5px',
-                      boxShadow: '0 8px 20px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.1)',
+                      boxShadow: '0 6px 15px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.1)',
                       backdropFilter: 'blur(5px)',
                       transition: 'all 0.3s ease',
                       '&:hover': {
                         transform: 'scale(1.1) rotate(5deg)',
-                        boxShadow: '0 12px 25px rgba(255, 255, 255, 0.2)',
+                        boxShadow: '0 10px 20px rgba(255, 255, 255, 0.2)',
                       },
                     }}
                   >
-                    <img src={subjectsData[subject].icon} alt={subjectsData[subject].title} style={{ width: '40px', height: '40px' }} />
+                    <img
+                      src={subjectsData[subject].icon}
+                      alt={subjectsData[subject].title}
+                      style={{ width: '35px', height: '35px' }}
+                    />
                   </Box>
                   <SubjectTitle>{subjectsData[subject].title}</SubjectTitle>
                 </CardContent>
@@ -429,7 +525,7 @@ const Test = () => {
               <RadioGroup
                 value={userAnswers[`${selectedSubject}-${currentTest.id}`]?.selected || ''}
                 onChange={(e) => handleAnswerChange(e.target.value)}
-                sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}
+                sx={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
               >
                 {Object.entries(currentTest.options).map(([key, option]) => (
                   <OptionLabel
@@ -446,11 +542,11 @@ const Test = () => {
                 <Typography
                   sx={{
                     color: '#FFFFFF',
-                    fontSize: '16px',
+                    fontSize: { xs: '12px', sm: '14px' },
                     fontWeight: 500,
                     textAlign: 'center',
-                    marginTop: '15px',
-                    textShadow: '0 0 5px rgba(255, 255, 255, 0.3)',
+                    marginTop: '10px',
+                    textShadow: '0 0 4px rgba(255, 255, 255, 0.3)',
                     opacity: userAnswers[`${selectedSubject}-${currentTest.id}`].isCorrect ? 1 : 0.7,
                   }}
                 >
@@ -462,7 +558,7 @@ const Test = () => {
             </CardContent>
           </TestCard>
           <ProgressContainer>
-            <Typography sx={{ color: '#FFFFFF', fontSize: '16px', fontWeight: 500, opacity: 0.8 }}>
+            <Typography sx={{ color: '#FFFFFF', fontSize: { xs: '12px', sm: '14px' }, fontWeight: 500, opacity: 0.8 }}>
               Прогресс: {correctAnswers}/{totalTests}
             </Typography>
             <ProgressLine variant="determinate" value={(correctAnswers / totalTests) * 100} />
@@ -478,9 +574,10 @@ const Test = () => {
             sx={{
               color: '#FFFFFF',
               fontWeight: 700,
-              textShadow: '0 0 15px rgba(255, 255, 255, 0.3)',
-              marginBottom: '20px',
+              textShadow: '0 0 12px rgba(255, 255, 255, 0.3)',
+              marginBottom: '15px',
               textAlign: 'center',
+              fontSize: { xs: '24px', sm: '28px' },
             }}
           >
             Поздравляем!
@@ -488,7 +585,7 @@ const Test = () => {
           <Typography
             sx={{
               color: '#FFFFFF',
-              fontSize: '24px',
+              fontSize: { xs: '18px', sm: '22px' },
               fontWeight: 500,
               marginBottom: '20px',
               textAlign: 'center',
@@ -497,50 +594,9 @@ const Test = () => {
           >
             Вы набрали: {correctAnswers}/{totalTests}
           </Typography>
-          <Button
-            onClick={handleBackToSubjects}
-            sx={{
-              background: 'linear-gradient(135deg, #FFFFFF, #FFFFFF)',
-              color: '#000000',
-              padding: '10px 25px',
-              borderRadius: '15px',
-              textTransform: 'none',
-              fontSize: '16px',
-              fontWeight: 600,
-              boxShadow: '0 8px 25px rgba(255, 255, 255, 0.2)',
-              position: 'relative',
-              overflow: 'hidden',
-              transition: 'all 0.3s ease',
-              width: '100%',
-              '&:before': {
-                content: '""',
-                position: 'absolute',
-                top: '-50%',
-                left: '-50%',
-                width: '200%',
-                height: '200%',
-                background: 'linear-gradient(45deg, transparent, rgba(0, 0, 0, 0.2), transparent)',
-                transform: 'rotate(45deg)',
-                transition: 'all 0.5s ease',
-                opacity: 0,
-              },
-              '&:hover': {
-                background: 'linear-gradient(135deg, #FFFFFF, #FFFFFF)',
-                boxShadow: '0 12px 30px rgba(255, 255, 255, 0.4)',
-                transform: 'translateY(-3px) scale(1.05)',
-                '&:before': {
-                  left: '150%',
-                  opacity: 1,
-                },
-              },
-              '&:active': {
-                transform: 'translateY(1px)',
-                boxShadow: '0 5px 15px rgba(255, 255, 255, 0.2)',
-              },
-            }}
-          >
+          <StyledButton onClick={handleBackToSubjects}>
             Вернуться к тестам
-          </Button>
+          </StyledButton>
         </ResultCard>
       )}
     </TestContainer>
