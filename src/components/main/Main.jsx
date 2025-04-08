@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+// Main.js
+import React, { useState, useContext } from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -9,9 +10,9 @@ import js from "../../assets/icons8-javascript-96.png";
 import python from "../../assets/icons8-python-144.png";
 import roboto from "../../assets/icons8-robot-94.png";
 import react from "../../assets/icons8-react-100.png";
+import { AccessibilityContext } from '../voice/AccessibilityContext'; // Импортируем контекст
 
-
-// Расширенные данные курсов с уроками (без тестов)
+// Данные курсов (без изменений)
 const coursesData = {
   javascript: {
     title: 'Основы JavaScript',
@@ -209,14 +210,13 @@ jsx\nfunction Button() {\n  const handleClick = () => alert("Кнопка наж
   },
 };
 
-// Стилизация
+// Стили (без изменений)
 const ScrollContainer = styled(Box)(({ theme }) => ({
-  background: 'linear-gradient(135deg, #000000 10%,rgb(18, 18, 18) 90%)', // Чёрно-белый градиент
-  maxHeight: 'calc(100vh - 145px)', //l читываем высоту навбара/футера
+  background: 'linear-gradient(135deg, #000000 10%,rgb(18, 18, 18) 90%)',
+  maxHeight: 'calc(100vh - 145px)',
   overflowY: 'auto',
-  padding: theme.breakpoints.down('sm') ? '8px' : '15px', // Ещё меньше padding в мобильном режиме
-  margin: theme.breakpoints.down('sm') ? '0' : '10px', // Без margin в мобильном режиме
-  // Уменьшаем marginTop в десктопном режиме с 40px до 10px
+  padding: theme.breakpoints.down('sm') ? '8px' : '15px',
+  margin: theme.breakpoints.down('sm') ? '0' : '10px',
   marginTop: theme.breakpoints.down('sm') ? '0' : '10px',
   borderRadius: '25px',
   display: 'flex',
@@ -241,10 +241,10 @@ const CourseSection = styled(Box)({
 });
 
 const CourseCard = styled(Box)(({ theme }) => ({
-  background: '#1A1A1A', // Чуть светлее чёрный для карточек
+  background: '#1A1A1A',
   borderRadius: '25px',
-  padding: theme.breakpoints.down('sm') ? '8px' : '15px', // Ещё меньше padding в мобильном режиме
-  margin: theme.breakpoints.down('sm') ? '8px 0' : '15px', // Ещё меньше margin в мобильном режиме
+  padding: theme.breakpoints.down('sm') ? '8px' : '15px',
+  margin: theme.breakpoints.down('sm') ? '8px 0' : '15px',
   width: '100%',
   cursor: 'pointer',
   transition: 'all 0.4s cubic-bezier(0.1, 0.82, 0.25, 1)',
@@ -260,7 +260,7 @@ const CourseCard = styled(Box)(({ theme }) => ({
     left: 0,
     right: 0,
     height: '5px',
-    background: 'linear-gradient(90deg, #FFFFFF, #FFFFFF)', // Чисто белый градиент
+    background: 'linear-gradient(90deg, #FFFFFF, #FFFFFF)',
     borderRadius: '25px 25px 0 0',
     zIndex: 1,
   },
@@ -291,7 +291,7 @@ const CourseCard = styled(Box)(({ theme }) => ({
 const CourseHeader = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  gap: theme.breakpoints.down('sm') ? '10px' : '20px', // Меньше gap в мобильном режиме
+  gap: theme.breakpoints.down('sm') ? '10px' : '20px',
   position: 'relative',
   zIndex: 1,
 }));
@@ -325,7 +325,7 @@ const CourseInfo = styled(Box)(({ theme }) => ({
 }));
 
 const CourseTitle = styled(Typography)(({ theme }) => ({
-  fontSize: theme.breakpoints.down('sm') ? '20px' : '28px', // Меньший шрифт в мобильном режиме
+  fontSize: theme.breakpoints.down('sm') ? '20px' : '28px',
   fontWeight: 800,
   color: '#FFFFFF',
   textShadow: '0 0 10px rgba(255, 255, 255, 0.3)',
@@ -338,26 +338,26 @@ const CourseTitle = styled(Typography)(({ theme }) => ({
     left: '0',
     width: '40px',
     height: '3px',
-    background: 'linear-gradient(90deg, #FFFFFF, #FFFFFF)', // Чисто белый градиент
+    background: 'linear-gradient(90deg, #FFFFFF, #FFFFFF)',
     borderRadius: '3px',
   },
 }));
 
 const CourseDescription = styled(Typography)(({ theme }) => ({
-  fontSize: theme.breakpoints.down('sm') ? '12px' : '16px', // Меньший шрифт в мобильном режиме
-  color: '#FFFFFF', // Чисто белый текст
+  fontSize: theme.breakpoints.down('sm') ? '12px' : '16px',
+  color: '#FFFFFF',
   marginTop: '8px',
   position: 'relative',
   zIndex: 1,
   lineHeight: 1.5,
-  opacity: 0.8, // Лёгкая прозрачность для визуальной иерархии
+  opacity: 0.8,
 }));
 
 const LessonCard = styled(Box)(({ theme }) => ({
-  background: '#1A1A1A', // Чуть светлее чёрный для карточек
+  background: '#1A1A1A',
   borderRadius: '25px',
-  padding: theme.breakpoints.down('sm') ? '8px' : '15px', // Меньше padding в мобильном режиме
-  margin: theme.breakpoints.down('sm') ? '8px 0' : '15px', // Меньше margin в мобильном режиме
+  padding: theme.breakpoints.down('sm') ? '8px' : '15px',
+  margin: theme.breakpoints.down('sm') ? '8px 0' : '15px',
   boxShadow: '0 12px 35px rgba(0, 0, 0, 0.5)',
   position: 'relative',
   overflow: 'hidden',
@@ -374,7 +374,7 @@ const LessonCard = styled(Box)(({ theme }) => ({
     left: '0',
     width: '8px',
     height: '100%',
-    background: 'linear-gradient(to bottom, #FFFFFF, #FFFFFF)', // Чисто белый градиент
+    background: 'linear-gradient(to bottom, #FFFFFF, #FFFFFF)',
     borderRadius: '4px',
   },
   '@keyframes cardFadeIn': {
@@ -384,7 +384,7 @@ const LessonCard = styled(Box)(({ theme }) => ({
 }));
 
 const LessonTitle = styled(Typography)(({ theme }) => ({
-  fontSize: theme.breakpoints.down('sm') ? '18px' : '24px', // Меньший шрифт в мобильном режиме
+  fontSize: theme.breakpoints.down('sm') ? '18px' : '24px',
   fontWeight: 700,
   color: '#FFFFFF',
   marginBottom: '5px',
@@ -393,13 +393,13 @@ const LessonTitle = styled(Typography)(({ theme }) => ({
 }));
 
 const LessonDate = styled(Typography)(({ theme }) => ({
-  fontSize: theme.breakpoints.down('sm') ? '10px' : '12px', // Меньший шрифт в мобильном режиме
+  fontSize: theme.breakpoints.down('sm') ? '10px' : '12px',
   color: '#FFFFFF',
   marginBottom: '10px',
   display: 'flex',
   alignItems: 'center',
   paddingLeft: '15px',
-  opacity: 0.7, // Лёгкая прозрачность для визуальной иерархии
+  opacity: 0.7,
   '&:before': {
     content: '"📅"',
     marginRight: '8px',
@@ -408,27 +408,27 @@ const LessonDate = styled(Typography)(({ theme }) => ({
 
 const ContentArea = styled(Box)(({ theme }) => ({
   display: 'flex',
-  gap: theme.breakpoints.down('sm') ? '10px' : '20px', // Меньше gap в мобильном режиме
+  gap: theme.breakpoints.down('sm') ? '10px' : '20px',
   width: '100%',
   flexDirection: { xs: 'column', md: 'row' },
 }));
 
 const LessonContent = styled(Typography)(({ theme }) => ({
-  fontSize: theme.breakpoints.down('sm') ? '14px' : '16px', // Меньший шрифт в мобильном режиме
+  fontSize: theme.breakpoints.down('sm') ? '14px' : '16px',
   color: '#FFFFFF',
   whiteSpace: 'pre-wrap',
   background: 'rgba(255, 255, 255, 0.05)',
-  padding: theme.breakpoints.down('sm') ? '10px' : '15px', // Меньше padding в мобильном режиме
+  padding: theme.breakpoints.down('sm') ? '10px' : '15px',
   borderRadius: '15px',
   flex: 1,
   boxShadow: '0 8px 25px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.1)',
   lineHeight: 1.6,
-  opacity: 0.9, // Лёгкая прозрачность для визуальной иерархии
+  opacity: 0.9,
 }));
 
 const FunFactBox = styled(Box)(({ theme }) => ({
   background: 'rgba(255, 255, 255, 0.05)',
-  padding: theme.breakpoints.down('sm') ? '10px' : '15px', // Меньше padding в мобильном режиме
+  padding: theme.breakpoints.down('sm') ? '10px' : '15px',
   borderRadius: '15px',
   marginTop: '10px',
   position: 'relative',
@@ -448,22 +448,22 @@ const FunFactBox = styled(Box)(({ theme }) => ({
 }));
 
 const FunFactText = styled(Typography)(({ theme }) => ({
-  fontSize: theme.breakpoints.down('sm') ? '12px' : '14px', // Меньший шрифт в мобильном режиме
+  fontSize: theme.breakpoints.down('sm') ? '12px' : '14px',
   color: '#FFFFFF',
   paddingLeft: '10px',
   lineHeight: '1.5',
   fontStyle: 'italic',
-  opacity: 0.8, // Лёгкая прозрачность для визуальной иерархии
+  opacity: 0.8,
 }));
 
 const CodeEditor = styled(TextField)(({ theme }) => ({
   width: '100%',
   flex: 1,
   '& .MuiInputBase-root': {
-    background: '#1A1A1A', // Чуть светлее чёрный для редактора
+    background: '#1A1A1A',
     borderRadius: '15px',
     fontFamily: '"Fira Code", monospace',
-    fontSize: theme.breakpoints.down('sm') ? '12px' : '14px', // Меньший шрифт в мобильном режиме
+    fontSize: theme.breakpoints.down('sm') ? '12px' : '14px',
     color: '#FFFFFF',
     border: '1px solid rgba(255, 255, 255, 0.1)',
     boxShadow: 'inset 0 2px 10px rgba(0, 0, 0, 0.3)',
@@ -472,8 +472,8 @@ const CodeEditor = styled(TextField)(({ theme }) => ({
   '& .MuiInputLabel-root': {
     color: '#FFFFFF',
     fontFamily: '"Fira Code", monospace',
-    fontSize: theme.breakpoints.down('sm') ? '12px' : '14px', // Меньший шрифт в мобильном режиме
-    opacity: 0.7, // Лёгкая прозрачность для визуальной иерархии
+    fontSize: theme.breakpoints.down('sm') ? '12px' : '14px',
+    opacity: 0.7,
   },
   '& .MuiOutlinedInput-root': {
     '&:hover fieldset': {
@@ -490,11 +490,11 @@ const Output = styled(Typography)(({ success, theme }) => {
   const bgColor = success ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.05)';
 
   return {
-    fontSize: theme.breakpoints.down('sm') ? '12px' : '14px', // Меньший шрифт в мобильном режиме
+    fontSize: theme.breakpoints.down('sm') ? '12px' : '14px',
     color: '#FFFFFF',
     fontFamily: '"Fira Code", monospace',
     background: bgColor,
-    padding: theme.breakpoints.down('sm') ? '10px' : '15px', // Меньше padding в мобильном режиме
+    padding: theme.breakpoints.down('sm') ? '10px' : '15px',
     borderRadius: '15px',
     marginTop: '10px',
     position: 'relative',
@@ -518,12 +518,12 @@ const Output = styled(Typography)(({ success, theme }) => {
 });
 
 const TryButton = styled(Button)(({ theme }) => ({
-  background: 'linear-gradient(135deg, #FFFFFF, #FFFFFF)', // Чисто белый градиент
-  color: '#000000', // Чёрный текст для контраста
-  padding: theme.breakpoints.down('sm') ? '8px 15px' : '10px 25px', // Меньше padding в мобильном режиме
+  background: 'linear-gradient(135deg, #FFFFFF, #FFFFFF)',
+  color: '#000000',
+  padding: theme.breakpoints.down('sm') ? '8px 15px' : '10px 25px',
   borderRadius: '15px',
   textTransform: 'none',
-  fontSize: theme.breakpoints.down('sm') ? '12px' : '14px', // Меньший шрифт в мобильном режиме
+  fontSize: theme.breakpoints.down('sm') ? '12px' : '14px',
   fontWeight: 600,
   boxShadow: '0 8px 25px rgba(255, 255, 255, 0.2)',
   position: 'relative',
@@ -542,7 +542,7 @@ const TryButton = styled(Button)(({ theme }) => ({
     opacity: 0,
   },
   '&:hover': {
-    background: 'linear-gradient(135deg, #FFFFFF, #FFFFFF)', // Чисто белый при наведении
+    background: 'linear-gradient(135deg, #FFFFFF, #FFFFFF)',
     boxShadow: '0 12px 30px rgba(255, 255, 255, 0.4)',
     transform: 'translateY(-1px)',
     '&:before': {
@@ -557,7 +557,7 @@ const TryButton = styled(Button)(({ theme }) => ({
 }));
 
 const CourseHeaderTitle = styled(Typography)(({ theme }) => ({
-  fontSize: theme.breakpoints.down('sm') ? '26px' : '36px', // Меньший шрифт в мобильном режиме
+  fontSize: theme.breakpoints.down('sm') ? '26px' : '36px',
   fontWeight: 800,
   textAlign: 'center',
   color: '#FFFFFF',
@@ -573,7 +573,7 @@ const CourseHeaderTitle = styled(Typography)(({ theme }) => ({
     transform: 'translateX(-50%)',
     width: '80px',
     height: '4px',
-    background: 'linear-gradient(90deg, #FFFFFF, #FFFFFF)', // Чисто белый градиент
+    background: 'linear-gradient(90deg, #FFFFFF, #FFFFFF)',
     borderRadius: '2px',
   },
   '@keyframes titleFadeIn': {
@@ -583,7 +583,7 @@ const CourseHeaderTitle = styled(Typography)(({ theme }) => ({
 }));
 
 const CurrentDate = styled(Typography)(({ theme }) => ({
-  fontSize: theme.breakpoints.down('sm') ? '12px' : '14px', // Меньший шрифт в мобильном режиме
+  fontSize: theme.breakpoints.down('sm') ? '12px' : '14px',
   color: '#FFFFFF',
   textAlign: 'center',
   marginBottom: '20px',
@@ -594,7 +594,7 @@ const CurrentDate = styled(Typography)(({ theme }) => ({
   borderRadius: '15px',
   display: 'inline-block',
   boxShadow: 'inset 0 0 0 1px rgba(255, 255, 255, 0.1)',
-  opacity: 0.7, // Лёгкая прозрачность для визуальной иерархии
+  opacity: 0.7,
   animation: 'titleFadeIn 1.2s ease-in-out',
 }));
 
@@ -623,10 +623,10 @@ const ChipStyled = styled(Chip)(({ theme }) => ({
   border: '1px solid rgba(255, 255, 255, 0.1)',
   backdropFilter: 'blur(3px)',
   fontWeight: 500,
-  fontSize: theme.breakpoints.down('sm') ? '10px' : '12px', // Меньший шрифт в мобильном режиме
+  fontSize: theme.breakpoints.down('sm') ? '10px' : '12px',
   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
   transition: 'all 0.3s ease',
-  opacity: 0.8, // Лёгкая прозрачность для визуальной иерархии
+  opacity: 0.8,
   '&:hover': {
     background: 'rgba(255, 255, 255, 0.1)',
     transform: 'scale(1.05)',
@@ -639,8 +639,8 @@ const Main = () => {
   const [expandedCourses, setExpandedCourses] = useState({});
   const [codeInputs, setCodeInputs] = useState({});
   const [outputs, setOutputs] = useState({});
+  const { speakText, stopSpeech } = useContext(AccessibilityContext);
 
-  // Toggle course expansion
   const handleToggleCourse = (courseKey) => {
     setExpandedCourses((prev) => ({
       ...prev,
@@ -648,7 +648,6 @@ const Main = () => {
     }));
   };
 
-  // Handle code input change
   const handleCodeChange = (courseKey, lessonId, value) => {
     setCodeInputs((prev) => ({
       ...prev,
@@ -656,7 +655,6 @@ const Main = () => {
     }));
   };
 
-  // Simulate code execution (for demo purposes)
   const executeCode = (courseKey, lessonId) => {
     const lesson = coursesData[courseKey].lessons.find((l) => l.id === lessonId);
     const userCode = codeInputs[`${courseKey}-${lessonId}`] || lesson.testCode;
@@ -683,7 +681,6 @@ const Main = () => {
     }
   };
 
-  // Get current date for display
   const currentDate = new Date().toLocaleDateString('ru-RU', {
     day: 'numeric',
     month: 'long',
@@ -693,8 +690,28 @@ const Main = () => {
   return (
     <ScrollContainer>
       <HeaderContainer>
-        <CourseHeaderTitle>Курсы программирования</CourseHeaderTitle>
-        <CurrentDate>Сегодня: {currentDate}</CurrentDate>
+        <CourseHeaderTitle
+          onMouseEnter={() => speakText('Курсы программирования')}
+          onMouseLeave={stopSpeech}
+          onTouchStart={() => speakText('Курсы программирования')}
+          onTouchEnd={stopSpeech}
+          onFocus={() => speakText('Курсы программирования')}
+          onBlur={stopSpeech}
+          tabIndex={0}
+        >
+          Курсы программирования
+        </CourseHeaderTitle>
+        <CurrentDate
+          onMouseEnter={() => speakText(`Сегодня: ${currentDate}`)}
+          onMouseLeave={stopSpeech}
+          onTouchStart={() => speakText(`Сегодня: ${currentDate}`)}
+          onTouchEnd={stopSpeech}
+          onFocus={() => speakText(`Сегодня: ${currentDate}`)}
+          onBlur={stopSpeech}
+          tabIndex={0}
+        >
+          Сегодня: {currentDate}
+        </CurrentDate>
       </HeaderContainer>
 
       {Object.keys(coursesData).map((courseKey) => {
@@ -709,14 +726,61 @@ const Main = () => {
                   <img src={course.icon} alt={`${course.title} icon`} style={{ width: '40px', height: '40px' }} />
                 </IconWrapper>
                 <Box>
-                  <CourseTitle>{course.title}</CourseTitle>
-                  <CourseDescription>{course.description}</CourseDescription>
+                  <CourseTitle
+                    onMouseEnter={() => speakText(course.title)}
+                    onMouseLeave={stopSpeech}
+                    onTouchStart={() => speakText(course.title)}
+                    onTouchEnd={stopSpeech}
+                    onFocus={() => speakText(course.title)}
+                    onBlur={stopSpeech}
+                    tabIndex={0}
+                  >
+                    {course.title}
+                  </CourseTitle>
+                  <CourseDescription
+                    onMouseEnter={() => speakText(course.description)}
+                    onMouseLeave={stopSpeech}
+                    onTouchStart={() => speakText(course.description)}
+                    onTouchEnd={stopSpeech}
+                    onFocus={() => speakText(course.description)}
+                    onBlur={stopSpeech}
+                    tabIndex={0}
+                  >
+                    {course.description}
+                  </CourseDescription>
                 </Box>
               </CourseHeader>
               <CourseInfo>
-                <ChipStyled label={`Последнее обновление: ${course.lastUpdated}`} />
-                <ChipStyled label={`Сложность: ${course.difficulty}`} />
-                <ChipStyled label={`Длительность: ${course.duration}`} />
+                <ChipStyled
+                  label={`Последнее обновление: ${course.lastUpdated}`}
+                  onMouseEnter={() => speakText(`Последнее обновление: ${course.lastUpdated}`)}
+                  onMouseLeave={stopSpeech}
+                  onTouchStart={() => speakText(`Последнее обновление: ${course.lastUpdated}`)}
+                  onTouchEnd={stopSpeech}
+                  onFocus={() => speakText(`Последнее обновление: ${course.lastUpdated}`)}
+                  onBlur={stopSpeech}
+                  tabIndex={0}
+                />
+                <ChipStyled
+                  label={`Сложность: ${course.difficulty}`}
+                  onMouseEnter={() => speakText(`Сложность: ${course.difficulty}`)}
+                  onMouseLeave={stopSpeech}
+                  onTouchStart={() => speakText(`Сложность: ${course.difficulty}`)}
+                  onTouchEnd={stopSpeech}
+                  onFocus={() => speakText(`Сложность: ${course.difficulty}`)}
+                  onBlur={stopSpeech}
+                  tabIndex={0}
+                />
+                <ChipStyled
+                  label={`Длительность: ${course.duration}`}
+                  onMouseEnter={() => speakText(`Длительность: ${course.duration}`)}
+                  onMouseLeave={stopSpeech}
+                  onTouchStart={() => speakText(`Длительность: ${course.duration}`)}
+                  onTouchEnd={stopSpeech}
+                  onFocus={() => speakText(`Длительность: ${course.duration}`)}
+                  onBlur={stopSpeech}
+                  tabIndex={0}
+                />
               </CourseInfo>
             </CourseCard>
 
@@ -724,10 +788,40 @@ const Main = () => {
               <Box>
                 {course.lessons.map((lesson) => (
                   <LessonCard key={lesson.id}>
-                    <LessonTitle>{lesson.title}</LessonTitle>
-                    <LessonDate>{lesson.date}</LessonDate>
+                    <LessonTitle
+                      onMouseEnter={() => speakText(lesson.title)}
+                      onMouseLeave={stopSpeech}
+                      onTouchStart={() => speakText(lesson.title)}
+                      onTouchEnd={stopSpeech}
+                      onFocus={() => speakText(lesson.title)}
+                      onBlur={stopSpeech}
+                      tabIndex={0}
+                    >
+                      {lesson.title}
+                    </LessonTitle>
+                    <LessonDate
+                      onMouseEnter={() => speakText(lesson.date)}
+                      onMouseLeave={stopSpeech}
+                      onTouchStart={() => speakText(lesson.date)}
+                      onTouchEnd={stopSpeech}
+                      onFocus={() => speakText(lesson.date)}
+                      onBlur={stopSpeech}
+                      tabIndex={0}
+                    >
+                      {lesson.date}
+                    </LessonDate>
                     <ContentArea>
-                      <LessonContent>{lesson.content}</LessonContent>
+                      <LessonContent
+                        onMouseEnter={() => speakText(lesson.content)}
+                        onMouseLeave={stopSpeech}
+                        onTouchStart={() => speakText(lesson.content)}
+                        onTouchEnd={stopSpeech}
+                        onFocus={() => speakText(lesson.content)}
+                        onBlur={stopSpeech}
+                        tabIndex={0}
+                      >
+                        {lesson.content}
+                      </LessonContent>
                       <Box sx={{ flex: 1 }}>
                         <CodeEditor
                           label="Попробуйте код"
@@ -736,16 +830,39 @@ const Main = () => {
                           value={codeInputs[`${courseKey}-${lesson.id}`] || lesson.testCode}
                           onChange={(e) => handleCodeChange(courseKey, lesson.id, e.target.value)}
                           variant="outlined"
+                          inputProps={{
+                            'aria-label': 'Поле для ввода кода',
+                          }}
                         />
                         <TryButton
                           onClick={() => executeCode(courseKey, lesson.id)}
                           sx={{ mt: 1.5, width: '100%' }}
+                          onMouseEnter={() => speakText('Выполнить')}
+                          onMouseLeave={stopSpeech}
+                          onTouchStart={() => speakText('Выполнить')}
+                          onTouchEnd={stopSpeech}
+                          onFocus={() => speakText('Выполнить')}
+                          onBlur={stopSpeech}
+                          tabIndex={0}
                         >
                           Выполнить
                         </TryButton>
                         {outputs[`${courseKey}-${lesson.id}`] && (
                           <Output
                             success={outputs[`${courseKey}-${lesson.id}`].success}
+                            onMouseEnter={() =>
+                              speakText(`Результат: ${outputs[`${courseKey}-${lesson.id}`].result}`)
+                            }
+                            onMouseLeave={stopSpeech}
+                            onTouchStart={() =>
+                              speakText(`Результат: ${outputs[`${courseKey}-${lesson.id}`].result}`)
+                            }
+                            onTouchEnd={stopSpeech}
+                            onFocus={() =>
+                              speakText(`Результат: ${outputs[`${courseKey}-${lesson.id}`].result}`)
+                            }
+                            onBlur={stopSpeech}
+                            tabIndex={0}
                           >
                             {outputs[`${courseKey}-${lesson.id}`].result}
                           </Output>
@@ -753,7 +870,17 @@ const Main = () => {
                       </Box>
                     </ContentArea>
                     <FunFactBox>
-                      <FunFactText>{lesson.funFact}</FunFactText>
+                      <FunFactText
+                        onMouseEnter={() => speakText(`Интересный факт: ${lesson.funFact}`)}
+                        onMouseLeave={stopSpeech}
+                        onTouchStart={() => speakText(`Интересный факт: ${lesson.funFact}`)}
+                        onTouchEnd={stopSpeech}
+                        onFocus={() => speakText(`Интересный факт: ${lesson.funFact}`)}
+                        onBlur={stopSpeech}
+                        tabIndex={0}
+                      >
+                        {lesson.funFact}
+                      </FunFactText>
                     </FunFactBox>
                   </LessonCard>
                 ))}

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+// Test.js
+import React, { useState, useEffect, useContext } from 'react';
 import { styled, keyframes } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -16,6 +17,7 @@ import react from "../../assets/icons8-react-100.png";
 import succesfuly from "../../audio/succesful.mp3";
 import error from "../../audio/error.mp3";
 import victor from "../../audio/victory.mp3";
+import { AccessibilityContext } from '../voice/AccessibilityContext'; // Импортируем контекст
 
 // Анимации
 const waveAnimation = keyframes`
@@ -108,7 +110,19 @@ const TestContainer = styled(Box)(({ theme }) => ({
   width: '100%',
   boxSizing: 'border-box',
   borderRadius: '25px',
-  maxHeight: 'calc(100vh - 127px)', // Учитываем высоту навбара/футера
+  maxHeight: 'calc(100vh - 127px)',
+}));
+
+const CenteredContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexGrow: 1,
+  width: '100%',
+  gap: theme.breakpoints.down('sm') ? '10px' : '20px',
+  padding: theme.breakpoints.down('sm') ? '10px 0' : '20px 0',
+  minHeight: 'calc(100vh - 127px)',
 }));
 
 const SubjectsContainer = styled(Box)(({ theme }) => ({
@@ -500,6 +514,7 @@ const Test = () => {
   const [userAnswers, setUserAnswers] = useState({});
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [showResult, setShowResult] = useState(false);
+  const { speakText, stopSpeech } = useContext(AccessibilityContext); // Используем контекст
 
   // Звуковые эффекты
   const successSound = new Audio(succesfuly);
@@ -523,7 +538,7 @@ const Test = () => {
 
     setUserAnswers((prev) => ({
       ...prev,
-      [`${selectedSubject}-${currentTest.id}`]: { selected: value, isCorrect },
+      [selectedSubject + '-' + currentTest.id]: { selected: value, isCorrect },
     }));
 
     if (isCorrect) {
@@ -572,14 +587,33 @@ const Test = () => {
           ))}
         </>
       )}
-
       {/* Выбор предметов */}
       {!selectedSubject && (
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: '15px', alignItems: 'center', width: '100%' }}>
-          <TestHeader>Выберите тест</TestHeader>
+        <CenteredContainer sx={{ marginTop: -30 }}>
+          <TestHeader
+            onMouseEnter={() => speakText('Выберите тест')}
+            onMouseLeave={stopSpeech}
+            onTouchStart={() => speakText('Выберите тест')}
+            onTouchEnd={stopSpeech}
+            onFocus={() => speakText('Выберите тест')}
+            onBlur={stopSpeech}
+            tabIndex={0}
+          >
+            Выберите тест
+          </TestHeader>
           <SubjectsContainer>
             {Object.keys(subjectsData).map((subject) => (
-              <SubjectCard key={subject} onClick={() => handleSubjectSelect(subject)}>
+              <SubjectCard
+                key={subject}
+                onClick={() => handleSubjectSelect(subject)}
+                onMouseEnter={() => speakText(subjectsData[subject].title)}
+                onMouseLeave={stopSpeech}
+                onTouchStart={() => speakText(subjectsData[subject].title)}
+                onTouchEnd={stopSpeech}
+                onFocus={() => speakText(subjectsData[subject].title)}
+                onBlur={stopSpeech}
+                tabIndex={0}
+              >
                 <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
                   <Box
                     sx={{
@@ -611,20 +645,44 @@ const Test = () => {
               </SubjectCard>
             ))}
           </SubjectsContainer>
-        </Box>
+        </CenteredContainer>
       )}
 
       {/* Тесты */}
       {selectedSubject && !showResult && (
-        <>
+        <CenteredContainer>
           <TestCard>
             <CardContent>
-              <SubjectTitle>
+              <SubjectTitle
+                onMouseEnter={() =>
+                  speakText(`${subjectsData[selectedSubject].title} - Тест ${currentTestIndex + 1} из ${totalTests}`)
+                }
+                onMouseLeave={stopSpeech}
+                onTouchStart={() =>
+                  speakText(`${subjectsData[selectedSubject].title} - Тест ${currentTestIndex + 1} из ${totalTests}`)
+                }
+                onTouchEnd={stopSpeech}
+                onFocus={() =>
+                  speakText(`${subjectsData[selectedSubject].title} - Тест ${currentTestIndex + 1} из ${totalTests}`)
+                }
+                onBlur={stopSpeech}
+                tabIndex={0}
+              >
                 {subjectsData[selectedSubject].title} - Тест {currentTestIndex + 1}/{totalTests}
               </SubjectTitle>
-              <TestQuestion>{currentTest.question}</TestQuestion>
+              <TestQuestion
+                onMouseEnter={() => speakText(currentTest.question)}
+                onMouseLeave={stopSpeech}
+                onTouchStart={() => speakText(currentTest.question)}
+                onTouchEnd={stopSpeech}
+                onFocus={() => speakText(currentTest.question)}
+                onBlur={stopSpeech}
+                tabIndex={0}
+              >
+                {currentTest.question}
+              </TestQuestion>
               <RadioGroup
-                value={userAnswers[`${selectedSubject}-${currentTest.id}`]?.selected || ''}
+                value={userAnswers[selectedSubject + '-' + currentTest.id]?.selected || ''}
                 onChange={(e) => handleAnswerChange(e.target.value)}
                 sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}
               >
@@ -635,13 +693,47 @@ const Test = () => {
                     control={<Radio />}
                     label={`${key.toUpperCase()}. ${option}`}
                     isCorrect={key === currentTest.correctAnswer}
-                    isSelected={userAnswers[`${selectedSubject}-${currentTest.id}`]?.selected === key}
+                    isSelected={userAnswers[selectedSubject + '-' + currentTest.id]?.selected === key}
+                    onMouseEnter={() => speakText(`${key.toUpperCase()}. ${option}`)}
+                    onMouseLeave={stopSpeech}
+                    onTouchStart={() => speakText(`${key.toUpperCase()}. ${option}`)}
+                    onTouchEnd={stopSpeech}
+                    onFocus={() => speakText(`${key.toUpperCase()}. ${option}`)}
+                    onBlur={stopSpeech}
+                    tabIndex={0}
                   />
                 ))}
               </RadioGroup>
-              {userAnswers[`${selectedSubject}-${currentTest.id}`] && (
-                <FeedbackMessage isCorrect={userAnswers[`${selectedSubject}-${currentTest.id}`].isCorrect}>
-                  {userAnswers[`${selectedSubject}-${currentTest.id}`].isCorrect
+              {userAnswers[selectedSubject + '-' + currentTest.id] && (
+                <FeedbackMessage
+                  isCorrect={userAnswers[selectedSubject + '-' + currentTest.id].isCorrect}
+                  onMouseEnter={() =>
+                    speakText(
+                      userAnswers[selectedSubject + '-' + currentTest.id].isCorrect
+                        ? 'Правильно! Готовимся к следующему...'
+                        : 'Ой, неверно. Попробуй ещё раз!'
+                    )
+                  }
+                  onMouseLeave={stopSpeech}
+                  onTouchStart={() =>
+                    speakText(
+                      userAnswers[selectedSubject + '-' + currentTest.id].isCorrect
+                        ? 'Правильно! Готовимся к следующему...'
+                        : 'Ой, неверно. Попробуй ещё раз!'
+                    )
+                  }
+                  onTouchEnd={stopSpeech}
+                  onFocus={() =>
+                    speakText(
+                      userAnswers[selectedSubject + '-' + currentTest.id].isCorrect
+                        ? 'Правильно! Готовимся к следующему...'
+                        : 'Ой, неверно. Попробуй ещё раз!'
+                    )
+                  }
+                  onBlur={stopSpeech}
+                  tabIndex={0}
+                >
+                  {userAnswers[selectedSubject + '-' + currentTest.id].isCorrect
                     ? 'Правильно! Готовимся к следующему...'
                     : 'Ой, неверно. Попробуй ещё раз!'}
                 </FeedbackMessage>
@@ -649,23 +741,68 @@ const Test = () => {
             </CardContent>
           </TestCard>
           <ProgressContainer>
-            <Typography sx={{ color: '#FFFFFF', fontSize: { xs: '11px', sm: '13px' }, fontWeight: 500, opacity: 0.8, fontFamily: '"Roboto Mono", monospace' }}>
+            <Typography
+              sx={{
+                color: '#FFFFFF',
+                fontSize: { xs: '11px', sm: '13px' },
+                fontWeight: 500,
+                opacity: 0.8,
+                fontFamily: '"Roboto Mono", monospace',
+              }}
+              onMouseEnter={() => speakText(`Прогресс: ${correctAnswers} из ${totalTests}`)}
+              onMouseLeave={stopSpeech}
+              onTouchStart={() => speakText(`Прогресс: ${correctAnswers} из ${totalTests}`)}
+              onTouchEnd={stopSpeech}
+              onFocus={() => speakText(`Прогресс: ${correctAnswers} из ${totalTests}`)}
+              onBlur={stopSpeech}
+              tabIndex={0}
+            >
               Прогресс: {correctAnswers}/{totalTests}
             </Typography>
             <ProgressLine variant="determinate" value={(correctAnswers / totalTests) * 100} />
           </ProgressContainer>
-        </>
+        </CenteredContainer>
       )}
-
       {/* Результат */}
       {showResult && (
-        <ResultCard>
-          <ResultTitle>Поздравляем!</ResultTitle>
-          <ResultScore>Вы набрали: {correctAnswers}/{totalTests}</ResultScore>
-          <StyledButton onClick={handleBackToSubjects}>
-            Вернуться к тестам
-          </StyledButton>
-        </ResultCard>
+        <CenteredContainer>
+          <ResultCard>
+            <ResultTitle
+              onMouseEnter={() => speakText('Поздравляем!')}
+              onMouseLeave={stopSpeech}
+              onTouchStart={() => speakText('Поздравляем!')}
+              onTouchEnd={stopSpeech}
+              onFocus={() => speakText('Поздравляем!')}
+              onBlur={stopSpeech}
+              tabIndex={0}
+            >
+              Поздравляем!
+            </ResultTitle>
+            <ResultScore
+              onMouseEnter={() => speakText(`Вы набрали: ${correctAnswers} из ${totalTests}`)}
+              onMouseLeave={stopSpeech}
+              onTouchStart={() => speakText(`Вы набрали: ${correctAnswers} из ${totalTests}`)}
+              onTouchEnd={stopSpeech}
+              onFocus={() => speakText(`Вы набрали: ${correctAnswers} из ${totalTests}`)}
+              onBlur={stopSpeech}
+              tabIndex={0}
+            >
+              Вы набрали: {correctAnswers}/{totalTests}
+            </ResultScore>
+            <StyledButton
+              onClick={handleBackToSubjects}
+              onMouseEnter={() => speakText('Вернуться к тестам')}
+              onMouseLeave={stopSpeech}
+              onTouchStart={() => speakText('Вернуться к тестам')}
+              onTouchEnd={stopSpeech}
+              onFocus={() => speakText('Вернуться к тестам')}
+              onBlur={stopSpeech}
+              tabIndex={0}
+            >
+              Вернуться к тестам
+            </StyledButton>
+          </ResultCard>
+        </CenteredContainer>
       )}
     </TestContainer>
   );
