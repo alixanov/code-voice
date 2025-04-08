@@ -48,12 +48,11 @@ const FooterContainer = styled(Box)(({ theme }) => ({
   position: 'fixed',
   bottom: 0,
   left: 0,
-  width: 'calc(100% - 40px)', // Учитываем margin
+  width: '100%', // Учитываем margin
   background: 'linear-gradient(135deg, #000000 10%,rgb(18, 18, 18) 90%)', // Чёрно-белый градиент
   backdropFilter: 'blur(15px)',
   WebkitBackdropFilter: 'blur(15px)',
   padding: '20px',
-  margin: '20px',
   borderRadius: '25px',
   boxShadow: '0 -5px 20px rgba(0, 0, 0, 0.3)',
   zIndex: 1300,
