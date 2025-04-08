@@ -1,0 +1,119 @@
+{
+  "courses_title": "Dasturlash kurslari",
+  "today": "Bugun",
+  "last_updated": "Oxirgi yangilanish",
+  "difficulty": "Qiyinlik",
+  "duration": "Davomiyligi",
+  "beginner": "Boshlang'ich",
+  "intermediate": "O'rta",
+  "execute": "Bajarish",
+  "try_code": "Kodni sinab ko'ring",
+  "javascript": {
+    "title": "JavaScript asoslari",
+    "description": "JavaScript bilan veb-dasturlash olamiga sho'ng'ing!",
+    "lessons": {
+      "variables_and_data_types": {
+        "title": "O'zgaruvchilar va ma'lumot turlari",
+        "content": "JavaScript-da o'zgaruvchilar let, const yoki var yordamida e'lon qilinadi. Ular satrlar, raqamlar, mantiqiy qiymatlar va boshqa ma'lumot turlarini saqlashi mumkin. Misol:\njavascript\nlet name = \"Aleksey\";\nconst age = 25;\nlet isStudent = true;\nconsole.log(`Ism: ${name}, Yosh: ${age}, Talaba: ${isStudent}`);\n",
+        "expected_output": "Ism: Aleksey, Yosh: 25, Talaba: true",
+        "fun_fact": "JavaScript 1995 yilning may oyida Brendan Eich tomonidan atigi 10 kun ichida yaratilgan!"
+      },
+      "functions_and_conditions": {
+        "title": "Funksiyalar va shartlar",
+        "content": "JavaScript-da funksiyalar qayta ishlatiladigan kodni yaratishga imkon beradi. Shartlar (if) mantiqni boshqaradi. \"Raqamni taxmin qil\" o'yini misoli:\njavascript\nfunction guessNumber(num) {\n  const secret = 42;\n  if (num === secret) return \"Topding!\";\n  return num > secret ? \"Juda ko'p\" : \"Juda kam\";\n}\nconsole.log(guessNumber(42));\n",
+        "expected_output": "Topding!",
+        "fun_fact": "Misolda 42 raqami — \"Avtostop bo'yicha galaktika bo'ylab sayohat\" kitobiga ishora bo'lib, u yerda bu \"hayot, koinot va hamma narsaning asosiy savoliga javob\" deb ataladi."
+      },
+      "arrays_and_loops": {
+        "title": "Massivlar va sikllar",
+        "content": "Massivlar ma'lumotlar ro'yxatini saqlaydi, sikllar (for) esa ularni qayta ishlashga imkon beradi. Ballarni hisoblash misoli:\njavascript\nconst scores = [85, 92, 78, 95];\nlet total = 0;\nfor (let i = 0; i < scores.length; i++) {\n  total += scores[i];\n}\nconsole.log(`O'rtacha ball: ${total / scores.length}`);\n",
+        "expected_output": "O'rtacha ball: 87.5",
+        "fun_fact": "Zamonaviy brauzerlar soniyasiga millionlab JavaScript operatsiyalarini bajaradi!"
+      },
+      "objects_and_methods": {
+        "title": "Obyektlar va metodlar",
+        "content": "JavaScript-da obyektlar ma'lumotlar to'plamidir. Misol:\njavascript\nconst user = { name: \"Anna\", age: 30, greet() { return `Salom, men ${this.name}!`; } };\nconsole.log(user.greet());\n",
+        "expected_output": "Salom, men Anna!",
+        "fun_fact": "JavaScript-da obyektlar murakkab ilovalarni yaratish uchun asosdir!"
+      }
+    }
+  },
+  "python": {
+    "title": "Boshlang'ichlar uchun Python",
+    "description": "Kuchli va oddiy dasturlash tilini o'rganing!",
+    "lessons": {
+      "variables_and_input": {
+        "title": "O'zgaruvchilar va ma'lumot kiritish",
+        "content": "Python-da o'zgaruvchilar turlarni talab qilmaydi, input() esa foydalanuvchi bilan muloqot qilishga imkon beradi. Misol:\npython\nname = input(\"Ismingizni kiriting: \")\nage = int(input(\"Yoshingizni kiriting: \"))\nprint(f\"Salom, {name}! 5 yildan keyin siz {age + 5} yoshda bo'lasiz.\")\n",
+        "expected_output": "Salom, Ivan! 5 yildan keyin siz 27 yoshda bo'lasiz.",
+        "fun_fact": "Python nomi ilondan emas, balki \"Monti Payton\" komediya shousidan olingan!"
+      },
+      "lists_and_loops": {
+        "title": "Ro'yxatlar va sikllar",
+        "content": "Ro'yxatlar va for sikli ma'lumotlarni qayta ishlash uchun juda yaxshi. Xarid ro'yxati misoli:\npython\nitems = [\"non\", \"sut\", \"tuxum\"]\nfor item in items:\n  print(f\"Sotib olish: {item}\")\n",
+        "expected_output": "Sotib olish: non\nSotib olish: sut\nSotib olish: tuxum",
+        "fun_fact": "Python NASA tomonidan kosmik teleskoplardan olingan tasvirlarni qayta ishlash uchun ishlatiladi!"
+      },
+      "dictionaries_and_data": {
+        "title": "Lug'atlar va ma'lumotlar bilan ishlash",
+        "content": "Lug'atlar ma'lumotlarni kalit-qiymat formatida saqlaydi. Xarajatlarni hisoblash misoli:\npython\nexpenses = {\"ovqat\": 500, \"transport\": 200, \"ko'ngilochar\": 300}\ntotal = sum(expenses.values())\nprint(f\"Umumiy xarajatlar: {total} so'm.\")\n",
+        "expected_output": "Umumiy xarajatlar: 1000 so'm.",
+        "fun_fact": "Python dunyodagi eng mashhur dasturlash tillari uchligiga kiradi!"
+      },
+      "functions_and_modules": {
+        "title": "Funksiyalar va modullar",
+        "content": "Funksiyalar kodni tartibga solishga yordam beradi. Misol:\npython\ndef calculate_area(length, width):\n  return length * width\narea = calculate_area(5, 3)\nprint(f\"Maydon: {area} kv.m\")\n",
+        "expected_output": "Maydon: 15 kv.m",
+        "fun_fact": "Python ko'pincha mashinaviy o'qitish va ma'lumotlarni tahlil qilish uchun ishlatiladi!"
+      }
+    }
+  },
+  "robotics": {
+    "title": "Robototexnikaga kirish",
+    "description": "Kod yordamida robotlarni boshqarishni o'rganing!",
+    "lessons": {
+      "robot_movement": {
+        "title": "Robot harakatini dasturlash",
+        "content": "Robototexnika xatti-harakatni modellashtirish uchun sinflardan foydalanadi. Misol:\npython\nclass Robot:\n  def move_forward(self):\n    return \"Robot oldinga harakat qilmoqda\"\n  def turn_left(self):\n    return \"Robot chapga burilmoqda\"\nrobot = Robot()\nprint(robot.move_forward())\n",
+        "expected_output": "Robot oldinga harakat qilmoqda",
+        "fun_fact": "\"Robot\" so'zi birinchi marta 1920 yilda chex yozuvchisi Karel Chapekning pyesasida ishlatilgan!"
+      },
+      "sensors_and_logic": {
+        "title": "Sensorlar va mantiq",
+        "content": "Robotlar qaror qabul qilish uchun sensorlardan foydalanadi. Misol:\npython\nclass Robot:\n  def detect_obstacle(self, distance):\n    if distance < 10:\n      return \"To'xtash: to'siq\"\n    return \"Oldinga harakat\"\nrobot = Robot()\nprint(robot.detect_obstacle(5))\n",
+        "expected_output": "To'xtash: to'siq",
+        "fun_fact": "Zamonaviy robotlar 100 dan ortiq turli sensorlarga ega bo'lishi mumkin!"
+      },
+      "motor_control": {
+        "title": "Motorlarni boshqarish",
+        "content": "Motorlar buyruqlar orqali boshqariladi. Misol:\npython\nclass Robot:\n  def set_speed(self, speed):\n    return f\"Tezlik {speed}% ga o'rnatildi\"\nrobot = Robot()\nprint(robot.set_speed(75))\n",
+        "expected_output": "Tezlik 75% ga o'rnatildi",
+        "fun_fact": "Zavodlardagi robotlar sekundiga 10 metrgacha harakat qilishi mumkin!"
+      }
+    }
+  },
+  "react": {
+    "title": "Boshlang'ichlar uchun React",
+    "description": "React bilan zamonaviy veb-ilovalarni yarating!",
+    "lessons": {
+      "components_and_jsx": {
+        "title": "Komponentlar va JSX",
+        "content": "React interfeyslar yaratish uchun komponentlardan foydalanadi. Misol:\njsx\nfunction Greeting() {\n  return <h1>Salom, dunyo!</h1>;\n}\n",
+        "expected_output": "Salom, dunyo!",
+        "fun_fact": "React Facebook-da yaratilgan va birinchi marta 2013 yilda ishlatilgan!"
+      },
+      "state_and_hooks": {
+        "title": "Holat va huklar",
+        "content": "useState huki holatni boshqaradi. Hisoblagich misoli:\njsx\nimport React, { useState } from \"react\";\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  return (\n    <div>\n      <p>Hisoblagich: {count}</p>\n      <button onClick={() => setCount(count + 1)}>Oshirish</button>\n    </div>\n  );\n}\n",
+        "expected_output": "Hisoblagich: 0",
+        "fun_fact": "Huklar React 16.8 versiyasida 2019 yilda joriy etilgan!"
+      },
+      "events_and_handlers": {
+        "title": "Hodisalar va ishlovchilar",
+        "content": "React-da hodisa ishlovchilari onClick kabi atributlar orqali ishlatiladi. Misol:\njsx\nfunction Button() {\n  const handleClick = () => alert(\"Tugma bosildi!\");\n  return <button onClick={handleClick}>Meni bos</button>;\n}\n",
+        "expected_output": "Tugma bosildi!",
+        "fun_fact": "React DOM-ga to'g'ridan-to'g'ri kirishsiz hodisalarni oson boshqarishga imkon beradi!"
+      }
+    }
+  }
+}

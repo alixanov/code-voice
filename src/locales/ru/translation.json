@@ -1,0 +1,119 @@
+{
+  "courses_title": "Курсы программирования",
+    "today": "Сегодня",
+      "last_updated": "Последнее обновление",
+        "difficulty": "Сложность",
+          "duration": "Длительность",
+            "beginner": "Начинающий",
+              "intermediate": "Средний",
+                "execute": "Выполнить",
+                  "try_code": "Попробуйте код",
+                    "javascript": {
+    "title": "Основы JavaScript",
+      "description": "Погрузитесь в мир веб-разработки с JavaScript!",
+        "lessons": {
+      "variables_and_data_types": {
+        "title": "Переменные и типы данных",
+          "content": "В JavaScript переменные объявляются с помощью let, const или var. Они могут содержать строки, числа, булевы значения и другие типы данных. Пример:\njavascript\nlet name = \"Алексей\";\nconst age = 25;\nlet isStudent = true;\nconsole.log(`Имя: ${name}, Возраст: ${age}, Студент: ${isStudent}`);\n",
+            "expected_output": "Имя: Алексей, Возраст: 25, Студент: true",
+              "fun_fact": "JavaScript был создан всего за 10 дней в мае 1995 года Бренданом Эйхом!"
+      },
+      "functions_and_conditions": {
+        "title": "Функции и условия",
+          "content": "Функции в JavaScript позволяют создавать переиспользуемый код. Условия (if) управляют логикой. Пример игры \"Угадай число\":\njavascript\nfunction guessNumber(num) {\n  const secret = 42;\n  if (num === secret) return \"Угадал!\";\n  return num > secret ? \"Слишком много\" : \"Слишком мало\";\n}\nconsole.log(guessNumber(42));\n",
+            "expected_output": "Угадал!",
+              "fun_fact": "Число 42 в примере — отсылка к книге \"Автостопом по галактике\", где это \"ответ на главный вопрос жизни, вселенной и всего такого\"."
+      },
+      "arrays_and_loops": {
+        "title": "Массивы и циклы",
+          "content": "Массивы хранят списки данных, а циклы (for) позволяют их обрабатывать. Пример подсчета очков:\njavascript\nconst scores = [85, 92, 78, 95];\nlet total = 0;\nfor (let i = 0; i < scores.length; i++) {\n  total += scores[i];\n}\nconsole.log(`Средний балл: ${total / scores.length}`);\n",
+            "expected_output": "Средний балл: 87.5",
+              "fun_fact": "Современные браузеры обрабатывают миллионы операций JavaScript в секунду!"
+      },
+      "objects_and_methods": {
+        "title": "Объекты и методы",
+          "content": "Объекты в JavaScript — это коллекции данных. Пример:\njavascript\nconst user = { name: \"Анна\", age: 30, greet() { return `Привет, я ${this.name}!`; } };\nconsole.log(user.greet());\n",
+            "expected_output": "Привет, я Анна!",
+              "fun_fact": "Объекты в JavaScript — это основа для создания сложных приложений!"
+      }
+    }
+  },
+  "python": {
+    "title": "Python для начинающих",
+      "description": "Освойте мощный и простой язык программирования!",
+        "lessons": {
+      "variables_and_input": {
+        "title": "Переменные и ввод данных",
+          "content": "В Python переменные не требуют типов, а input() позволяет взаимодействовать с пользователем. Пример:\npython\nname = input(\"Введите ваше имя: \")\nage = int(input(\"Введите ваш возраст: \"))\nprint(f\"Привет, {name}! Через 5 лет тебе будет {age + 5} лет.\")\n",
+            "expected_output": "Привет, Иван! Через 5 лет тебе будет 27 лет.",
+              "fun_fact": "Название Python происходит не от змеи, а от комедийного шоу \"Монти Пайтон\"!"
+      },
+      "lists_and_loops": {
+        "title": "Списки и циклы",
+          "content": "Списки и цикл for идеальны для обработки данных. Пример списка покупок:\npython\nitems = [\"хлеб\", \"молоко\", \"яйца\"]\nfor item in items:\n  print(f\"Купить: {item}\")\n",
+            "expected_output": "Купить: хлеб\nКупить: молоко\nКупить: яйца",
+              "fun_fact": "Python используется NASA для обработки изображений с космических телескопов!"
+      },
+      "dictionaries_and_data": {
+        "title": "Словари и работа с данными",
+          "content": "Словари хранят данные в формате ключ-значение. Пример учета расходов:\npython\nexpenses = {\"еда\": 500, \"транспорт\": 200, \"развлечения\": 300}\ntotal = sum(expenses.values())\nprint(f\"Общие расходы: {total} руб.\")\n",
+            "expected_output": "Общие расходы: 1000 руб.",
+              "fun_fact": "Python входит в тройку самых популярных языков программирования в мире!"
+      },
+      "functions_and_modules": {
+        "title": "Функции и модули",
+          "content": "Функции позволяют организовать код. Пример:\npython\ndef calculate_area(length, width):\n  return length * width\narea = calculate_area(5, 3)\nprint(f\"Площадь: {area} кв.м\")\n",
+            "expected_output": "Площадь: 15 кв.м",
+              "fun_fact": "Python часто используется для машинного обучения и анализа данных!"
+      }
+    }
+  },
+  "robotics": {
+    "title": "Введение в робототехнику",
+      "description": "Научитесь управлять роботами с помощью кода!",
+        "lessons": {
+      "robot_movement": {
+        "title": "Программирование движения робота",
+          "content": "Робототехника использует классы для моделирования поведения. Пример:\npython\nclass Robot:\n  def move_forward(self):\n    return \"Робот движется вперед\"\n  def turn_left(self):\n    return \"Робот поворачивает налево\"\nrobot = Robot()\nprint(robot.move_forward())\n",
+            "expected_output": "Робот движется вперед",
+              "fun_fact": "Слово \"робот\" впервые было использовано в пьесе чешского писателя Карела Чапека в 1920 году!"
+      },
+      "sensors_and_logic": {
+        "title": "Датчики и логика",
+          "content": "Роботы используют датчики для принятия решений. Пример:\npython\nclass Robot:\n  def detect_obstacle(self, distance):\n    if distance < 10:\n      return \"Остановка: препятствие\"\n    return \"Движение вперед\"\nrobot = Robot()\nprint(robot.detect_obstacle(5))\n",
+            "expected_output": "Остановка: препятствие",
+              "fun_fact": "Современные роботы могут иметь более 100 различных датчиков!"
+      },
+      "motor_control": {
+        "title": "Управление моторами",
+          "content": "Моторы управляются через команды. Пример:\npython\nclass Robot:\n  def set_speed(self, speed):\n    return f\"Скорость установлена на {speed}%\"\nrobot = Robot()\nprint(robot.set_speed(75))\n",
+            "expected_output": "Скорость установлена на 75%",
+              "fun_fact": "Роботы на заводах могут двигаться со скоростью до 10 м/с!"
+      }
+    }
+  },
+  "react": {
+    "title": "React для начинающих",
+      "description": "Создавайте современные веб-приложения с React!",
+        "lessons": {
+      "components_and_jsx": {
+        "title": "Компоненты и JSX",
+          "content": "React использует компоненты для создания интерфейсов. Пример:\njsx\nfunction Greeting() {\n  return <h1>Привет, мир!</h1>;\n}\n",
+            "expected_output": "Привет, мир!",
+              "fun_fact": "React был создан в Facebook и впервые использован в 2013 году!"
+      },
+      "state_and_hooks": {
+        "title": "Состояние и хуки",
+          "content": "Хук useState управляет состоянием. Пример счётчика:\njsx\nimport React, { useState } from \"react\";\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  return (\n    <div>\n      <p>Счётчик: {count}</p>\n      <button onClick={() => setCount(count + 1)}>Увеличить</button>\n    </div>\n  );\n}\n",
+            "expected_output": "Счётчик: 0",
+              "fun_fact": "Хуки были введены в React 16.8 в 2019 году!"
+      },
+      "events_and_handlers": {
+        "title": "События и обработчики",
+          "content": "Обработчики событий в React используют атрибуты, такие как onClick. Пример:\njsx\nfunction Button() {\n  const handleClick = () => alert(\"Кнопка нажата!\");\n  return <button onClick={handleClick}>Нажми меня</button>;\n}\n",
+            "expected_output": "Кнопка нажата!",
+              "fun_fact": "React позволяет легко управлять событиями без прямого доступа к DOM!"
+      }
+    }
+  }
+}
