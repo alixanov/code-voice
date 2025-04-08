@@ -212,7 +212,7 @@ jsx\nfunction Button() {\n  const handleClick = () => alert("Кнопка наж
 // Стилизация
 const ScrollContainer = styled(Box)(({ theme }) => ({
   background: 'linear-gradient(135deg, #000000 10%,rgb(18, 18, 18) 90%)', // Чёрно-белый градиент
-  maxHeight: 'calc(100vh - 145px)', // Учитываем высоту навбара/футера
+  maxHeight: 'calc(100vh - 145px)', //l читываем высоту навбара/футера
   overflowY: 'auto',
   padding: theme.breakpoints.down('sm') ? '8px' : '15px', // Ещё меньше padding в мобильном режиме
   margin: theme.breakpoints.down('sm') ? '0' : '10px', // Без margin в мобильном режиме
@@ -544,7 +544,7 @@ const TryButton = styled(Button)(({ theme }) => ({
   '&:hover': {
     background: 'linear-gradient(135deg, #FFFFFF, #FFFFFF)', // Чисто белый при наведении
     boxShadow: '0 12px 30px rgba(255, 255, 255, 0.4)',
-    transform: 'translateY(-3px) scale(1.05)',
+    transform: 'translateY(-1px)',
     '&:before': {
       left: '150%',
       opacity: 1,

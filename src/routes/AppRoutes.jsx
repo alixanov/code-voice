@@ -41,7 +41,7 @@ const AppRoutes = () => {
   }, []);
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', maxWidth: '1920px', width: '100%', mx: 'auto' }}>
       {/* Навбар теперь отображается сверху в десктопной версии */}
       <Navbar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} isMobile={isMobile} />
       <Box
@@ -49,9 +49,10 @@ const AppRoutes = () => {
         className="routes__container"
         sx={{
           flexGrow: 1,
-          padding: location.pathname === '/' ? '20px' : '20px',
+          padding: isMobile ? '5px' : location.pathname === '/' ? '20px' : '20px',
           marginTop: isMobile ? 0 : '110px', // Отступ сверху для десктопной версии из-за навбара
           marginBottom: isMobile ? '100px' : 0, // Отступ снизу для мобильной версии из-за футера
+          overflowY: 'auto', // Добавляем прокрутку, если контент выходит за границы
         }}
       >
         <Routes>
@@ -59,8 +60,10 @@ const AppRoutes = () => {
           <Route path="/test" element={<Test />} />
         </Routes>
       </Box>
+
     </Box>
   );
+
 };
 
 export default AppRoutes;

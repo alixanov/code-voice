@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled, keyframes } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -13,6 +13,9 @@ import js from "../../assets/icons8-javascript-96.png";
 import python from "../../assets/icons8-python-144.png";
 import roboto from "../../assets/icons8-robot-94.png";
 import react from "../../assets/icons8-react-100.png";
+import succesfuly from "../../audio/succesful.mp3";
+import error from "../../audio/error.mp3";
+import victor from "../../audio/victory.mp3";
 
 // Анимации
 const waveAnimation = keyframes`
@@ -23,18 +26,30 @@ const waveAnimation = keyframes`
 
 const burstAnimation = keyframes`
   0% { transform: scale(0) rotate(0deg); opacity: 1; }
-  50% { transform: scale(1.2) rotate(180deg); opacity: 0.8; }
+  50% { transform: scale(1.5) rotate(180deg); opacity: 0.7; }
   100% { transform: scale(0) rotate(360deg); opacity: 0; }
 `;
 
+const glowAnimation = keyframes`
+  0% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.5); }
+  100% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.3); }
+`;
+
 const fadeIn = keyframes`
-  0% { opacity: 0; transform: translateY(15px); }
+  0% { opacity: 0; transform: translateY(20px); }
   100% { opacity: 1; transform: translateY(0); }
 `;
 
 const scaleIn = keyframes`
-  0% { transform: scale(0.95); opacity: 0; }
+  0% { transform: scale(0.9); opacity: 0; }
   100% { transform: scale(1); opacity: 1; }
+`;
+
+const pulseAnimation = keyframes`
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
 `;
 
 // Данные тестов (без изменений)
@@ -99,25 +114,27 @@ const TestContainer = styled(Box)(({ theme }) => ({
 const SubjectsContainer = styled(Box)(({ theme }) => ({
   display: 'grid',
   gridTemplateColumns: theme.breakpoints.down('sm')
-    ? 'repeat(auto-fit, minmax(160px, 1fr))'
-    : 'repeat(auto-fit, minmax(220px, 1fr))',
-  gap: theme.breakpoints.down('sm') ? '10px' : '20px',
+    ? 'repeat(auto-fit, minmax(140px, 1fr))'
+    : 'repeat(auto-fit, minmax(200px, 1fr))',
+  gap: theme.breakpoints.down('sm') ? '8px' : '15px',
   maxWidth: '1000px',
   width: '100%',
+  zIndex: 1,
 }));
 
 const SubjectCard = styled(Card)(({ theme }) => ({
-  background: '#1A1A1A',
-  borderRadius: '15px',
-  padding: theme.breakpoints.down('sm') ? '10px' : '15px',
+  background: 'rgba(255, 255, 255, 0.05)',
+  borderRadius: '20px',
+  padding: theme.breakpoints.down('sm') ? '8px' : '12px',
   textAlign: 'center',
-  border: '1px solid rgba(255, 255, 255, 0.1)',
-  boxShadow: '0 8px 20px rgba(0, 0, 0, 0.4)',
-  backdropFilter: 'blur(10px)',
-  transition: 'all 0.3s cubic-bezier(0.1, 0.82, 0.25, 1)',
+  border: '1px solid rgba(255, 255, 255, 0.15)',
+  boxShadow: '0 8px 25px rgba(0, 0, 0, 0.5)',
+  backdropFilter: 'blur(12px)',
+  transition: 'all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)',
   cursor: 'pointer',
   position: 'relative',
   overflow: 'hidden',
+  animation: `${scaleIn} 0.5s ease-in-out`,
   '&:before': {
     content: '""',
     position: 'absolute',
@@ -125,8 +142,8 @@ const SubjectCard = styled(Card)(({ theme }) => ({
     left: 0,
     right: 0,
     height: '4px',
-    background: 'linear-gradient(90deg, #FFFFFF, #FFFFFFcc)',
-    borderRadius: '15px 15px 0 0',
+    background: 'linear-gradient(90deg, #FFFFFF, #FFFFFF80)',
+    borderRadius: '20px 20px 0 0',
     zIndex: 1,
   },
   '&:after': {
@@ -136,35 +153,36 @@ const SubjectCard = styled(Card)(({ theme }) => ({
     left: 0,
     width: '100%',
     height: '100%',
-    background: 'radial-gradient(circle at top right, rgba(255, 255, 255, 0.05), transparent 70%)',
+    background: 'radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, transparent 70%)',
     zIndex: 0,
-    opacity: 0.8,
+    opacity: 0.7,
   },
   '&:hover': {
-    transform: 'translateY(-5px)',
-    boxShadow: '0 15px 30px rgba(0, 0, 0, 0.6)',
+    transform: 'translateY(-5px) scale(1.02)',
+    boxShadow: '0 15px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 255, 255, 0.2)',
     '&:before': {
       height: '6px',
     },
   },
   [theme.breakpoints.down('sm')]: {
-    padding: '8px',
-    borderRadius: '12px',
+    padding: '6px',
+    borderRadius: '15px',
   },
 }));
 
 const TestCard = styled(Card)(({ theme }) => ({
-  background: '#1A1A1A',
-  borderRadius: '20px',
-  padding: theme.breakpoints.down('sm') ? '12px' : '20px',
-  maxWidth: '600px',
+  background: 'rgba(255, 255, 255, 0.05)',
+  borderRadius: '25px',
+  padding: theme.breakpoints.down('sm') ? '10px' : '15px',
+  maxWidth: '650px',
   width: '100%',
-  boxShadow: '0 10px 25px rgba(0, 0, 0, 0.5)',
-  border: '1px solid rgba(255, 255, 255, 0.1)',
-  backdropFilter: 'blur(8px)',
+  boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 255, 255, 0.1)',
+  border: '1px solid rgba(255, 255, 255, 0.15)',
+  backdropFilter: 'blur(15px)',
   position: 'relative',
   overflow: 'hidden',
-  animation: `${scaleIn} 0.5s ease-in-out`,
+  animation: `${scaleIn} 0.6s ease-in-out`,
+  zIndex: 1,
   '&:before': {
     content: '""',
     position: 'absolute',
@@ -172,56 +190,61 @@ const TestCard = styled(Card)(({ theme }) => ({
     left: '0',
     width: '6px',
     height: '100%',
-    background: 'linear-gradient(to bottom, #FFFFFF, #FFFFFFcc)',
+    background: 'linear-gradient(to bottom, #FFFFFF, #FFFFFF80)',
     borderRadius: '4px',
   },
   '&:hover': {
-    boxShadow: '0 12px 35px rgba(0, 0, 0, 0.6)',
+    boxShadow: '0 15px 45px rgba(0, 0, 0, 0.6), 0 0 25px rgba(255, 255, 255, 0.2)',
   },
   [theme.breakpoints.down('sm')]: {
-    padding: '10px',
-    borderRadius: '15px',
+    padding: '8px',
+    borderRadius: '20px',
   },
 }));
 
 const SubjectTitle = styled(Typography)(({ theme }) => ({
-  fontSize: theme.breakpoints.down('sm') ? '16px' : '20px',
+  fontSize: theme.breakpoints.down('sm') ? '14px' : '18px',
   fontWeight: 700,
   color: '#FFFFFF',
-  textShadow: '0 0 8px rgba(255, 255, 255, 0.3)',
+  textShadow: '0 0 10px rgba(255, 255, 255, 0.4)',
   position: 'relative',
   zIndex: 1,
   marginBottom: '5px',
+  fontFamily: '"Orbitron", sans-serif',
+  letterSpacing: '1px',
   '&:after': {
     content: '""',
     position: 'absolute',
     bottom: '-6px',
     left: '50%',
     transform: 'translateX(-50%)',
-    width: '30px',
+    width: '25px',
     height: '2px',
-    background: 'linear-gradient(90deg, #FFFFFF, #FFFFFFcc)',
+    background: 'linear-gradient(90deg, #FFFFFF, #FFFFFF80)',
     borderRadius: '2px',
   },
   [theme.breakpoints.down('sm')]: {
-    fontSize: '14px',
+    fontSize: '12px',
     '&:after': {
-      width: '25px',
+      width: '20px',
       height: '1.5px',
     },
   },
 }));
 
 const TestQuestion = styled(Typography)(({ theme }) => ({
-  fontSize: theme.breakpoints.down('sm') ? '16px' : '18px',
+  fontSize: theme.breakpoints.down('sm') ? '14px' : '18px',
   fontWeight: 600,
   color: '#FFFFFF',
   marginBottom: '15px',
   textAlign: 'center',
-  textShadow: '0 0 4px rgba(255, 255, 255, 0.3)',
+  textShadow: '0 0 6px rgba(255, 255, 255, 0.4)',
   lineHeight: 1.4,
+  fontFamily: '"Orbitron", sans-serif',
+  letterSpacing: '0.5px',
+  animation: `${fadeIn} 0.5s ease-in-out`,
   [theme.breakpoints.down('sm')]: {
-    fontSize: '14px',
+    fontSize: '13px',
     marginBottom: '10px',
   },
 }));
@@ -229,130 +252,139 @@ const TestQuestion = styled(Typography)(({ theme }) => ({
 const OptionLabel = styled(FormControlLabel)(({ isCorrect, isSelected, theme }) => ({
   background: isSelected
     ? isCorrect
-      ? 'rgba(255, 255, 255, 0.15)'
+      ? 'rgba(255, 255, 255, 0.2)'
       : 'rgba(255, 255, 255, 0.05)'
     : 'rgba(255, 255, 255, 0.05)',
-  borderRadius: '10px',
-  padding: theme.breakpoints.down('sm') ? '8px' : '10px',
-  margin: '3px 0',
-  border: '1px solid rgba(255, 255, 255, 0.1)',
-  boxShadow: '0 3px 10px rgba(0, 0, 0, 0.3)',
-  backdropFilter: 'blur(5px)',
+  borderRadius: '12px',
+  padding: theme.breakpoints.down('sm') ? '6px 10px' : '8px 15px',
+  margin: '4px 0',
+  border: '1px solid rgba(255, 255, 255, 0.15)',
+  boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3)',
+  backdropFilter: 'blur(8px)',
   transition: 'all 0.3s ease',
+  animation: isSelected ? `${pulseAnimation} 0.5s ease-in-out` : 'none',
   '& .MuiTypography-root': {
     color: isSelected
       ? isCorrect
         ? '#FFFFFF'
-        : 'rgba(255, 255, 255, 0.7)'
+        : 'rgba(255, 255, 255, 0.6)'
       : '#FFFFFF',
-    fontSize: theme.breakpoints.down('sm') ? '12px' : '14px',
+    fontSize: theme.breakpoints.down('sm') ? '11px' : '13px',
     fontWeight: 500,
-    opacity: isSelected && !isCorrect ? 0.7 : 1,
+    fontFamily: '"Roboto Mono", monospace',
+    opacity: isSelected && !isCorrect ? 0.6 : 1,
   },
   '& .MuiRadio-root': {
     color: '#FFFFFF',
-    padding: theme.breakpoints.down('sm') ? '6px' : '9px',
+    padding: theme.breakpoints.down('sm') ? '5px' : '8px',
   },
   '& .Mui-checked': {
     color: '#FFFFFF',
   },
   '&:hover': {
-    background: 'rgba(255, 255, 255, 0.1)',
-    transform: 'scale(1.02)',
+    background: 'rgba(255, 255, 255, 0.15)',
+    transform: 'scale(1.03)',
+    boxShadow: '0 6px 20px rgba(0, 0, 0, 0.4), 0 0 10px rgba(255, 255, 255, 0.2)',
   },
   [theme.breakpoints.down('sm')]: {
-    padding: '6px',
-    borderRadius: '8px',
+    padding: '5px 8px',
+    borderRadius: '10px',
   },
 }));
 
 const ProgressContainer = styled(Box)(({ theme }) => ({
   width: '100%',
-  maxWidth: '600px',
-  padding: theme.breakpoints.down('sm') ? '8px' : '12px',
+  maxWidth: '650px',
+  padding: theme.breakpoints.down('sm') ? '6px' : '10px',
   background: 'rgba(255, 255, 255, 0.05)',
-  borderRadius: '12px',
-  boxShadow: '0 6px 20px rgba(0, 0, 0, 0.3)',
-  border: '1px solid rgba(255, 255, 255, 0.1)',
-  backdropFilter: 'blur(5px)',
+  borderRadius: '15px',
+  boxShadow: '0 6px 20px rgba(0, 0, 0, 0.4), 0 0 10px rgba(255, 255, 255, 0.1)',
+  border: '1px solid rgba(255, 255, 255, 0.15)',
+  backdropFilter: 'blur(10px)',
+  animation: `${fadeIn} 0.5s ease-in-out`,
   [theme.breakpoints.down('sm')]: {
-    padding: '6px',
-    borderRadius: '10px',
+    padding: '5px',
+    borderRadius: '12px',
   },
 }));
 
 const ProgressLine = styled(LinearProgress)(({ theme }) => ({
-  height: '10px',
-  borderRadius: '5px',
+  height: '12px',
+  borderRadius: '6px',
   background: 'rgba(255, 255, 255, 0.1)',
-  boxShadow: 'inset 0 2px 8px rgba(0, 0, 0, 0.3)',
+  boxShadow: 'inset 0 2px 10px rgba(0, 0, 0, 0.3)',
   '& .MuiLinearProgress-bar': {
     background: 'linear-gradient(90deg, #FFFFFF, #FFFFFF80)',
     animation: `${waveAnimation} 2s ease-in-out infinite`,
+    boxShadow: '0 0 15px rgba(255, 255, 255, 0.5)',
   },
   [theme.breakpoints.down('sm')]: {
-    height: '8px',
-    borderRadius: '4px',
+    height: '10px',
+    borderRadius: '5px',
   },
 }));
 
 const ResultCard = styled(Card)(({ theme }) => ({
-  background: '#1A1A1A',
-  borderRadius: '20px',
-  padding: theme.breakpoints.down('sm') ? '15px' : '25px',
-  maxWidth: '600px',
+  background: 'rgba(255, 255, 255, 0.05)',
+  borderRadius: '30px',
+  padding: theme.breakpoints.down('sm') ? '12px' : '20px',
+  maxWidth: '700px',
   width: '100%',
-  boxShadow: '0 10px 25px rgba(0, 0, 0, 0.5)',
-  border: '1px solid rgba(255, 255, 255, 0.1)',
-  backdropFilter: 'blur(8px)',
+  boxShadow: '0 15px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 255, 255, 0.2)',
+  border: '1px solid rgba(255, 255, 255, 0.15)',
+  backdropFilter: 'blur(15px)',
   position: 'relative',
   zIndex: 10,
-  animation: `${scaleIn} 0.5s ease-in-out`,
+  animation: `${scaleIn} 0.8s ease-in-out`,
+  overflow: 'hidden',
   '&:before': {
     content: '""',
     position: 'absolute',
     top: 0,
     left: '0',
-    width: '6px',
+    width: '100%',
     height: '100%',
-    background: 'linear-gradient(to bottom, #FFFFFF, #FFFFFFcc)',
-    borderRadius: '4px',
+    background: 'radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, transparent 70%)',
+    zIndex: 0,
   },
   [theme.breakpoints.down('sm')]: {
-    padding: '12px',
-    borderRadius: '15px',
+    padding: '10px',
+    borderRadius: '25px',
   },
 }));
 
 const Confetti = styled(Box)(({ delay, theme }) => ({
   position: 'absolute',
-  width: '12px',
-  height: '12px',
-  background: 'linear-gradient(45deg, #FFFFFF, #FFFFFFcc)',
+  width: '15px',
+  height: '15px',
+  background: 'linear-gradient(45deg, #FFFFFF, #FFFFFF80)',
   borderRadius: '50%',
-  animation: `${burstAnimation} 1.8s ease-out infinite`,
+  animation: `${burstAnimation} 2s ease-out infinite`,
   animationDelay: `${delay}s`,
   transformOrigin: 'center',
   zIndex: 5,
+  boxShadow: '0 0 10px rgba(255, 255, 255, 0.5)',
   [theme.breakpoints.down('sm')]: {
-    width: '10px',
-    height: '10px',
+    width: '12px',
+    height: '12px',
   },
 }));
 
 const StyledButton = styled(Button)(({ theme }) => ({
-  background: 'linear-gradient(135deg, #FFFFFF, #FFFFFFcc)',
+  background: 'linear-gradient(135deg, #FFFFFF, #FFFFFF80)',
   color: '#000000',
-  padding: theme.breakpoints.down('sm') ? '8px 20px' : '10px 25px',
-  borderRadius: '12px',
+  padding: theme.breakpoints.down('sm') ? '6px 15px' : '8px 20px',
+  borderRadius: '15px',
   textTransform: 'none',
-  fontSize: theme.breakpoints.down('sm') ? '12px' : '14px',
+  fontSize: theme.breakpoints.down('sm') ? '11px' : '13px',
   fontWeight: 600,
-  boxShadow: '0 6px 20px rgba(255, 255, 255, 0.2)',
+  fontFamily: '"Orbitron", sans-serif',
+  boxShadow: '0 8px 25px rgba(255, 255, 255, 0.3)',
   position: 'relative',
   overflow: 'hidden',
-  transition: 'all 0.3s ease',
+  transition: 'all 0.4s ease',
   width: '100%',
+  animation: `${glowAnimation} 2s ease-in-out infinite`,
   '&:before': {
     content: '""',
     position: 'absolute',
@@ -367,8 +399,8 @@ const StyledButton = styled(Button)(({ theme }) => ({
   },
   '&:hover': {
     background: 'linear-gradient(135deg, #FFFFFF, #FFFFFF)',
-    boxShadow: '0 10px 25px rgba(255, 255, 255, 0.3)',
-    transform: 'translateY(-2px) scale(1.03)',
+    boxShadow: '0 12px 30px rgba(255, 255, 255, 0.4), 0 0 20px rgba(255, 255, 255, 0.5)',
+    transform: 'translateY(-3px) scale(1.05)',
     '&:before': {
       left: '150%',
       opacity: 1,
@@ -376,20 +408,103 @@ const StyledButton = styled(Button)(({ theme }) => ({
   },
   '&:active': {
     transform: 'translateY(1px)',
-    boxShadow: '0 4px 15px rgba(255, 255, 255, 0.2)',
+    boxShadow: '0 5px 15px rgba(255, 255, 255, 0.2)',
   },
   [theme.breakpoints.down('sm')]: {
-    padding: '6px 15px',
-    fontSize: '12px',
+    padding: '5px 12px',
+    fontSize: '10px',
   },
 }));
 
+const ResultTitle = styled(Typography)(({ theme }) => ({
+  fontSize: theme.breakpoints.down('sm') ? '22px' : '28px',
+  fontWeight: 800,
+  color: '#FFFFFF',
+  textShadow: '0 0 15px rgba(255, 255, 255, 0.5)',
+  marginBottom: '15px',
+  textAlign: 'center',
+  fontFamily: '"Orbitron", sans-serif',
+  letterSpacing: '2px',
+  animation: `${pulseAnimation} 1.5s ease-in-out infinite`,
+  [theme.breakpoints.down('sm')]: {
+    fontSize: '20px',
+  },
+}));
+
+const ResultScore = styled(Typography)(({ theme }) => ({
+  fontSize: theme.breakpoints.down('sm') ? '16px' : '20px',
+  fontWeight: 500,
+  color: '#FFFFFF',
+  marginBottom: '20px',
+  textAlign: 'center',
+  fontFamily: '"Roboto Mono", monospace',
+  opacity: 0.9,
+  animation: `${fadeIn} 0.5s ease-in-out`,
+  [theme.breakpoints.down('sm')]: {
+    fontSize: '14px',
+    marginBottom: '15px',
+  },
+}));
+
+const TestHeader = styled(Typography)(({ theme }) => ({
+  fontSize: theme.breakpoints.down('sm') ? '20px' : '26px',
+  fontWeight: 800,
+  color: '#FFFFFF',
+  textShadow: '0 0 12px rgba(255, 255, 255, 0.4)',
+  position: 'relative',
+  animation: `${fadeIn} 1s ease-in-out`,
+  fontFamily: '"Orbitron", sans-serif',
+  letterSpacing: '1px',
+  marginBottom: '15px',
+  textAlign: 'center',
+  '&:after': {
+    content: '""',
+    position: 'absolute',
+    bottom: '-8px',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    width: '50px',
+    height: '3px',
+    background: 'linear-gradient(90deg, #FFFFFF, #FFFFFF80)',
+    borderRadius: '2px',
+  },
+  [theme.breakpoints.down('sm')]: {
+    fontSize: '18px',
+    '&:after': {
+      width: '40px',
+      height: '2px',
+    },
+  },
+}));
+
+const FeedbackMessage = styled(Typography)(({ isCorrect, theme }) => ({
+  color: '#FFFFFF',
+  fontSize: theme.breakpoints.down('sm') ? '11px' : '13px',
+  fontWeight: 500,
+  textAlign: 'center',
+  marginTop: '10px',
+  textShadow: '0 0 4px rgba(255, 255, 255, 0.4)',
+  opacity: isCorrect ? 1 : 0.7,
+  fontFamily: '"Roboto Mono", monospace',
+  animation: `${fadeIn} 0.5s ease-in-out`,
+  [theme.breakpoints.down('sm')]: {
+    fontSize: '10px',
+    marginTop: '8px',
+  },
+}));
+
+// Компонент теста
 const Test = () => {
   const [selectedSubject, setSelectedSubject] = useState(null);
   const [currentTestIndex, setCurrentTestIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState({});
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [showResult, setShowResult] = useState(false);
+
+  // Звуковые эффекты
+  const successSound = new Audio(succesfuly);
+  const errorSound = new Audio(error);
+  const victorySound = new Audio(victor);
 
   const totalTests = selectedSubject ? subjectsData[selectedSubject].tests.length : 0;
   const currentTest = selectedSubject ? subjectsData[selectedSubject].tests[currentTestIndex] : null;
@@ -413,13 +528,16 @@ const Test = () => {
 
     if (isCorrect) {
       setCorrectAnswers((prev) => prev + 1);
+      successSound.play().catch((err) => console.error("Ошибка воспроизведения звука:", err));
       setTimeout(() => {
         if (currentTestIndex < totalTests - 1) {
           setCurrentTestIndex((prev) => prev + 1);
         } else {
           setShowResult(true);
         }
-      }, 300);
+      }, 500);
+    } else {
+      errorSound.play().catch((err) => console.error("Ошибка воспроизведения звука:", err));
     }
   };
 
@@ -431,15 +549,21 @@ const Test = () => {
     setUserAnswers({});
   };
 
+  useEffect(() => {
+    if (showResult) {
+      victorySound.play().catch((err) => console.error("Ошибка воспроизведения звука:", err));
+    }
+  }, [showResult]);
+
   return (
     <TestContainer>
-      {/* Хлопушки при завершении */}
+      {/* Конфетти при завершении */}
       {showResult && (
         <>
-          {Array.from({ length: 40 }).map((_, i) => (
+          {Array.from({ length: 50 }).map((_, i) => (
             <Confetti
               key={i}
-              delay={i * 0.04}
+              delay={i * 0.03}
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
@@ -452,57 +576,34 @@ const Test = () => {
       {/* Выбор предметов */}
       {!selectedSubject && (
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: '15px', alignItems: 'center', width: '100%' }}>
-          <Typography
-            variant="h4"
-            sx={{
-              color: '#FFFFFF',
-              fontWeight: 800,
-              textShadow: '0 0 12px rgba(255, 255, 255, 0.3)',
-              position: 'relative',
-              animation: `${fadeIn} 1s ease-in-out`,
-              fontSize: { xs: '24px', sm: '32px' },
-              '&:after': {
-                content: '""',
-                position: 'absolute',
-                bottom: '-8px',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                width: '60px',
-                height: '3px',
-                background: 'linear-gradient(90deg, #FFFFFF, #FFFFFFcc)',
-                borderRadius: '2px',
-              },
-            }}
-          >
-            Выберите тест
-          </Typography>
+          <TestHeader>Выберите тест</TestHeader>
           <SubjectsContainer>
             {Object.keys(subjectsData).map((subject) => (
               <SubjectCard key={subject} onClick={() => handleSubjectSelect(subject)}>
                 <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
                   <Box
                     sx={{
-                      width: { xs: '50px', sm: '60px' },
-                      height: { xs: '50px', sm: '60px' },
+                      width: { xs: '45px', sm: '55px' },
+                      height: { xs: '45px', sm: '55px' },
                       display: 'flex',
                       justifyContent: 'center',
                       alignItems: 'center',
-                      background: 'rgba(255, 255, 255, 0.05)',
-                      borderRadius: '12px',
+                      background: 'rgba(255, 255, 255, 0.1)',
+                      borderRadius: '15px',
                       padding: '5px',
-                      boxShadow: '0 6px 15px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.1)',
-                      backdropFilter: 'blur(5px)',
-                      transition: 'all 0.3s ease',
+                      boxShadow: '0 6px 15px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.15)',
+                      backdropFilter: 'blur(8px)',
+                      transition: 'all 0.4s ease',
                       '&:hover': {
                         transform: 'scale(1.1) rotate(5deg)',
-                        boxShadow: '0 10px 20px rgba(255, 255, 255, 0.2)',
+                        boxShadow: '0 10px 25px rgba(255, 255, 255, 0.3)',
                       },
                     }}
                   >
                     <img
                       src={subjectsData[subject].icon}
                       alt={subjectsData[subject].title}
-                      style={{ width: '35px', height: '35px' }}
+                      style={{ width: '30px', height: '30px' }}
                     />
                   </Box>
                   <SubjectTitle>{subjectsData[subject].title}</SubjectTitle>
@@ -525,7 +626,7 @@ const Test = () => {
               <RadioGroup
                 value={userAnswers[`${selectedSubject}-${currentTest.id}`]?.selected || ''}
                 onChange={(e) => handleAnswerChange(e.target.value)}
-                sx={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
+                sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}
               >
                 {Object.entries(currentTest.options).map(([key, option]) => (
                   <OptionLabel
@@ -539,26 +640,16 @@ const Test = () => {
                 ))}
               </RadioGroup>
               {userAnswers[`${selectedSubject}-${currentTest.id}`] && (
-                <Typography
-                  sx={{
-                    color: '#FFFFFF',
-                    fontSize: { xs: '12px', sm: '14px' },
-                    fontWeight: 500,
-                    textAlign: 'center',
-                    marginTop: '10px',
-                    textShadow: '0 0 4px rgba(255, 255, 255, 0.3)',
-                    opacity: userAnswers[`${selectedSubject}-${currentTest.id}`].isCorrect ? 1 : 0.7,
-                  }}
-                >
+                <FeedbackMessage isCorrect={userAnswers[`${selectedSubject}-${currentTest.id}`].isCorrect}>
                   {userAnswers[`${selectedSubject}-${currentTest.id}`].isCorrect
                     ? 'Правильно! Готовимся к следующему...'
                     : 'Ой, неверно. Попробуй ещё раз!'}
-                </Typography>
+                </FeedbackMessage>
               )}
             </CardContent>
           </TestCard>
           <ProgressContainer>
-            <Typography sx={{ color: '#FFFFFF', fontSize: { xs: '12px', sm: '14px' }, fontWeight: 500, opacity: 0.8 }}>
+            <Typography sx={{ color: '#FFFFFF', fontSize: { xs: '11px', sm: '13px' }, fontWeight: 500, opacity: 0.8, fontFamily: '"Roboto Mono", monospace' }}>
               Прогресс: {correctAnswers}/{totalTests}
             </Typography>
             <ProgressLine variant="determinate" value={(correctAnswers / totalTests) * 100} />
@@ -569,31 +660,8 @@ const Test = () => {
       {/* Результат */}
       {showResult && (
         <ResultCard>
-          <Typography
-            variant="h4"
-            sx={{
-              color: '#FFFFFF',
-              fontWeight: 700,
-              textShadow: '0 0 12px rgba(255, 255, 255, 0.3)',
-              marginBottom: '15px',
-              textAlign: 'center',
-              fontSize: { xs: '24px', sm: '28px' },
-            }}
-          >
-            Поздравляем!
-          </Typography>
-          <Typography
-            sx={{
-              color: '#FFFFFF',
-              fontSize: { xs: '18px', sm: '22px' },
-              fontWeight: 500,
-              marginBottom: '20px',
-              textAlign: 'center',
-              opacity: 0.9,
-            }}
-          >
-            Вы набрали: {correctAnswers}/{totalTests}
-          </Typography>
+          <ResultTitle>Поздравляем!</ResultTitle>
+          <ResultScore>Вы набрали: {correctAnswers}/{totalTests}</ResultScore>
           <StyledButton onClick={handleBackToSubjects}>
             Вернуться к тестам
           </StyledButton>
