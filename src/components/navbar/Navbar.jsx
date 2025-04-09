@@ -1,4 +1,3 @@
-// Navbar.js
 import React, { useEffect, useState, useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
@@ -10,7 +9,7 @@ import HomeFilledIcon from '@mui/icons-material/HomeFilled';
 import PersonIcon from '@mui/icons-material/Person';
 import LanguageIcon from '@mui/icons-material/Language';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
-import { AccessibilityContext } from '../voice/AccessibilityContext'; // Импортируем контекст
+import { AccessibilityContext } from '../voice/AccessibilityContext';
 
 const colors = {
   background: 'linear-gradient(135deg, #000000 10%,rgb(18, 18, 18) 90%)',
@@ -136,9 +135,6 @@ const LanguageToggle = styled(Box)(({ theme, active, isMobile }) => ({
     transform: isMobile ? 'scale(1.1)' : 'translateY(-2px)',
     boxShadow: `0 5px 15px ${colors.subtleGlow}`,
   },
-  '& svg': {
-    filter: active ? 'drop-shadow(0 0 5px rgba(255, 255, 255, 0.5))' : 'none',
-  },
 }));
 
 const AccessibilitySwitch = styled(FormControlLabel)(({ theme, isMobile }) => ({
@@ -149,6 +145,7 @@ const AccessibilitySwitch = styled(FormControlLabel)(({ theme, isMobile }) => ({
     fontWeight: 500,
   },
   '& .MuiSwitch-root': {
+    transform: isMobile ? 'rotate(180deg)' : 'none', // Поворачиваем Switch на 180 градусов в мобильном режиме
     '& .MuiSwitch-switchBase': {
       color: '#FFFFFF',
       '&.Mui-checked': {
@@ -197,23 +194,25 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isMobile }) => {
     uz: {
       authenticated: [
         { to: '/', label: 'Asosiy', icon: HomeFilledIcon, active: location.pathname === '/' },
-        { to: '/homework', label: 'Vazifalar', icon: PersonIcon, active: location.pathname === '/homework' },
         { to: '/test', label: 'Savollar', icon: AppRegistrationIcon, active: location.pathname === '/test' },
+        { to: '/homework', label: 'Vazifalar', icon: PersonIcon, active: location.pathname === '/homework' },
       ],
       unauthenticated: [
         { to: '/', label: 'Asosiy', icon: HomeFilledIcon, active: location.pathname === '/' },
         { to: '/test', label: 'Savollar', icon: AppRegistrationIcon, active: location.pathname === '/test' },
+        { to: '/homework', label: 'Vazifalar', icon: PersonIcon, active: location.pathname === '/homework' },
       ],
     },
     ru: {
       authenticated: [
         { to: '/', label: 'Главная', icon: HomeFilledIcon, active: location.pathname === '/' },
-        { to: '/homework', label: 'Задания', icon: PersonIcon, active: location.pathname === '/homework' },
         { to: '/test', label: 'Вопросы', icon: AppRegistrationIcon, active: location.pathname === '/test' },
+        { to: '/homework', label: 'Задания', icon: PersonIcon, active: location.pathname === '/homework' },
       ],
       unauthenticated: [
         { to: '/', label: 'Главная', icon: HomeFilledIcon, active: location.pathname === '/' },
         { to: '/test', label: 'Вопросы', icon: AppRegistrationIcon, active: location.pathname === '/test' },
+        { to: '/homework', label: 'Задания', icon: PersonIcon, active: location.pathname === '/homework' },
       ],
     },
   };
@@ -273,19 +272,29 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isMobile }) => {
             active={language === 'ru'}
             onClick={handleLanguageToggle}
             isMobile={true}
-            onMouseEnter={() => speakText(language === 'uz' ? "O‘zbek" : 'Русский')}
+            onMouseEnter={() => speakText(language === 'uz' ? 'UZ' : 'RU')}
             onMouseLeave={stopSpeech}
-            onTouchStart={() => speakText(language === 'uz' ? "O‘zbek" : 'Русский')}
+            onTouchStart={() => speakText(language === 'uz' ? 'UZ' : 'RU')}
             onTouchEnd={stopSpeech}
-            onFocus={() => speakText(language === 'uz' ? "O‘zbek" : 'Русский')}
+            onFocus={() => speakText(language === 'uz' ? 'UZ' : 'RU')}
             onBlur={stopSpeech}
             tabIndex={0}
           >
-            <LanguageIcon sx={{ fontSize: 24, color: '#fff' }} />
+            <Typography
+              sx={{
+                color: '#fff',
+                fontSize: 16,
+                fontWeight: language === 'ru' ? 600 : 400,
+                fontFamily: "'Inter', sans-serif",
+                textShadow: language === 'ru' ? '0 0 5px rgba(255, 255, 255, 0.5)' : 'none',
+              }}
+            >
+              {language === 'uz' ? 'UZ' : 'RU'}
+            </Typography>
           </LanguageToggle>
           <AccessibilitySwitch
             control={<Switch checked={isAccessibilityMode} onChange={toggleAccessibilityMode} />}
-            label={language === 'uz' ? 'Maxsus imkoniyatlar' : 'Специальные возможности'}
+            label="" // Убираем текст в мобильном режиме
             isMobile={true}
             onMouseEnter={() =>
               speakText(language === 'uz' ? 'Maxsus imkoniyatlar' : 'Специальные возможности')
@@ -330,7 +339,6 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isMobile }) => {
           onBlur={stopSpeech}
           tabIndex={0}
         >
-          <LanguageIcon sx={{ fontSize: 24, color: '#fff' }} />
           <Typography
             sx={{
               color: '#fff',
@@ -340,7 +348,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isMobile }) => {
               textShadow: language === 'ru' ? '0 0 5px rgba(255, 255, 255, 0.5)' : 'none',
             }}
           >
-            {language === 'uz' ? "O‘zbek" : 'Русский'}
+            {language === 'uz' ? "O‘z" : 'Ру'}
           </Typography>
         </LanguageToggle>
         <AccessibilitySwitch

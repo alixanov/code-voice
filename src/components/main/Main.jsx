@@ -214,6 +214,7 @@ jsx\nfunction Button() {\n  const handleClick = () => alert("Кнопка наж
 const ScrollContainer = styled(Box)(({ theme }) => ({
   background: 'linear-gradient(135deg, #000000 10%,rgb(18, 18, 18) 90%)',
   maxHeight: 'calc(100vh - 145px)',
+  
   overflowY: 'auto',
   padding: theme.breakpoints.down('sm') ? '8px' : '15px',
   margin: theme.breakpoints.down('sm') ? '0' : '10px',

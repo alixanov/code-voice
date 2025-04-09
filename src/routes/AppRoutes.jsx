@@ -1,7 +1,7 @@
 // AppRoutes.js
 import React, { useState, useEffect, useRef } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import { Navbar, Main, Test } from '../components/';
+import { Navbar, Main, Test,Task } from '../components/';
 import Box from '@mui/material/Box';
 import { AccessibilityProvider } from '../components/voice/AccessibilityContext'; // Импортируем провайдер
 
@@ -60,6 +60,7 @@ const AppRoutes = () => {
           <Routes>
             <Route path="/" element={<Main />} />
             <Route path="/test" element={<Test />} />
+            <Route path="/homework" element={<Task />} />
           </Routes>
         </Box>
       </Box>

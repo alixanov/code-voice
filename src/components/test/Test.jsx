@@ -1,4 +1,3 @@
-// Test.js
 import React, { useState, useEffect, useContext } from 'react';
 import { styled, keyframes } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -17,7 +16,7 @@ import react from "../../assets/icons8-react-100.png";
 import succesfuly from "../../audio/succesful.mp3";
 import error from "../../audio/error.mp3";
 import victor from "../../audio/victory.mp3";
-import { AccessibilityContext } from '../voice/AccessibilityContext'; // Импортируем контекст
+import { AccessibilityContext } from '../voice/AccessibilityContext';
 
 // Анимации
 const waveAnimation = keyframes`
@@ -54,7 +53,7 @@ const pulseAnimation = keyframes`
   100% { transform: scale(1); }
 `;
 
-// Данные тестов (без изменений)
+// Обновленные данные тестов с 10 вопросами для каждого предмета
 const subjectsData = {
   javascript: {
     title: 'JavaScript',
@@ -63,6 +62,13 @@ const subjectsData = {
       { id: 1, question: 'Какой метод добавляет элемент в конец массива?', options: { a: 'pop', b: 'push', c: 'shift' }, correctAnswer: 'b' },
       { id: 2, question: 'Что возвращает typeof null?', options: { a: 'null', b: 'object', c: 'undefined' }, correctAnswer: 'b' },
       { id: 3, question: 'Как объявить функцию?', options: { a: 'function myFunc()', b: 'let myFunc = ()', c: 'def myFunc()' }, correctAnswer: 'a' },
+      { id: 4, question: 'Что делает метод Array.prototype.map()?', options: { a: 'Удаляет элементы', b: 'Создает новый массив', c: 'Сортирует массив' }, correctAnswer: 'b' },
+      { id: 5, question: 'Какой оператор используется для строгого равенства?', options: { a: '==', b: '===', c: '=' }, correctAnswer: 'b' },
+      { id: 6, question: 'Что такое замыкание (closure)?', options: { a: 'Функция внутри другой функции', b: 'Метод массива', c: 'Тип данных' }, correctAnswer: 'a' },
+      { id: 7, question: 'Какой метод используется для удаления последнего элемента массива?', options: { a: 'shift', b: 'pop', c: 'splice' }, correctAnswer: 'b' },
+      { id: 8, question: 'Что выведет console.log(0 == "0")?', options: { a: 'true', b: 'false', c: 'undefined' }, correctAnswer: 'a' },
+      { id: 9, question: 'Какой метод используется для асинхронного выполнения?', options: { a: 'setTimeout', b: 'forEach', c: 'filter' }, correctAnswer: 'a' },
+      { id: 10, question: 'Что такое Promise?', options: { a: 'Тип данных', b: 'Объект для асинхронных операций', c: 'Метод массива' }, correctAnswer: 'b' },
     ],
   },
   python: {
@@ -72,6 +78,13 @@ const subjectsData = {
       { id: 1, question: 'Какой оператор возводит в степень?', options: { a: '//', b: '**', c: '^' }, correctAnswer: 'b' },
       { id: 2, question: 'Какой метод добавляет элемент в список?', options: { a: 'append', b: 'push', c: 'add' }, correctAnswer: 'a' },
       { id: 3, question: 'Что выведет print(2 + "2")?', options: { a: '4', b: '22', c: 'Ошибка' }, correctAnswer: 'c' },
+      { id: 4, question: 'Как объявить словарь?', options: { a: '[]', b: '{}', c: '()' }, correctAnswer: 'b' },
+      { id: 5, question: 'Что делает функция len()?', options: { a: 'Возвращает длину объекта', b: 'Сортирует список', c: 'Удаляет элемент' }, correctAnswer: 'a' },
+      { id: 6, question: 'Какой цикл используется для перебора элементов?', options: { a: 'while', b: 'for', c: 'do-while' }, correctAnswer: 'b' },
+      { id: 7, question: 'Что делает метод list.pop()?', options: { a: 'Добавляет элемент', b: 'Удаляет последний элемент', c: 'Сортирует список' }, correctAnswer: 'b' },
+      { id: 8, question: 'Какой модуль используется для работы с датами?', options: { a: 'math', b: 'datetime', c: 'random' }, correctAnswer: 'b' },
+      { id: 9, question: 'Что такое генератор списка?', options: { a: 'Функция', b: 'Синтаксис для создания списков', c: 'Тип данных' }, correctAnswer: 'b' },
+      { id: 10, question: 'Какой оператор проверяет принадлежность?', options: { a: 'is', b: 'in', c: '==' }, correctAnswer: 'b' },
     ],
   },
   robotics: {
@@ -81,6 +94,13 @@ const subjectsData = {
       { id: 1, question: 'Какой датчик измеряет расстояние?', options: { a: 'Инфракрасный', b: 'Ультразвуковой', c: 'Температурный' }, correctAnswer: 'b' },
       { id: 2, question: 'Какой язык часто используется в робототехнике?', options: { a: 'JavaScript', b: 'Python', c: 'HTML' }, correctAnswer: 'b' },
       { id: 3, question: 'Что делает робот при обнаружении препятствия?', options: { a: 'Останавливается', b: 'Ускоряется', c: 'Игнорирует' }, correctAnswer: 'a' },
+      { id: 4, question: 'Какой тип двигателя часто используется в роботах?', options: { a: 'Шаговый', b: 'Линейный', c: 'Турбинный' }, correctAnswer: 'a' },
+      { id: 5, question: 'Что такое Arduino?', options: { a: 'Программируемая плата', b: 'Датчик', c: 'Язык программирования' }, correctAnswer: 'a' },
+      { id: 6, question: 'Какой датчик определяет свет?', options: { a: 'Фоторезистор', b: 'Гироскоп', c: 'Акселерометр' }, correctAnswer: 'a' },
+      { id: 7, question: 'Что такое сервопривод?', options: { a: 'Датчик', b: 'Механизм управления углом', c: 'Источник питания' }, correctAnswer: 'b' },
+      { id: 8, question: 'Какой протокол часто используется для связи?', options: { a: 'HTTP', b: 'I2C', c: 'FTP' }, correctAnswer: 'b' },
+      { id: 9, question: 'Что измеряет гироскоп?', options: { a: 'Температуру', b: 'Ускорение', c: 'Ориентацию' }, correctAnswer: 'c' },
+      { id: 10, question: 'Что такое ROS?', options: { a: 'Операционная система', b: 'Фреймворк для робототехники', c: 'Язык программирования' }, correctAnswer: 'b' },
     ],
   },
   react: {
@@ -90,11 +110,18 @@ const subjectsData = {
       { id: 1, question: 'Какой хук управляет состоянием?', options: { a: 'useEffect', b: 'useState', c: 'useContext' }, correctAnswer: 'b' },
       { id: 2, question: 'Что такое JSX?', options: { a: 'Язык', b: 'Синтаксический сахар', c: 'Библиотека' }, correctAnswer: 'b' },
       { id: 3, question: 'Как передать данные в компонент?', options: { a: 'Props', b: 'State', c: 'Hooks' }, correctAnswer: 'a' },
+      { id: 4, question: 'Что делает useEffect?', options: { a: 'Управляет состоянием', b: 'Обрабатывает побочные эффекты', c: 'Передает данные' }, correctAnswer: 'b' },
+      { id: 5, question: 'Какой метод жизненного цикла заменяет useEffect?', options: { a: 'componentDidMount', b: 'render', c: 'setState' }, correctAnswer: 'a' },
+      { id: 6, question: 'Что такое React.Fragment?', options: { a: 'Компонент', b: 'Обертка без DOM-элемента', c: 'Хук' }, correctAnswer: 'b' },
+      { id: 7, question: 'Какой хук используется для доступа к контексту?', options: { a: 'useState', b: 'useContext', c: 'useReducer' }, correctAnswer: 'b' },
+      { id: 8, question: 'Что такое виртуальный DOM?', options: { a: 'Копия реального DOM', b: 'Библиотека', c: 'Компонент' }, correctAnswer: 'a' },
+      { id: 9, question: 'Как обновить состояние в React?', options: { a: 'Прямым изменением', b: 'Через setState/useState', c: 'Через props' }, correctAnswer: 'b' },
+      { id: 10, question: 'Что такое React Router?', options: { a: 'Библиотека для маршрутизации', b: 'Хук', c: 'Компонент' }, correctAnswer: 'a' },
     ],
   },
 };
 
-// Стилизация
+// Стилизация (без изменений)
 const TestContainer = styled(Box)(({ theme }) => ({
   background: '#000000',
   minHeight: '80vh',
@@ -507,16 +534,15 @@ const FeedbackMessage = styled(Typography)(({ isCorrect, theme }) => ({
   },
 }));
 
-// Компонент теста
+// Компонент теста (без изменений)
 const Test = () => {
   const [selectedSubject, setSelectedSubject] = useState(null);
   const [currentTestIndex, setCurrentTestIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState({});
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [showResult, setShowResult] = useState(false);
-  const { speakText, stopSpeech } = useContext(AccessibilityContext); // Используем контекст
+  const { speakText, stopSpeech } = useContext(AccessibilityContext);
 
-  // Звуковые эффекты
   const successSound = new Audio(succesfuly);
   const errorSound = new Audio(error);
   const victorySound = new Audio(victor);
@@ -572,7 +598,6 @@ const Test = () => {
 
   return (
     <TestContainer>
-      {/* Конфетти при завершении */}
       {showResult && (
         <>
           {Array.from({ length: 50 }).map((_, i) => (
@@ -587,7 +612,6 @@ const Test = () => {
           ))}
         </>
       )}
-      {/* Выбор предметов */}
       {!selectedSubject && (
         <CenteredContainer sx={{ marginTop: -30 }}>
           <TestHeader
@@ -648,7 +672,6 @@ const Test = () => {
         </CenteredContainer>
       )}
 
-      {/* Тесты */}
       {selectedSubject && !showResult && (
         <CenteredContainer>
           <TestCard>
@@ -763,7 +786,6 @@ const Test = () => {
           </ProgressContainer>
         </CenteredContainer>
       )}
-      {/* Результат */}
       {showResult && (
         <CenteredContainer>
           <ResultCard>

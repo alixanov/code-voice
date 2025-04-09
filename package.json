@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^7.0.1",
@@ -15,6 +16,7 @@
     "@testing-library/user-event": "^13.5.0",
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
+    "emailjs-com": "^3.2.0",
     "framer-motion": "^12.6.3",
     "gsap": "^3.12.7",
     "react": "^19.1.0",
