@@ -112,6 +112,10 @@ const NavItem = styled(Link)(({ theme, active, isMobile }) => ({
     transform: isMobile ? 'scale(1.1)' : 'translateY(-2px)',
     boxShadow: `0 5px 15px ${colors.subtleGlow}`,
   },
+  '&:focus': {
+    outline: '2px solid #FF007A',
+    outlineOffset: '2px',
+  },
   '& svg': {
     filter: active ? 'drop-shadow(0 0 5px rgba(255, 255, 255, 0.5))' : 'none',
   },
@@ -135,6 +139,10 @@ const LanguageToggle = styled(Box)(({ theme, active, isMobile }) => ({
     transform: isMobile ? 'scale(1.1)' : 'translateY(-2px)',
     boxShadow: `0 5px 15px ${colors.subtleGlow}`,
   },
+  '&:focus': {
+    outline: '2px solid #FF007A',
+    outlineOffset: '2px',
+  },
 }));
 
 const AccessibilitySwitch = styled(FormControlLabel)(({ theme, isMobile }) => ({
@@ -145,7 +153,7 @@ const AccessibilitySwitch = styled(FormControlLabel)(({ theme, isMobile }) => ({
     fontWeight: 500,
   },
   '& .MuiSwitch-root': {
-    transform: isMobile ? 'rotate(180deg)' : 'none', // Поворачиваем Switch на 180 градусов в мобильном режиме
+    transform: isMobile ? 'rotate(180deg)' : 'none',
     '& .MuiSwitch-switchBase': {
       color: '#FFFFFF',
       '&.Mui-checked': {
@@ -159,12 +167,16 @@ const AccessibilitySwitch = styled(FormControlLabel)(({ theme, isMobile }) => ({
       backgroundColor: 'rgba(255, 255, 255, 0.2)',
     },
   },
+  '&:focus-within': {
+    outline: '2px solid #FF007A',
+    outlineOffset: '2px',
+  },
 }));
 
 const Navbar = ({ sidebarOpen, setSidebarOpen, isMobile }) => {
   const location = useLocation();
   const [language, setLanguage] = useState('uz');
-  const { isAccessibilityMode, setIsAccessibilityMode, speakText, stopSpeech } = useContext(AccessibilityContext);
+  const { isAccessibilityMode, setIsAccessibilityMode, speakText, stopSpeech, isSpeechSupported } = useContext(AccessibilityContext);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -195,24 +207,24 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isMobile }) => {
       authenticated: [
         { to: '/', label: 'Asosiy', icon: HomeFilledIcon, active: location.pathname === '/' },
         { to: '/test', label: 'Savollar', icon: AppRegistrationIcon, active: location.pathname === '/test' },
-        { to: '/homework', label: 'Vazifalar', icon: PersonIcon, active: location.pathname === '/homework' },
+        { to: '/login', label: 'Royhdatdan otish', icon: PersonIcon, active: location.pathname === '/login' },
       ],
       unauthenticated: [
         { to: '/', label: 'Asosiy', icon: HomeFilledIcon, active: location.pathname === '/' },
         { to: '/test', label: 'Savollar', icon: AppRegistrationIcon, active: location.pathname === '/test' },
-        { to: '/homework', label: 'Vazifalar', icon: PersonIcon, active: location.pathname === '/homework' },
+        { to: '/login', label: 'Royhdatdan otish', icon: PersonIcon, active: location.pathname === '/login' },
       ],
     },
     ru: {
       authenticated: [
         { to: '/', label: 'Главная', icon: HomeFilledIcon, active: location.pathname === '/' },
         { to: '/test', label: 'Вопросы', icon: AppRegistrationIcon, active: location.pathname === '/test' },
-        { to: '/homework', label: 'Задания', icon: PersonIcon, active: location.pathname === '/homework' },
+        { to: '/login', label: 'Регистрация', icon: PersonIcon, active: location.pathname === '/login' },
       ],
       unauthenticated: [
         { to: '/', label: 'Главная', icon: HomeFilledIcon, active: location.pathname === '/' },
         { to: '/test', label: 'Вопросы', icon: AppRegistrationIcon, active: location.pathname === '/test' },
-        { to: '/homework', label: 'Задания', icon: PersonIcon, active: location.pathname === '/homework' },
+        { to: '/login', label: 'Регистрация', icon: PersonIcon, active: location.pathname === '/login' },
       ],
     },
   };
@@ -222,14 +234,23 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isMobile }) => {
     : linkTranslations[language].unauthenticated;
 
   const handleLanguageToggle = () => {
-    setLanguage((prev) => (prev === 'uz' ? 'ru' : 'uz'));
+    const newLanguage = language === 'uz' ? 'ru' : 'uz';
+    setLanguage(newLanguage);
+    if (isAccessibilityMode) {
+      speakText(newLanguage === 'uz' ? "O‘zbek" : 'Русский');
+    }
   };
 
   const toggleAccessibilityMode = () => {
-    setIsAccessibilityMode((prev) => !prev);
-    if (isAccessibilityMode) {
-      stopSpeech();
-    }
+    setIsAccessibilityMode((prev) => {
+      const newMode = !prev;
+      if (!newMode) {
+        stopSpeech();
+      } else if (isSpeechSupported) {
+        speakText(language === 'uz' ? 'Maxsus imkoniyatlar yoqildi' : 'Специальные возможности включены');
+      }
+      return newMode;
+    });
   };
 
   const renderLink = ({ to, label, icon: Icon, active }) => (
@@ -238,13 +259,13 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isMobile }) => {
       active={active}
       isMobile={isMobile}
       key={to}
-      onMouseEnter={() => speakText(label)}
+      onMouseEnter={() => isAccessibilityMode && speakText(label)}
       onMouseLeave={stopSpeech}
-      onTouchStart={() => speakText(label)}
-      onTouchEnd={stopSpeech}
-      onFocus={() => speakText(label)}
+      onFocus={() => isAccessibilityMode && speakText(label)}
       onBlur={stopSpeech}
       tabIndex={0}
+      aria-label={label}
+      role="link"
     >
       <Icon sx={{ fontSize: 24, color: '#fff' }} />
       {!isMobile && (
@@ -272,13 +293,13 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isMobile }) => {
             active={language === 'ru'}
             onClick={handleLanguageToggle}
             isMobile={true}
-            onMouseEnter={() => speakText(language === 'uz' ? 'UZ' : 'RU')}
+            onMouseEnter={() => isAccessibilityMode && speakText(language === 'uz' ? 'UZ' : 'RU')}
             onMouseLeave={stopSpeech}
-            onTouchStart={() => speakText(language === 'uz' ? 'UZ' : 'RU')}
-            onTouchEnd={stopSpeech}
-            onFocus={() => speakText(language === 'uz' ? 'UZ' : 'RU')}
+            onFocus={() => isAccessibilityMode && speakText(language === 'uz' ? 'UZ' : 'RU')}
             onBlur={stopSpeech}
             tabIndex={0}
+            role="button"
+            aria-label={language === 'uz' ? 'Сменить язык на русский' : 'Сменить язык на узбекский'}
           >
             <Typography
               sx={{
@@ -294,20 +315,17 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isMobile }) => {
           </LanguageToggle>
           <AccessibilitySwitch
             control={<Switch checked={isAccessibilityMode} onChange={toggleAccessibilityMode} />}
-            label="" // Убираем текст в мобильном режиме
+            label=""
             isMobile={true}
             onMouseEnter={() =>
-              speakText(language === 'uz' ? 'Maxsus imkoniyatlar' : 'Специальные возможности')
+              isAccessibilityMode && speakText(language === 'uz' ? 'Maxsus imkoniyatlar' : 'Специальные возможности')
             }
             onMouseLeave={stopSpeech}
-            onTouchStart={() =>
-              speakText(language === 'uz' ? 'Maxsus imkoniyatlar' : 'Специальные возможности')
-            }
-            onTouchEnd={stopSpeech}
             onFocus={() =>
               speakText(language === 'uz' ? 'Maxsus imkoniyatlar' : 'Специальные возможности')
             }
             onBlur={stopSpeech}
+            aria-label={language === 'uz' ? 'Переключить режим доступности' : 'Переключить режим специальных возможностей'}
           />
         </NavItems>
       </FooterContainer>
@@ -318,11 +336,13 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isMobile }) => {
     <NavbarContainer>
       <LogoContainer>
         <LogoText
-          onMouseEnter={() => speakText('Code Voice')}
+          onMouseEnter={() => isAccessibilityMode && speakText('Code Voice')}
           onMouseLeave={stopSpeech}
-          onFocus={() => speakText('Code Voice')}
+          onFocus={() => isAccessibilityMode && speakText('Code Voice')}
           onBlur={stopSpeech}
           tabIndex={0}
+          role="heading"
+          aria-level="1"
         >
           Code Voice
         </LogoText>
@@ -333,11 +353,13 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isMobile }) => {
           active={language === 'ru'}
           onClick={handleLanguageToggle}
           isMobile={false}
-          onMouseEnter={() => speakText(language === 'uz' ? "O‘zbek" : 'Русский')}
+          onMouseEnter={() => isAccessibilityMode && speakText(language === 'uz' ? "O‘zbek" : 'Русский')}
           onMouseLeave={stopSpeech}
-          onFocus={() => speakText(language === 'uz' ? "O‘zbek" : 'Русский')}
+          onFocus={() => isAccessibilityMode && speakText(language === 'uz' ? "O‘zbek" : 'Русский')}
           onBlur={stopSpeech}
           tabIndex={0}
+          role="button"
+          aria-label={language === 'uz' ? 'Сменить язык на русский' : 'Сменить язык на узбекский'}
         >
           <Typography
             sx={{
@@ -356,13 +378,14 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isMobile }) => {
           label={language === 'uz' ? 'Maxsus imkoniyatlar' : 'Специальные возможности'}
           isMobile={false}
           onMouseEnter={() =>
-            speakText(language === 'uz' ? 'Maxsus imkoniyatlar' : 'Специальные возможности')
+            isAccessibilityMode && speakText(language === 'uz' ? 'Maxsus imkoniyatlar' : 'Специальные возможности')
           }
           onMouseLeave={stopSpeech}
           onFocus={() =>
             speakText(language === 'uz' ? 'Maxsus imkoniyatlar' : 'Специальные возможности')
           }
           onBlur={stopSpeech}
+          aria-label={language === 'uz' ? 'Переключить режим доступности' : 'Переключить режим специальных возможностей'}
         />
       </NavItems>
     </NavbarContainer>
