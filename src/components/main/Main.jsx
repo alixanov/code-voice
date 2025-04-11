@@ -1,4 +1,3 @@
-// Main.js
 import React, { useState, useContext } from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -10,211 +9,210 @@ import js from "../../assets/icons8-javascript-96.png";
 import python from "../../assets/icons8-python-144.png";
 import roboto from "../../assets/icons8-robot-94.png";
 import react from "../../assets/icons8-react-100.png";
-import { AccessibilityContext } from '../voice/AccessibilityContext'; // Импортируем контекст
+import { AccessibilityContext } from '../voice/AccessibilityContext';
 
-// Данные курсов (без изменений)
+// Kurslar ma'lumotlari
 const coursesData = {
   javascript: {
-    title: 'Основы JavaScript',
+    title: 'JavaScript asoslari',
     icon: js,
-    description: 'Погрузитесь в мир веб-разработки с JavaScript!',
-    lastUpdated: '15 марта 2025',
-    difficulty: 'Начинающий',
-    duration: '6 недель',
+    description: 'Veb-dasturlash olamiga JavaScript bilan sho\'ng\'ing!',
+    lastUpdated: '15 mart 2025',
+    difficulty: 'Boshlang\'ich',
+    duration: '6 hafta',
     lessons: [
       {
         id: 1,
-        title: 'Переменные и типы данных',
-        date: '12 апреля 2025',
-        content: `В JavaScript переменные объявляются с помощью let, const или var. Они могут содержать строки, числа, булевы значения и другие типы данных. Пример:\n
-javascript\nlet name = "Алексей";\nconst age = 25;\nlet isStudent = true;\nconsole.log(\`Имя: \${name}, Возраст: \${age}, Студент: \${isStudent}\`);\n
+        title: 'O\'zgaruvchilar va ma\'lumot turlari',
+        date: '12 aprel 2025',
+        content: `JavaScript-da o\'zgaruvchilar let, const yoki var yordamida e\'lon qilinadi. Ular satrlar, raqamlar, mantiqiy qiymatlar va boshqa ma\'lumot turlarini saqlashi mumkin. Misol:\n
+javascript\nlet ism = "Ali";\nconst yosh = 25;\nlet talaba = true;\nconsole.log(\`Ism: \${ism}, Yosh: \${yosh}, Talaba: \${talaba}\`);\n
 `,
-        testCode: 'let name = "Алексей";\nconst age = 25;\nlet isStudent = true;\nconsole.log(`Имя: ${name}, Возраст: ${age}, Студент: ${isStudent}`);',
-        expectedOutput: 'Имя: Алексей, Возраст: 25, Студент: true',
-        funFact: 'JavaScript был создан всего за 10 дней в мае 1995 года Бренданом Эйхом!',
+        testCode: 'let ism = "Ali";\nconst yosh = 25;\nlet talaba = true;\nconsole.log(`Ism: ${ism}, Yosh: ${yosh}, Talaba: ${talaba}`);',
+        expectedOutput: 'Ism: Ali, Yosh: 25, Talaba: true',
+        funFact: 'JavaScript 1995 yilning may oyida Brendan Eich tomonidan atigi 10 kun ichida yaratilgan!',
       },
       {
         id: 2,
-        title: 'Функции и условия',
-        date: '19 апреля 2025',
-        content: `Функции в JavaScript позволяют создавать переиспользуемый код. Условия (if) управляют логикой. Пример игры "Угадай число":\n
-javascript\nfunction guessNumber(num) {\n  const secret = 42;\n  if (num === secret) return "Угадал!";\n  return num > secret ? "Слишком много" : "Слишком мало";\n}\nconsole.log(guessNumber(42));\n
+        title: 'Funksiyalar va shartlar',
+        date: '19 aprel 2025',
+        content: `JavaScript-da funksiyalar qayta ishlatiladigan kodni yaratish imkonini beradi. Shartlar (if) mantiqni boshqaradi. "Raqamni taxmin qilish" o\'yini misoli:\n
+javascript\nfunction taxminQil(raqam) {\n  const sirliRaqam = 42;\n  if (raqam === sirliRaqam) return "Topdingiz!";\n  return raqam > sirliRaqam ? "Juda ko\'p" : "Juda kam";\n}\nconsole.log(taxminQil(42));\n
 `,
-        testCode: 'function guessNumber(num) {\n  const secret = 42;\n  if (num === secret) return "Угадал!";\n  return num > secret ? "Слишком много" : "Слишком мало";\n}\nconsole.log(guessNumber(42));',
-        expectedOutput: 'Угадал!',
-        funFact: 'Число 42 в примере — отсылка к книге "Автостопом по галактике", где это "ответ на главный вопрос жизни, вселенной и всего такого".',
+        testCode: 'function taxminQil(raqam) {\n  const sirliRaqam = 42;\n  if (raqam === sirliRaqam) return "Topdingiz!";\n  return raqam > sirliRaqam ? "Juda ko\'p" : "Juda kam";\n}\nconsole.log(taxminQil(42));',
+        expectedOutput: 'Topdingiz!',
+        funFact: 'Misolda ishlatilgan 42 raqami "Galaktika bo\'ylab sayohat" kitobiga ishora bo\'lib, u yerda bu "hayot, koinot va hamma narsaning asosiy savoliga javob" deb ataladi.',
       },
       {
         id: 3,
-        title: 'Массивы и циклы',
-        date: '26 апреля 2025',
-        content: `Массивы хранят списки данных, а циклы (for) позволяют их обрабатывать. Пример подсчета очков:\n
-javascript\nconst scores = [85, 92, 78, 95];\nlet total = 0;\nfor (let i = 0; i < scores.length; i++) {\n  total += scores[i];\n}\nconsole.log(\`Средний балл: \${total / scores.length}\`);\n
+        title: 'Massivlar va sikllar',
+        date: '26 aprel 2025',
+        content: `Massivlar ma\'lumotlar ro\'yxatini saqlaydi, sikllar (for) esa ularni qayta ishlash imkonini beradi. Ballarni hisoblash misoli:\n
+javascript\nconst ballar = [85, 92, 78, 95];\nlet jami = 0;\nfor (let i = 0; i < ballar.length; i++) {\n  jami += ballar[i];\n}\nconsole.log(\`O\'rtacha ball: \${jami / ballar.length}\`);\n
 `,
-        testCode: 'const scores = [85, 92, 78, 95];\nlet total = 0;\nfor (let i = 0; i < scores.length; i++) {\n  total += scores[i];\n}\nconsole.log(`Средний балл: ${total / scores.length}`);',
-        expectedOutput: 'Средний балл: 87.5',
-        funFact: 'Современные браузеры обрабатывают миллионы операций JavaScript в секунду!',
+        testCode: 'const ballar = [85, 92, 78, 95];\nlet jami = 0;\nfor (let i = 0; i < ballar.length; i++) {\n  jami += ballar[i];\n}\nconsole.log(`O\'rtacha ball: ${jami / ballar.length}`);',
+        expectedOutput: 'O\'rtacha ball: 87.5',
+        funFact: 'Zamonaviy brauzerlar sekundiga millionlab JavaScript operatsiyalarini bajaradi!',
       },
       {
         id: 4,
-        title: 'Объекты и методы',
-        date: '3 мая 2025',
-        content: `Объекты в JavaScript — это коллекции данных. Пример:\n
-javascript\nconst user = { name: "Анна", age: 30, greet() { return \`Привет, я \${this.name}!\`; } };\nconsole.log(user.greet());\n
+        title: 'Obyektlar va metodlar',
+        date: '3 may 2025',
+        content: `JavaScript-da obyektlar ma\'lumotlar to\'plamidir. Misol:\n
+javascript\nconst foydalanuvchi = { ism: "Aziza", yosh: 30, salomlash() { return \`Salom, men \${this.ism}!\`; } };\nconsole.log(foydalanuvchi.salomlash());\n
 `,
-        testCode: 'const user = { name: "Анна", age: 30, greet() { return `Привет, я ${this.name}!`; } };\nconsole.log(user.greet());',
-        expectedOutput: 'Привет, я Анна!',
-        funFact: 'Объекты в JavaScript — это основа для создания сложных приложений!',
+        testCode: 'const foydalanuvchi = { ism: "Aziza", yosh: 30, salomlash() { return `Salom, men ${this.ism}!`; } };\nconsole.log(foydalanuvchi.salomlash());',
+        expectedOutput: 'Salom, men Aziza!',
+        funFact: 'JavaScript-da obyektlar murakkab ilovalarni yaratishning asosidir!',
       },
     ],
   },
   python: {
-    title: 'Python для начинающих',
+    title: 'Boshlang\'ichlar uchun Python',
     icon: python,
-    description: 'Освойте мощный и простой язык программирования!',
-    lastUpdated: '28 февраля 2025',
-    difficulty: 'Начинающий',
-    duration: '8 недель',
+    description: 'Kuchli va oson dasturlash tilini o\'rganing!',
+    lastUpdated: '28 fevral 2025',
+    difficulty: 'Boshlang\'ich',
+    duration: '8 hafta',
     lessons: [
       {
         id: 1,
-        title: 'Переменные и ввод данных',
-        date: '10 апреля 2025',
-        content: `В Python переменные не требуют типов, а input() позволяет взаимодействовать с пользователем. Пример:\n
-python\nname = input("Введите ваше имя: ")\nage = int(input("Введите ваш возраст: "))\nprint(f"Привет, {name}! Через 5 лет тебе будет {age + 5} лет.")\n
+        title: 'O\'zgaruvchilar va ma\'lumot kiritish',
+        date: '10 aprel 2025',
+        content: `Python-da o\'zgaruvchilar turlarni talab qilmaydi, input() esa foydalanuvchi bilan muloqot qilish imkonini beradi. Misol:\n
+python\nism = input("Ismingizni kiriting: ")\nyosh = int(input("Yoshingizni kiriting: "))\nprint(f"Salom, {ism}! 5 yildan keyin senga {yosh + 5} yosh bo\'ladi.")\n
 `,
-        testCode: 'name = "Иван"\nage = 22\nprint(f"Привет, {name}! Через 5 лет тебе будет {age + 5} лет.")',
-        expectedOutput: 'Привет, Иван! Через 5 лет тебе будет 27 лет.',
-        funFact: 'Название Python происходит не от змеи, а от комедийного шоу "Монти Пайтон"!',
+        testCode: 'ism = "Sardor"\nyosh = 22\nprint(f"Salom, {ism}! 5 yildan keyin senga {yosh + 5} yosh bo\'ladi.")',
+        expectedOutput: 'Salom, Sardor! 5 yildan keyin senga 27 yosh bo\'ladi.',
+        funFact: 'Python nomi ilondan emas, balki "Monti Payton" komediya shousidan olingan!',
       },
       {
         id: 2,
-        title: 'Списки и циклы',
-        date: '17 апреля 2025',
-        content: `Списки и цикл for идеальны для обработки данных. Пример списка покупок:\n
-python\nitems = ["хлеб", "молоко", "яйца"]\nfor item in items:\n  print(f"Купить: {item}")\n
+        title: 'Ro\'yxatlar va sikllar',
+        date: '17 aprel 2025',
+        content: `Ro\'yxatlar va for sikli ma\'lumotlarni qayta ishlash uchun juda mos. Xaridlar ro\'yxati misoli:\n
+python\nnarsalar = ["non", "sut", "tuxum"]\nfor narsa in narsalar:\n  print(f"Sotib olish: {narsa}")\n
 `,
-        testCode: 'items = ["хлеб", "молоко", "яйца"]\nfor item in items:\n  print(f"Купить: {item}")',
-        expectedOutput: 'Купить: хлеб\nКупить: молоко\nКупить: яйца',
-        funFact: 'Python используется NASA для обработки изображений с космических телескопов!',
+        testCode: 'narsalar = ["non", "sut", "tuxum"]\nfor narsa in narsalar:\n  print(f"Sotib olish: {narsa}")',
+        expectedOutput: 'Sotib olish: non\nSotib olish: sut\nSotib olish: tuxum',
+        funFact: 'Python NASA tomonidan kosmik teleskoplardan olingan tasvirlarni qayta ishlash uchun ishlatiladi!',
       },
       {
         id: 3,
-        title: 'Словари и работа с данными',
-        date: '24 апреля 2025',
-        content: `Словари хранят данные в формате ключ-значение. Пример учета расходов:\n
-python\nexpenses = {"еда": 500, "транспорт": 200, "развлечения": 300}\ntotal = sum(expenses.values())\nprint(f"Общие расходы: {total} руб.")\n
+        title: 'Lug\'atlar va ma\'lumotlar bilan ishlash',
+        date: '24 aprel 2025',
+        content: `Lug\'atlar kalit-qiymat formatida ma\'lumot saqlaydi. Xarajatlarni hisoblash misoli:\n
+python\nxarajatlar = {"ovqat": 500, "transport": 200, "ko\'ngilochar": 300}\njami = sum(xarajatlar.values())\nprint(f"Umumiy xarajatlar: {jami} so\'m")\n
 `,
-        testCode: 'expenses = {"еда": 500, "транспорт": 200, "развлечения": 300}\ntotal = sum(expenses.values())\nprint(f"Общие расходы: {total} руб.")',
-        expectedOutput: 'Общие расходы: 1000 руб.',
-        funFact: 'Python входит в тройку самых популярных языков программирования в мире!',
+        testCode: 'xarajatlar = {"ovqat": 500, "transport": 200, "ko\'ngilochar": 300}\njami = sum(xarajatlar.values())\nprint(f"Umumiy xarajatlar: {jami} so\'m")',
+        expectedOutput: 'Umumiy xarajatlar: 1000 so\'m',
+        funFact: 'Python dunyodagi eng mashhur dasturlash tillarining uchtaligiga kiradi!',
       },
       {
         id: 4,
-        title: 'Функции и модули',
-        date: '1 мая 2025',
-        content: `Функции позволяют организовать код. Пример:\n
-python\ndef calculate_area(length, width):\n  return length * width\narea = calculate_area(5, 3)\nprint(f"Площадь: {area} кв.м")\n
+        title: 'Funksiyalar va modullar',
+        date: '1 may 2025',
+        content: `Funksiyalar kodni tartibga solish imkonini beradi. Misol:\n
+python\ndef maydonniHisobla(uzunlik, kenglik):\n  return uzunlik * kenglik\nmaydon = maydonniHisobla(5, 3)\nprint(f"Maydon: {maydon} kv.m")\n
 `,
-        testCode: 'def calculate_area(length, width):\n  return length * width\narea = calculate_area(5, 3)\nprint(f"Площадь: {area} кв.м")',
-        expectedOutput: 'Площадь: 15 кв.м',
-        funFact: 'Python часто используется для машинного обучения и анализа данных!',
+        testCode: 'def maydonniHisobla(uzunlik, kenglik):\n  return uzunlik * kenglik\nmaydon = maydonniHisobla(5, 3)\nprint(f"Maydon: {maydon} kv.m")',
+        expectedOutput: 'Maydon: 15 kv.m',
+        funFact: 'Python ko\'pincha mashinaviy o\'qitish va ma\'lumotlar tahlili uchun ishlatiladi!',
       },
     ],
   },
   robotics: {
-    title: 'Введение в робототехнику',
+    title: 'Robototexnikaga kirish',
     icon: roboto,
-    description: 'Научитесь управлять роботами с помощью кода!',
-    lastUpdated: '5 апреля 2025',
-    difficulty: 'Средний',
-    duration: '10 недель',
+    description: 'Kod yordamida robotlarni boshqarishni o\'rganing!',
+    lastUpdated: '5 aprel 2025',
+    difficulty: 'O\'rta',
+    duration: '10 hafta',
     lessons: [
       {
         id: 1,
-        title: 'Программирование движения робота',
-        date: '15 апреля 2025',
-        content: `Робототехника использует классы для моделирования поведения. Пример:\n
-python\nclass Robot:\n  def move_forward(self):\n    return "Робот движется вперед"\n  def turn_left(self):\n    return "Робот поворачивает налево"\nrobot = Robot()\nprint(robot.move_forward())\n
+        title: 'Robot harakatini dasturlash',
+        date: '15 aprel 2025',
+        content: `Robototexnika robot xatti-harakatlarini modellashtirish uchun sinflardan foydalanadi. Misol:\n
+python\nclass Robot:\n  def oldingaYur(self):\n    return "Robot oldinga yurmoqda"\n  def chapgaBuril(self):\n    return "Robot chapga burilmoqda"\nrobot = Robot()\nprint(robot.oldingaYur())\n
 `,
-        testCode: 'class Robot:\n  def move_forward(self):\n    return "Робот движется вперед"\nrobot = Robot()\nprint(robot.move_forward())',
-        expectedOutput: 'Робот движется вперед',
-        funFact: 'Слово "робот" впервые было использовано в пьесе чешского писателя Карела Чапека в 1920 году!',
+        testCode: 'class Robot:\n  def oldingaYur(self):\n    return "Robot oldinga yurmoqda"\nrobot = Robot()\nprint(robot.oldingaYur())',
+        expectedOutput: 'Robot oldinga yurmoqda',
+        funFact: '"Robot" so\'zi birinchi marta 1920 yilda chex yozuvchisi Karel Čapekning pyesasida ishlatilgan!',
       },
       {
         id: 2,
-        title: 'Датчики и логика',
-        date: '22 апреля 2025',
-        content: `Роботы используют датчики для принятия решений. Пример:\n
-python\nclass Robot:\n  def detect_obstacle(self, distance):\n    if distance < 10:\n      return "Остановка: препятствие"\n    return "Движение вперед"\nrobot = Robot()\nprint(robot.detect_obstacle(5))\n
+        title: 'Sensorlar va mantiq',
+        date: '22 aprel 2025',
+        content: `Robotlar qaror qabul qilish uchun sensorlardan foydalanadi. Misol:\n
+python\nclass Robot:\n  def to\'siqniAniqla(self, masofa):\n    if masofa < 10:\n      return "To\'xtash: to\'siq"\n    return "Oldinga yurish"\nrobot = Robot()\nprint(robot.to\'siqniAniqla(5))\n
 `,
-        testCode: 'class Robot:\n  def detect_obstacle(self, distance):\n    if distance < 10:\n      return "Остановка: препятствие"\n    return "Движение вперед"\nrobot = Robot()\nprint(robot.detect_obstacle(5))',
-        expectedOutput: 'Остановка: препятствие',
-        funFact: 'Современные роботы могут иметь более 100 различных датчиков!',
+        testCode: 'class Robot:\n  def to\'siqniAniqla(self, masofa):\n    if masofa < 10:\n      return "To\'xtash: to\'siq"\n    return "Oldinga yurish"\nrobot = Robot()\nprint(robot.to\'siqniAniqla(5))',
+        expectedOutput: 'To\'xtash: to\'siq',
+        funFact: 'Zamonaviy robotlarda 100 dan ortiq turli sensorlar bo\'lishi mumkin!',
       },
       {
         id: 3,
-        title: 'Управление моторами',
-        date: '29 апреля 2025',
-        content: `Моторы управляются через команды. Пример:\n
-python\nclass Robot:\n  def set_speed(self, speed):\n    return f"Скорость установлена на {speed}%\nrobot = Robot()\nprint(robot.set_speed(75))\n
+        title: 'Motorlarni boshqarish',
+        date: '29 aprel 2025',
+        content: `Motorlar buyruqlar orqali boshqariladi. Misol:\n
+python\nclass Robot:\n  def tezlikniBelgila(self, tezlik):\n    return f"Tezlik {tezlik}% ga o\'rnatildi"\nrobot = Robot()\nprint(robot.tezlikniBelgila(75))\n
 `,
-        testCode: 'class Robot:\n  def set_speed(self, speed):\n    return f"Скорость установлена на {speed}%"\nrobot = Robot()\nprint(robot.set_speed(75))',
-        expectedOutput: 'Скорость установлена на 75%',
-        funFact: 'Роботы на заводах могут двигаться со скоростью до 10 м/с!',
+        testCode: 'class Robot:\n  def tezlikniBelgila(self, tezlik):\n    return f"Tezlik {tezlik}% ga o\'rnatildi"\nrobot = Robot()\nprint(robot.tezlikniBelgila(75))',
+        expectedOutput: 'Tezlik 75% ga o\'rnatildi',
+        funFact: 'Zavodlardagi robotlar sekundiga 10 metrgacha harakat qilishi mumkin!',
       },
     ],
   },
   react: {
-    title: 'React для начинающих',
+    title: 'Boshlang\'ichlar uchun React',
     icon: react,
-    description: 'Создавайте современные веб-приложения с React!',
-    lastUpdated: '10 апреля 2025',
-    difficulty: 'Средний',
-    duration: '8 недель',
+    description: 'React bilan zamonaviy veb-ilovalarni yarating!',
+    lastUpdated: '10 aprel 2025',
+    difficulty: 'O\'rta',
+    duration: '8 hafta',
     lessons: [
       {
         id: 1,
-        title: 'Компоненты и JSX',
-        date: '13 апреля 2025',
-        content: `React использует компоненты для создания интерфейсов. Пример:\n
-jsx\nfunction Greeting() {\n  return <h1>Привет, мир!</h1>;\n}\n
+        title: 'Komponentlar va JSX',
+        date: '13 aprel 2025',
+        content: `React interfeyslar yaratish uchun komponentlardan foydalanadi. Misol:\n
+jsx\nfunction Salomlash() {\n  return <h1>Salom, dunyo!</h1>;\n}\n
 `,
-        testCode: 'function Greeting() {\n  return <h1>Привет, мир!</h1>;\n}',
-        expectedOutput: 'Привет, мир!',
-        funFact: 'React был создан в Facebook и впервые использован в 2013 году!',
+        testCode: 'function Salomlash() {\n  return <h1>Salom, dunyo!</h1>;\n}',
+        expectedOutput: 'Salom, dunyo!',
+        funFact: 'React Facebook tomonidan yaratilgan va birinchi marta 2013 yilda ishlatilgan!',
       },
       {
         id: 2,
-        title: 'Состояние и хуки',
-        date: '20 апреля 2025',
-        content: `Хук useState управляет состоянием. Пример счётчика:\n
-jsx\nimport React, { useState } from "react";\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  return (\n    <div>\n      <p>Счётчик: {count}</p>\n      <button onClick={() => setCount(count + 1)}>Увеличить</button>\n    </div>\n  );\n}\n
+        title: 'Holat va huklar',
+        date: '20 aprel 2025',
+        content: `useState huki holatni boshqaradi. Hisoblagich misoli:\n
+jsx\nimport React, { useState } from "react";\nfunction Hisoblagich() {\n  const [son, setSon] = useState(0);\n  return (\n    <div>\n      <p>Hisoblagich: {son}</p>\n      <button onClick={() => setSon(son + 1)}>Oshirish</button>\n    </div>\n  );\n}\n
 `,
-        testCode: 'import React, { useState } from "react";\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  return (\n    <div>\n      <p>Счётчик: {count}</p>\n      <button onClick={() => setCount(count + 1)}>Увеличить</button>\n    </div>\n  );\n}',
-        expectedOutput: 'Счётчик: 0',
-        funFact: 'Хуки были введены в React 16.8 в 2019 году!',
+        testCode: 'import React, { useState } from "react";\nfunction Hisoblagich() {\n  const [son, setSon] = useState(0);\n  return (\n    <div>\n      <p>Hisoblagich: {son}</p>\n      <button onClick={() => setSon(son + 1)}>Oshirish</button>\n    </div>\n  );\n}',
+        expectedOutput: 'Hisoblagich: 0',
+        funFact: 'Huklar React 16.8 versiyasida 2019 yilda joriy etilgan!',
       },
       {
         id: 3,
-        title: 'События и обработчики',
-        date: '27 апреля 2025',
-        content: `Обработчики событий в React используют атрибуты, такие как onClick. Пример:\n
-jsx\nfunction Button() {\n  const handleClick = () => alert("Кнопка нажата!");\n  return <button onClick={handleClick}>Нажми меня</button>;\n}\n
+        title: 'Hodisalar va ishlovchilar',
+        date: '27 aprel 2025',
+        content: `React-da hodisa ishlovchilari onClick kabi atributlar orqali ishlatiladi. Misol:\n
+jsx\nfunction Tugma() {\n  const bosishniBoshqarish = () => alert("Tugma bosildi!");\n  return <button onClick={bosishniBoshqarish}>Meni bos</button>;\n}\n
 `,
-        testCode: 'function Button() {\n  const handleClick = () => alert("Кнопка нажата!");\n  return <button onClick={handleClick}>Нажми меня</button>;\n}',
-        expectedOutput: 'Кнопка нажата!',
-        funFact: 'React позволяет легко управлять событиями без прямого доступа к DOM!',
+        testCode: 'function Tugma() {\n  const bosishniBoshqarish = () => alert("Tugma bosildi!");\n  return <button onClick={bosishniBoshqarish}>Meni bos</button>;\n}',
+        expectedOutput: 'Tugma bosildi!',
+        funFact: 'React DOM ga bevosita kirishsiz hodisalarni oson boshqarish imkonini beradi!',
       },
     ],
   },
 };
 
-// Стили (без изменений)
+// Услублар (Стили)
 const ScrollContainer = styled(Box)(({ theme }) => ({
-  background: 'linear-gradient(135deg, #000000 10%,rgb(18, 18, 18) 90%)',
+  background: 'linear-gradient(135deg, #000000 10%, rgb(18, 18, 18) 90%)',
   maxHeight: 'calc(100vh - 145px)',
-  
   overflowY: 'auto',
   padding: theme.breakpoints.down('sm') ? '8px' : '15px',
   margin: theme.breakpoints.down('sm') ? '0' : '10px',
@@ -223,10 +221,18 @@ const ScrollContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  scrollbarWidth: 'none',
-  '-ms-overflow-style': 'none',
+  scrollbarWidth: 'thin',
+  scrollbarColor: 'rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1)',
   '&::-webkit-scrollbar': {
-    display: 'none',
+    width: '8px',
+  },
+  '&::-webkit-scrollbar-track': {
+    background: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: '10px',
+  },
+  '&::-webkit-scrollbar-thumb': {
+    background: 'rgba(255, 255, 255, 0.3)',
+    borderRadius: '10px',
   },
   animation: 'fadeIn 1s ease-in-out',
   '@keyframes fadeIn': {
@@ -283,6 +289,10 @@ const CourseCard = styled(Box)(({ theme }) => ({
       height: '8px',
     },
   },
+  '&:focus-within': {
+    outline: '2px solid  #FF007A',
+    outlineOffset: '2px',
+  },
   '@keyframes cardFadeIn': {
     '0%': { opacity: 0, transform: 'scale(0.95)' },
     '100%': { opacity: 1, transform: 'scale(1)' },
@@ -295,6 +305,10 @@ const CourseHeader = styled(Box)(({ theme }) => ({
   gap: theme.breakpoints.down('sm') ? '10px' : '20px',
   position: 'relative',
   zIndex: 1,
+  '&:focus-within': {
+    outline: '2px solid  #FF007A',
+    outlineOffset: '2px',
+  },
 }));
 
 const IconWrapper = styled(Box)({
@@ -313,6 +327,10 @@ const IconWrapper = styled(Box)({
     transform: 'scale(1.1) rotate(5deg)',
     boxShadow: '0 12px 25px rgba(255, 255, 255, 0.2)',
   },
+  '&:focus-within': {
+    outline: '2px solid  #FF007A',
+    outlineOffset: '2px',
+  },
 });
 
 const CourseInfo = styled(Box)(({ theme }) => ({
@@ -323,6 +341,10 @@ const CourseInfo = styled(Box)(({ theme }) => ({
   position: 'relative',
   zIndex: 1,
   padding: theme.breakpoints.down('sm') ? '0 5px' : '0',
+  '&:focus-within': {
+    outline: '2px solid  #FF007A',
+    outlineOffset: '2px',
+  },
 }));
 
 const CourseTitle = styled(Typography)(({ theme }) => ({
@@ -342,6 +364,10 @@ const CourseTitle = styled(Typography)(({ theme }) => ({
     background: 'linear-gradient(90deg, #FFFFFF, #FFFFFF)',
     borderRadius: '3px',
   },
+  '&:focus-within': {
+    outline: '2px solid  #FF007A',
+    outlineOffset: '2px',
+  },
 }));
 
 const CourseDescription = styled(Typography)(({ theme }) => ({
@@ -352,6 +378,10 @@ const CourseDescription = styled(Typography)(({ theme }) => ({
   zIndex: 1,
   lineHeight: 1.5,
   opacity: 0.8,
+  '&:focus-within': {
+    outline: '2px solid  #FF007A',
+    outlineOffset: '2px',
+  },
 }));
 
 const LessonCard = styled(Box)(({ theme }) => ({
@@ -378,6 +408,10 @@ const LessonCard = styled(Box)(({ theme }) => ({
     background: 'linear-gradient(to bottom, #FFFFFF, #FFFFFF)',
     borderRadius: '4px',
   },
+  '&:focus-within': {
+    outline: '2px solid  #FF007A',
+    outlineOffset: '2px',
+  },
   '@keyframes cardFadeIn': {
     '0%': { opacity: 0, transform: 'scale(0.95)' },
     '100%': { opacity: 1, transform: 'scale(1)' },
@@ -391,6 +425,10 @@ const LessonTitle = styled(Typography)(({ theme }) => ({
   marginBottom: '5px',
   textShadow: '0 0 8px rgba(255, 255, 255, 0.3)',
   paddingLeft: '15px',
+  '&:focus-within': {
+    outline: '2px solid  #FF007A',
+    outlineOffset: '2px',
+  },
 }));
 
 const LessonDate = styled(Typography)(({ theme }) => ({
@@ -405,6 +443,10 @@ const LessonDate = styled(Typography)(({ theme }) => ({
     content: '"📅"',
     marginRight: '8px',
   },
+  '&:focus-within': {
+    outline: '2px solid  #FF007A',
+    outlineOffset: '2px',
+  },
 }));
 
 const ContentArea = styled(Box)(({ theme }) => ({
@@ -412,6 +454,10 @@ const ContentArea = styled(Box)(({ theme }) => ({
   gap: theme.breakpoints.down('sm') ? '10px' : '20px',
   width: '100%',
   flexDirection: { xs: 'column', md: 'row' },
+  '&:focus-within': {
+    outline: '2px solid  #FF007A',
+    outlineOffset: '2px',
+  },
 }));
 
 const LessonContent = styled(Typography)(({ theme }) => ({
@@ -425,6 +471,10 @@ const LessonContent = styled(Typography)(({ theme }) => ({
   boxShadow: '0 8px 25px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.1)',
   lineHeight: 1.6,
   opacity: 0.9,
+  '&:focus-within': {
+    outline: '2px solid  #FF007A',
+    outlineOffset: '2px',
+  },
 }));
 
 const FunFactBox = styled(Box)(({ theme }) => ({
@@ -446,6 +496,10 @@ const FunFactBox = styled(Box)(({ theme }) => ({
     fontSize: '16px',
     boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.1)',
   },
+  '&:focus-within': {
+    outline: '2px solid  #FF007A',
+    outlineOffset: '2px',
+  },
 }));
 
 const FunFactText = styled(Typography)(({ theme }) => ({
@@ -455,6 +509,10 @@ const FunFactText = styled(Typography)(({ theme }) => ({
   lineHeight: '1.5',
   fontStyle: 'italic',
   opacity: 0.8,
+  '&:focus-within': {
+    outline: '2px solid  #FF007A',
+    outlineOffset: '2px',
+  },
 }));
 
 const CodeEditor = styled(TextField)(({ theme }) => ({
@@ -485,6 +543,10 @@ const CodeEditor = styled(TextField)(({ theme }) => ({
       borderWidth: '2px',
     },
   },
+  '&:focus-within': {
+    outline: '2px solid  #FF007A',
+    outlineOffset: '2px',
+  },
 }));
 
 const Output = styled(Typography)(({ success, theme }) => {
@@ -502,7 +564,7 @@ const Output = styled(Typography)(({ success, theme }) => {
     boxShadow: '0 8px 25px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.1)',
     backdropFilter: 'blur(5px)',
     '&:before': {
-      content: '"Output"',
+      content: '"Natija"',
       position: 'absolute',
       top: '-12px',
       left: '15px',
@@ -514,6 +576,10 @@ const Output = styled(Typography)(({ success, theme }) => {
       border: '1px solid rgba(255, 255, 255, 0.1)',
       boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
       color: '#FFFFFF',
+    },
+    '&:focus-within': {
+      outline: '2px solid  #FF007A',
+      outlineOffset: '2px',
     },
   };
 });
@@ -555,6 +621,10 @@ const TryButton = styled(Button)(({ theme }) => ({
     transform: 'translateY(1px)',
     boxShadow: '0 5px 15px rgba(255, 255, 255, 0.2)',
   },
+  '&:focus-within': {
+    outline: '2px solid  #FF007A',
+    outlineOffset: '2px',
+  },
 }));
 
 const CourseHeaderTitle = styled(Typography)(({ theme }) => ({
@@ -577,6 +647,10 @@ const CourseHeaderTitle = styled(Typography)(({ theme }) => ({
     background: 'linear-gradient(90deg, #FFFFFF, #FFFFFF)',
     borderRadius: '2px',
   },
+  '&:focus-within': {
+    outline: '2px solid  #FF007A',
+    outlineOffset: '2px',
+  },
   '@keyframes titleFadeIn': {
     '0%': { opacity: 0, transform: 'translateY(-20px)' },
     '100%': { opacity: 1, transform: 'translateY(0)' },
@@ -597,6 +671,10 @@ const CurrentDate = styled(Typography)(({ theme }) => ({
   boxShadow: 'inset 0 0 0 1px rgba(255, 255, 255, 0.1)',
   opacity: 0.7,
   animation: 'titleFadeIn 1.2s ease-in-out',
+  '&:focus-within': {
+    outline: '2px solid  #FF007A',
+    outlineOffset: '2px',
+  },
 }));
 
 const HeaderContainer = styled(Box)({
@@ -616,6 +694,10 @@ const HeaderContainer = styled(Box)({
     background: 'radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%)',
     zIndex: 0,
   },
+  '&:focus-within': {
+    outline: '2px solid  #FF007A',
+    outlineOffset: '2px',
+  },
 });
 
 const ChipStyled = styled(Chip)(({ theme }) => ({
@@ -633,9 +715,13 @@ const ChipStyled = styled(Chip)(({ theme }) => ({
     transform: 'scale(1.05)',
     opacity: 1,
   },
+  '&:focus-within': {
+    outline: '2px solid  #FF007A',
+    outlineOffset: '2px',
+  },
 }));
 
-// Main Component
+// Asosiy komponent
 const Main = () => {
   const [expandedCourses, setExpandedCourses] = useState({});
   const [codeInputs, setCodeInputs] = useState({});
@@ -662,7 +748,7 @@ const Main = () => {
 
     try {
       const expectedOutput = lesson.expectedOutput;
-      const simulatedOutput = userCode.trim() === lesson.testCode.trim() ? expectedOutput : "Ошибка: код не соответствует ожидаемому";
+      const simulatedOutput = userCode.trim() === lesson.testCode.trim() ? expectedOutput : "Xato: kod kutilgan natijaga mos kelmaydi";
 
       setOutputs((prev) => ({
         ...prev,
@@ -675,14 +761,14 @@ const Main = () => {
       setOutputs((prev) => ({
         ...prev,
         [`${courseKey}-${lessonId}`]: {
-          result: `Ошибка выполнения: ${error.message}`,
+          result: `Bajarishda xato: ${error.message}`,
           success: false,
         },
       }));
     }
   };
 
-  const currentDate = new Date().toLocaleDateString('ru-RU', {
+  const currentDate = new Date().toLocaleDateString('uz-UZ', {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
@@ -692,26 +778,28 @@ const Main = () => {
     <ScrollContainer>
       <HeaderContainer>
         <CourseHeaderTitle
-          onMouseEnter={() => speakText('Курсы программирования')}
+          onMouseEnter={() => speakText('Dasturlash kurslari')}
           onMouseLeave={stopSpeech}
-          onTouchStart={() => speakText('Курсы программирования')}
+          onTouchStart={() => speakText('Dasturlash kurslari')}
           onTouchEnd={stopSpeech}
-          onFocus={() => speakText('Курсы программирования')}
+          onFocus={() => speakText('Dasturlash kurslari')}
           onBlur={stopSpeech}
           tabIndex={0}
+          role="heading"
+          aria-level="1"
         >
-          Курсы программирования
+          Dasturlash kurslari
         </CourseHeaderTitle>
         <CurrentDate
-          onMouseEnter={() => speakText(`Сегодня: ${currentDate}`)}
+          onMouseEnter={() => speakText(`Bugun: ${currentDate}`)}
           onMouseLeave={stopSpeech}
-          onTouchStart={() => speakText(`Сегодня: ${currentDate}`)}
+          onTouchStart={() => speakText(`Bugun: ${currentDate}`)}
           onTouchEnd={stopSpeech}
-          onFocus={() => speakText(`Сегодня: ${currentDate}`)}
+          onFocus={() => speakText(`Bugun: ${currentDate}`)}
           onBlur={stopSpeech}
           tabIndex={0}
         >
-          Сегодня: {currentDate}
+          Bugun: {currentDate}
         </CurrentDate>
       </HeaderContainer>
 
@@ -721,10 +809,10 @@ const Main = () => {
 
         return (
           <CourseSection key={courseKey}>
-            <CourseCard onClick={() => handleToggleCourse(courseKey)}>
+            <CourseCard onClick={() => handleToggleCourse(courseKey)} tabIndex={0}>
               <CourseHeader>
-                <IconWrapper>
-                  <img src={course.icon} alt={`${course.title} icon`} style={{ width: '40px', height: '40px' }} />
+                <IconWrapper tabIndex={0}>
+                  <img src={course.icon} alt={`${course.title} belgisi`} style={{ width: '40px', height: '40px' }} />
                 </IconWrapper>
                 <Box>
                   <CourseTitle
@@ -753,34 +841,37 @@ const Main = () => {
               </CourseHeader>
               <CourseInfo>
                 <ChipStyled
-                  label={`Последнее обновление: ${course.lastUpdated}`}
-                  onMouseEnter={() => speakText(`Последнее обновление: ${course.lastUpdated}`)}
+                  label={`Oxirgi yangilanish: ${course.lastUpdated}`}
+                  onMouseEnter={() => speakText(`Oxirgi yangilanish: ${course.lastUpdated}`)}
                   onMouseLeave={stopSpeech}
-                  onTouchStart={() => speakText(`Последнее обновление: ${course.lastUpdated}`)}
+                  onTouchStart={() => speakText(`Oxirgi yangilanish: ${course.lastUpdated}`)}
                   onTouchEnd={stopSpeech}
-                  onFocus={() => speakText(`Последнее обновление: ${course.lastUpdated}`)}
+                  onFocus={() => speakText(`Oxirgi yangilanish: ${course.lastUpdated}`)}
                   onBlur={stopSpeech}
                   tabIndex={0}
+                  aria-label={`Oxirgi yangilanish: ${course.lastUpdated}`}
                 />
                 <ChipStyled
-                  label={`Сложность: ${course.difficulty}`}
-                  onMouseEnter={() => speakText(`Сложность: ${course.difficulty}`)}
+                  label={`Qiyinlik: ${course.difficulty}`}
+                  onMouseEnter={() => speakText(`Qiyinlik: ${course.difficulty}`)}
                   onMouseLeave={stopSpeech}
-                  onTouchStart={() => speakText(`Сложность: ${course.difficulty}`)}
+                  onTouchStart={() => speakText(`Qiyinlik: ${course.difficulty}`)}
                   onTouchEnd={stopSpeech}
-                  onFocus={() => speakText(`Сложность: ${course.difficulty}`)}
+                  onFocus={() => speakText(`Qiyinlik: ${course.difficulty}`)}
                   onBlur={stopSpeech}
                   tabIndex={0}
+                  aria-label={`Qiyinlik: ${course.difficulty}`}
                 />
                 <ChipStyled
-                  label={`Длительность: ${course.duration}`}
-                  onMouseEnter={() => speakText(`Длительность: ${course.duration}`)}
+                  label={`Davomiylik: ${course.duration}`}
+                  onMouseEnter={() => speakText(`Davomiylik: ${course.duration}`)}
                   onMouseLeave={stopSpeech}
-                  onTouchStart={() => speakText(`Длительность: ${course.duration}`)}
+                  onTouchStart={() => speakText(`Davomiylik: ${course.duration}`)}
                   onTouchEnd={stopSpeech}
-                  onFocus={() => speakText(`Длительность: ${course.duration}`)}
+                  onFocus={() => speakText(`Davomiylik: ${course.duration}`)}
                   onBlur={stopSpeech}
                   tabIndex={0}
+                  aria-label={`Davomiylik: ${course.duration}`}
                 />
               </CourseInfo>
             </CourseCard>
@@ -788,7 +879,7 @@ const Main = () => {
             {isExpanded && (
               <Box>
                 {course.lessons.map((lesson) => (
-                  <LessonCard key={lesson.id}>
+                  <LessonCard key={lesson.id} tabIndex={0}>
                     <LessonTitle
                       onMouseEnter={() => speakText(lesson.title)}
                       onMouseLeave={stopSpeech}
@@ -825,42 +916,45 @@ const Main = () => {
                       </LessonContent>
                       <Box sx={{ flex: 1 }}>
                         <CodeEditor
-                          label="Попробуйте код"
+                          label="Kodni sinab ko\'ring"
                           multiline
                           rows={6}
                           value={codeInputs[`${courseKey}-${lesson.id}`] || lesson.testCode}
                           onChange={(e) => handleCodeChange(courseKey, lesson.id, e.target.value)}
                           variant="outlined"
                           inputProps={{
-                            'aria-label': 'Поле для ввода кода',
+                            'aria-label': 'Kod kiritish maydoni',
                           }}
+                          onFocus={() => speakText('Kodni sinab ko\'ring')}
+                          onBlur={stopSpeech}
                         />
                         <TryButton
                           onClick={() => executeCode(courseKey, lesson.id)}
                           sx={{ mt: 1.5, width: '100%' }}
-                          onMouseEnter={() => speakText('Выполнить')}
+                          onMouseEnter={() => speakText('Bajarish')}
                           onMouseLeave={stopSpeech}
-                          onTouchStart={() => speakText('Выполнить')}
+                          onTouchStart={() => speakText('Bajarish')}
                           onTouchEnd={stopSpeech}
-                          onFocus={() => speakText('Выполнить')}
+                          onFocus={() => speakText('Bajarish')}
                           onBlur={stopSpeech}
                           tabIndex={0}
+                          aria-label="Bajarish"
                         >
-                          Выполнить
+                          Bajarish
                         </TryButton>
                         {outputs[`${courseKey}-${lesson.id}`] && (
                           <Output
                             success={outputs[`${courseKey}-${lesson.id}`].success}
                             onMouseEnter={() =>
-                              speakText(`Результат: ${outputs[`${courseKey}-${lesson.id}`].result}`)
+                              speakText(`Natija: ${outputs[`${courseKey}-${lesson.id}`].result}`)
                             }
                             onMouseLeave={stopSpeech}
                             onTouchStart={() =>
-                              speakText(`Результат: ${outputs[`${courseKey}-${lesson.id}`].result}`)
+                              speakText(`Natija: ${outputs[`${courseKey}-${lesson.id}`].result}`)
                             }
                             onTouchEnd={stopSpeech}
                             onFocus={() =>
-                              speakText(`Результат: ${outputs[`${courseKey}-${lesson.id}`].result}`)
+                              speakText(`Natija: ${outputs[`${courseKey}-${lesson.id}`].result}`)
                             }
                             onBlur={stopSpeech}
                             tabIndex={0}
@@ -872,15 +966,15 @@ const Main = () => {
                     </ContentArea>
                     <FunFactBox>
                       <FunFactText
-                        onMouseEnter={() => speakText(`Интересный факт: ${lesson.funFact}`)}
+                        onMouseEnter={() => speakText(`Qiziqarli fakt: ${lesson.funFact}`)}
                         onMouseLeave={stopSpeech}
-                        onTouchStart={() => speakText(`Интересный факт: ${lesson.funFact}`)}
+                        onTouchStart={() => speakText(`Qiziqarli fakt: ${lesson.funFact}`)}
                         onTouchEnd={stopSpeech}
-                        onFocus={() => speakText(`Интересный факт: ${lesson.funFact}`)}
+                        onFocus={() => speakText(`Qiziqarli fakt: ${lesson.funFact}`)}
                         onBlur={stopSpeech}
                         tabIndex={0}
                       >
-                        {lesson.funFact}
+                        Qiziqarli fakt: {lesson.funFact}
                       </FunFactText>
                     </FunFactBox>
                   </LessonCard>
