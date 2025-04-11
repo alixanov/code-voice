@@ -13,7 +13,7 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 
 // API базавий URL
-const API_BASE_URL = 'http://localhost:5000';
+const API_BASE_URL = 'https://code-voice-server.vercel.app';
 
 // Анимациялар
 const fadeIn = keyframes`

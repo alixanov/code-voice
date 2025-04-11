@@ -19,7 +19,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 // API базавий URL
-const API_BASE_URL = 'http://localhost:5000';
+const API_BASE_URL = 'https://code-voice-server.vercel.app';
 
 // Анимациялар
 const fadeIn = keyframes`
