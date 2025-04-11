@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { styled, keyframes } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -192,6 +192,16 @@ const Login = () => {
   const { speakText, stopSpeech } = useContext(AccessibilityContext);
   const navigate = useNavigate();
 
+  // Check if user is already authenticated
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const userRole = localStorage.getItem('role') || 'student';
+    if (token) {
+      // Redirect to the appropriate dashboard if already authenticated
+      navigate(userRole === 'teacher' ? '/teacher-dashboard' : '/student-dashboard', { replace: true });
+    }
+  }, [navigate]);
+
   const handleSpeak = (text) => {
     speakText(text);
   };
@@ -269,9 +279,9 @@ const Login = () => {
 
       // Rolga qarab yo‘naltirish
       if (role === 'teacher') {
-        navigate('/teacher-dashboard');
+        navigate('/teacher-dashboard', { replace: true });
       } else {
-        navigate('/student-dashboard');
+        navigate('/student-dashboard', { replace: true });
       }
       handleSpeak('Avtorizatsiya muvaffaqiyatli! Shaxsiy kabinetingizga xush kelibsiz.');
     } catch (error) {

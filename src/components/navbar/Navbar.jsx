@@ -178,6 +178,11 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isMobile }) => {
   const [language, setLanguage] = useState('uz');
   const { isAccessibilityMode, setIsAccessibilityMode, speakText, stopSpeech, isSpeechSupported } = useContext(AccessibilityContext);
 
+  // Check authentication and role
+  const isAuthenticated = !!localStorage.getItem('token');
+  const userRole = localStorage.getItem('role') || 'student'; // Default to 'student' if role is not found
+  const dashboardPath = userRole === 'teacher' ? '/teacher-dashboard' : '/student-dashboard';
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (isMobile && sidebarOpen) {
@@ -200,26 +205,24 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isMobile }) => {
     };
   }, [isMobile, sidebarOpen, setSidebarOpen]);
 
-  const isAuthenticated = !!localStorage.getItem('userData');
-
   const linkTranslations = {
     uz: {
       authenticated: [
         { to: '/', label: 'Asosiy', icon: HomeFilledIcon, active: location.pathname === '/' },
         { to: '/test', label: 'Savollar', icon: AppRegistrationIcon, active: location.pathname === '/test' },
-        { to: '/login', label: 'Royhdatdan otish', icon: PersonIcon, active: location.pathname === '/login' },
+        { to: dashboardPath, label: 'Shaxsiy kabinet', icon: PersonIcon, active: location.pathname === dashboardPath },
       ],
       unauthenticated: [
         { to: '/', label: 'Asosiy', icon: HomeFilledIcon, active: location.pathname === '/' },
         { to: '/test', label: 'Savollar', icon: AppRegistrationIcon, active: location.pathname === '/test' },
-        { to: '/login', label: 'Royhdatdan otish', icon: PersonIcon, active: location.pathname === '/login' },
+        { to: '/login', label: 'Ro‘yxatdan o‘tish', icon: PersonIcon, active: location.pathname === '/login' },
       ],
     },
     ru: {
       authenticated: [
         { to: '/', label: 'Главная', icon: HomeFilledIcon, active: location.pathname === '/' },
         { to: '/test', label: 'Вопросы', icon: AppRegistrationIcon, active: location.pathname === '/test' },
-        { to: '/login', label: 'Регистрация', icon: PersonIcon, active: location.pathname === '/login' },
+        { to: dashboardPath, label: 'Личный кабинет', icon: PersonIcon, active: location.pathname === dashboardPath },
       ],
       unauthenticated: [
         { to: '/', label: 'Главная', icon: HomeFilledIcon, active: location.pathname === '/' },

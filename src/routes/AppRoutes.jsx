@@ -1,38 +1,30 @@
-// AppRoutes.js
 import React, { useState, useEffect, useRef } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation, Navigate } from 'react-router-dom';
 import { Navbar, Main, Test, Task, Login, TeacherDashboard, StudentDashboard } from '../components/';
 import Box from '@mui/material/Box';
-import { AccessibilityProvider } from '../components/voice/AccessibilityContext'; // Импортируем провайдер
+import { AccessibilityProvider } from '../components/voice/AccessibilityContext';
+
+// PrivateRoute component to protect routes
+const PrivateRoute = ({ children, allowedRoles }) => {
+  const isAuthenticated = !!localStorage.getItem('token');
+  const userRole = localStorage.getItem('role') || 'student';
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (allowedRoles && !allowedRoles.includes(userRole)) {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
+};
 
 const AppRoutes = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-  const [isAuthenticated, setIsAuthenticated] = useState(null);
   const location = useLocation();
   const routeRef = useRef(null);
-
-  const checkAuthentication = () => {
-    const storedData = localStorage.getItem('userData');
-    if (storedData) {
-      try {
-        const parsedData = JSON.parse(storedData);
-        if (parsedData && parsedData.id) {
-          setIsAuthenticated(true);
-        } else {
-          setIsAuthenticated(false);
-        }
-      } catch {
-        setIsAuthenticated(false);
-      }
-    } else {
-      setIsAuthenticated(false);
-    }
-  };
-
-  useEffect(() => {
-    checkAuthentication();
-  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -62,8 +54,22 @@ const AppRoutes = () => {
             <Route path="/test" element={<Test />} />
             <Route path="/homework" element={<Task />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
-            <Route path="/student-dashboard" element={<StudentDashboard />} />
+            <Route
+              path="/teacher-dashboard"
+              element={
+                <PrivateRoute allowedRoles={['teacher']}>
+                  <TeacherDashboard />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/student-dashboard"
+              element={
+                <PrivateRoute allowedRoles={['student']}>
+                  <StudentDashboard />
+                </PrivateRoute>
+              }
+            />
           </Routes>
         </Box>
       </Box>
