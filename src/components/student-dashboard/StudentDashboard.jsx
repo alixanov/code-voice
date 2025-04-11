@@ -9,6 +9,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import EmailIcon from '@mui/icons-material/Email';
 import SendIcon from '@mui/icons-material/Send';
 import { AccessibilityContext } from '../voice/AccessibilityContext';
+import { useLanguage } from '../context/LanguageContext'; // Import the useLanguage hook
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -114,7 +115,7 @@ const TaskDescription = styled(Typography)(({ theme }) => ({
   borderRadius: '15px',
   boxShadow: '0 5px 15px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 0, 122, 0.1)',
   lineHeight: '1.6',
-  opacity: 0.9,
+  opacity: '0.9',
   marginBottom: '15px',
   fontFamily: "'Roboto', sans-serif",
   width: '100%',
@@ -218,6 +219,7 @@ const StudentDashboard = () => {
   const [isSendingSolution, setIsSendingSolution] = useState(null);
   const [showConfetti, setShowConfetti] = useState(false);
   const { speakText, stopSpeech } = useContext(AccessibilityContext);
+  const { t, language } = useLanguage(); // Use the LanguageContext
   const navigate = useNavigate();
 
   const handleSpeak = (text) => {
@@ -244,30 +246,30 @@ const StudentDashboard = () => {
         setTasks(response.data);
       } catch (error) {
         console.error('Topshiriqlarni yuklashda xatolik:', error);
-        handleSpeak('Topshiriqlarni yuklashda xatolik yuz berdi');
+        handleSpeak(t('errorFetchTasks'));
       }
     };
 
     fetchTasks();
-  }, [navigate]);
+  }, [navigate, t]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     localStorage.removeItem('role');
     navigate('/login');
-    handleSpeak('Siz tizimdan chiqdingiz');
+    handleSpeak(t('loggedOut'));
   };
 
   const sendSolution = async (taskId) => {
     if (!solution.trim()) {
-      alert('Iltimos, yechimingizni kiriting.');
-      handleSpeak('Iltimos, yechimingizni kiriting.');
+      alert(t('errorEmptySolution'));
+      handleSpeak(t('errorEmptySolution'));
       return;
     }
 
     setIsSendingSolution(taskId);
-    handleSpeak('Yechim yuborilmoqda...');
+    handleSpeak(t('sending'));
 
     try {
       const response = await axios.post(`${API_BASE_URL}/send-solution`, { taskId, solution }, {
@@ -282,12 +284,12 @@ const StudentDashboard = () => {
       setSolution('');
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 3000);
-      alert('Yechim muvaffaqiyatli yuborildi!');
-      handleSpeak('Yechim muvaffaqiyatli yuborildi');
+      alert(t('successSendSolution'));
+      handleSpeak(t('successSendSolution'));
     } catch (error) {
       console.error('Yechim yuborishda xatolik:', error);
-      alert('Yechim yuborishda xatolik');
-      handleSpeak('Yechim yuborishda xatolik');
+      alert(t('errorSendSolution'));
+      handleSpeak(t('errorSendSolution'));
     } finally {
       setIsSendingSolution(null);
     }
@@ -330,17 +332,17 @@ const StudentDashboard = () => {
             fontFamily: "'Orbitron', sans-serif",
             textShadow: '0 0 10px rgba(255, 0, 122, 0.5)',
           }}
-          onMouseEnter={() => handleSpeak(`Xush kelibsiz, ${user.firstName} ${user.lastName}`)}
+          onMouseEnter={() => handleSpeak(t('welcome', user.firstName, user.lastName))}
           onMouseLeave={stopSpeech}
-          onTouchStart={() => handleSpeak(`Xush kelibsiz, ${user.firstName} ${user.lastName}`)}
+          onTouchStart={() => handleSpeak(t('welcome', user.firstName, user.lastName))}
           onTouchEnd={stopSpeech}
-          onFocus={() => handleSpeak(`Xush kelibsiz, ${user.firstName} ${user.lastName}`)}
+          onFocus={() => handleSpeak(t('welcome', user.firstName, user.lastName))}
           onBlur={stopSpeech}
           tabIndex={0}
           role="heading"
           aria-level="1"
         >
-          Xush kelibsiz, {user.firstName} {user.lastName}
+          {t('welcome', user.firstName, user.lastName)}
         </Typography>
         <Button
           onClick={handleLogout}
@@ -361,16 +363,16 @@ const StudentDashboard = () => {
               outlineOffset: '2px',
             },
           }}
-          onMouseEnter={() => handleSpeak('Chiqish')}
+          onMouseEnter={() => handleSpeak(t('logout'))}
           onMouseLeave={stopSpeech}
-          onTouchStart={() => handleSpeak('Chiqish')}
+          onTouchStart={() => handleSpeak(t('logout'))}
           onTouchEnd={stopSpeech}
-          onFocus={() => handleSpeak('Chiqish')}
+          onFocus={() => handleSpeak(t('logout'))}
           onBlur={stopSpeech}
           tabIndex={0}
-          aria-label="Chiqish"
+          aria-label={t('logout')}
         >
-          Chiqish
+          {t('logout')}
         </Button>
       </Box>
 
@@ -385,17 +387,17 @@ const StudentDashboard = () => {
         }}
       >
         <TaskTitle
-          onMouseEnter={() => handleSpeak('Sizning topshiriqlaringiz')}
+          onMouseEnter={() => handleSpeak(t('yourTasks'))}
           onMouseLeave={stopSpeech}
-          onTouchStart={() => handleSpeak('Sizning topshiriqlaringiz')}
+          onTouchStart={() => handleSpeak(t('yourTasks'))}
           onTouchEnd={stopSpeech}
-          onFocus={() => handleSpeak('Sizning topshiriqlaringiz')}
+          onFocus={() => handleSpeak(t('yourTasks'))}
           onBlur={stopSpeech}
           tabIndex={0}
           role="heading"
           aria-level="2"
         >
-          <EmailIcon sx={{ color: '#FF007A' }} /> Sizning topshiriqlaringiz
+          <EmailIcon sx={{ color: '#FF007A' }} /> {t('yourTasks')}
         </TaskTitle>
         {tasks.length === 0 ? (
           <Typography
@@ -405,37 +407,37 @@ const StudentDashboard = () => {
               textAlign: 'center',
               fontFamily: "'Roboto', sans-serif",
             }}
-            onMouseEnter={() => handleSpeak('Topshiriqlar yo‘q')}
+            onMouseEnter={() => handleSpeak(t('noTasks'))}
             onMouseLeave={stopSpeech}
-            onTouchStart={() => handleSpeak('Topshiriqlar yo‘q')}
+            onTouchStart={() => handleSpeak(t('noTasks'))}
             onTouchEnd={stopSpeech}
-            onFocus={() => handleSpeak('Topshiriqlar yo‘q')}
+            onFocus={() => handleSpeak(t('noTasks'))}
             onBlur={stopSpeech}
             tabIndex={0}
           >
-            Topshiriqlar yo‘q
+            {t('noTasks')}
           </Typography>
         ) : (
           tasks.map((task) => (
             <TaskCard key={task._id}>
               <CardContent>
                 <TaskTitle
-                  onMouseEnter={() => handleSpeak('O‘qituvchidan topshiriq')}
+                  onMouseEnter={() => handleSpeak(t('taskFromTeacher'))}
                   onMouseLeave={stopSpeech}
-                  onTouchStart={() => handleSpeak('O‘qituvchidan topshiriq')}
+                  onTouchStart={() => handleSpeak(t('taskFromTeacher'))}
                   onTouchEnd={stopSpeech}
-                  onFocus={() => handleSpeak('O‘qituvchidan topshiriq')}
+                  onFocus={() => handleSpeak(t('taskFromTeacher'))}
                   onBlur={stopSpeech}
                   tabIndex={0}
                 >
-                  O‘qituvchidan topshiriq
+                  {t('taskFromTeacher')}
                 </TaskTitle>
                 <TaskDescription
-                  onMouseEnter={() => handleSpeak(`Topshiriq matni: ${task.message}`)}
+                  onMouseEnter={() => handleSpeak(`${t('taskFromTeacher')}: ${task.message}`)}
                   onMouseLeave={stopSpeech}
-                  onTouchStart={() => handleSpeak(`Topshiriq matni: ${task.message}`)}
+                  onTouchStart={() => handleSpeak(`${t('taskFromTeacher')}: ${task.message}`)}
                   onTouchEnd={stopSpeech}
-                  onFocus={() => handleSpeak(`Topshiriq matni: ${task.message}`)}
+                  onFocus={() => handleSpeak(`${t('taskFromTeacher')}: ${task.message}`)}
                   onBlur={stopSpeech}
                   tabIndex={0}
                 >
@@ -448,59 +450,59 @@ const StudentDashboard = () => {
                     opacity: 0.8,
                     fontFamily: "'Roboto', sans-serif",
                   }}
-                  onMouseEnter={() => handleSpeak(`Qabul qilingan: ${new Date(task.createdAt).toLocaleDateString('uz-UZ')}`)}
+                  onMouseEnter={() => handleSpeak(t('received', new Date(task.createdAt).toLocaleDateString(language === 'uz' ? 'uz-UZ' : 'ru-RU')))}
                   onMouseLeave={stopSpeech}
-                  onTouchStart={() => handleSpeak(`Qabul qilingan: ${new Date(task.createdAt).toLocaleDateString('uz-UZ')}`)}
+                  onTouchStart={() => handleSpeak(t('received', new Date(task.createdAt).toLocaleDateString(language === 'uz' ? 'uz-UZ' : 'ru-RU')))}
                   onTouchEnd={stopSpeech}
-                  onFocus={() => handleSpeak(`Qabul qilingan: ${new Date(task.createdAt).toLocaleDateString('uz-UZ')}`)}
+                  onFocus={() => handleSpeak(t('received', new Date(task.createdAt).toLocaleDateString(language === 'uz' ? 'uz-UZ' : 'ru-RU')))}
                   onBlur={stopSpeech}
                   tabIndex={0}
                 >
-                  Qabul qilingan: {new Date(task.createdAt).toLocaleDateString('uz-UZ')}
+                  {t('received', new Date(task.createdAt).toLocaleDateString(language === 'uz' ? 'uz-UZ' : 'ru-RU'))}
                 </Typography>
                 {task.status === 'sent' ? (
                   <>
                     <Box sx={{ mb: 2 }}>
                       <CustomLabel
                         htmlFor={`solution-${task._id}`}
-                        onMouseEnter={() => handleSpeak('Yechimingizni kiriting')}
+                        onMouseEnter={() => handleSpeak(t('yourSolution'))}
                         onMouseLeave={stopSpeech}
-                        onTouchStart={() => handleSpeak('Yechimingizni kiriting')}
+                        onTouchStart={() => handleSpeak(t('yourSolution'))}
                         onTouchEnd={stopSpeech}
-                        onFocus={() => handleSpeak('Yechimingizni kiriting')}
+                        onFocus={() => handleSpeak(t('yourSolution'))}
                         onBlur={stopSpeech}
                       >
-                        Sizning yechimingiz
+                        {t('yourSolution')}
                       </CustomLabel>
                       <CustomTextarea
                         id={`solution-${task._id}`}
                         value={solution}
                         onChange={(e) => setSolution(e.target.value)}
-                        placeholder="Yechimingizni kiriting..."
-                        onFocus={() => handleSpeak('Yechimingizni kiriting')}
+                        placeholder={t('solutionPlaceholder')}
+                        onFocus={() => handleSpeak(t('solutionPlaceholder'))}
                         onBlur={stopSpeech}
-                        aria-label="Yechimingizni kiriting"
+                        aria-label={t('solutionPlaceholder')}
                         tabIndex={0}
                       />
                     </Box>
                     <SubmitButton
                       onClick={() => sendSolution(task._id)}
                       disabled={isSendingSolution === task._id}
-                      onMouseEnter={() => handleSpeak('Yechim yuborish')}
+                      onMouseEnter={() => handleSpeak(t('sendSolution'))}
                       onMouseLeave={stopSpeech}
-                      onTouchStart={() => handleSpeak('Yechim yuborish')}
+                      onTouchStart={() => handleSpeak(t('sendSolution'))}
                       onTouchEnd={stopSpeech}
-                      onFocus={() => handleSpeak('Yechim yuborish')}
+                      onFocus={() => handleSpeak(t('sendSolution'))}
                       onBlur={stopSpeech}
                       tabIndex={0}
-                      aria-label="Yechim yuborish"
+                      aria-label={t('sendSolution')}
                     >
                       {isSendingSolution === task._id ? (
                         <CircularProgress size={20} sx={{ color: '#FFFFFF', mr: 1 }} />
                       ) : (
                         <SendIcon sx={{ mr: 1, color: '#FFFFFF' }} />
                       )}
-                      {isSendingSolution === task._id ? 'Yuborilmoqda...' : 'Yechim yuborish'}
+                      {isSendingSolution === task._id ? t('sending') : t('sendSolution')}
                     </SubmitButton>
                   </>
                 ) : (
@@ -509,15 +511,15 @@ const StudentDashboard = () => {
                       color: '#00FFDD',
                       fontFamily: "'Roboto', sans-serif",
                     }}
-                    onMouseEnter={() => handleSpeak('Yechim yuborildi')}
+                    onMouseEnter={() => handleSpeak(t('solutionSent'))}
                     onMouseLeave={stopSpeech}
-                    onTouchStart={() => handleSpeak('Yechim yuborildi')}
+                    onTouchStart={() => handleSpeak(t('solutionSent'))}
                     onTouchEnd={stopSpeech}
-                    onFocus={() => handleSpeak('Yechim yuborildi')}
+                    onFocus={() => handleSpeak(t('solutionSent'))}
                     onBlur={stopSpeech}
                     tabIndex={0}
                   >
-                    Yechim yuborildi
+                    {t('solutionSent')}
                   </Typography>
                 )}
               </CardContent>

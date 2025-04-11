@@ -8,12 +8,13 @@ export const LanguageProvider = ({ children }) => {
   const [language, setLanguage] = useState(localStorage.getItem('language') || 'uz'); // Default language is Uzbek, persisted in localStorage
 
   useEffect(() => {
-    localStorage.setItem('language', language); // Save language to localStorage on change
+    localStorage.setItem('language', language); // Save to localStorage on change
   }, [language]);
 
   const translations = {
     uz: {
-      // Existing translations for Login
+      programmingCourses: 'Dasturlash kurslari',
+      // Existing translations for Login, Navbar, Test, and StudentDashboard
       loginTitle: 'Tizimga kirish',
       registerTitle: 'Ro‘yxatdan o‘tish',
       roleLabel: 'Rol',
@@ -41,19 +42,61 @@ export const LanguageProvider = ({ children }) => {
       accessibilityOn: 'Maxsus imkoniyatlar yoqildi',
       accessibilityOff: 'Maxsus imkoniyatlar o‘chirildi',
       accessibilityLabel: 'Maxsus imkoniyatlar',
-      toggleLanguage: 'Сменить язык на русский',
-      toggleAccessibility: 'Переключить режим доступности',
-
-      // New translations for Test component
+      toggleLanguage: 'Тилни русчага ўзгартириш',
+      toggleAccessibility: 'Махсус имкониятлар режимини ўзгартириш',
       selectTest: 'Testni tanlang',
-      testProgress: (correct, total) => `Jarayon: ${correct} / ${total}`,
+      testProgress: (correct, total) => `Jarayon: ${correct}/${total}`,
       correctAnswerFeedback: 'To\'g\'ri! Keyingisiga tayyorlanamiz...',
       incorrectAnswerFeedback: 'Afsus, noto\'g\'ri. Yana urinib ko\'ring!',
       congratulations: 'Tabriklaymiz!',
-      yourScore: (correct, total) => `Siz to\'plagan ball: ${correct} / ${total}`,
+      yourScore: (correct, total) => `Siz to\'plagan ball: ${correct}/${total}`,
       backToTests: 'Testlarga qaytish',
+      welcome: (firstName, lastName) => `Xush kelibsiz, ${firstName} ${lastName}`,
+      logout: 'Chiqish',
+      yourTasks: 'Sizning topshiriqlaringiz',
+      noTasks: 'Topshiriqlar yo‘q',
+      taskFromTeacher: 'O‘qituvchidan topshiriq',
+      received: (date) => `Qabul qilingan: ${date}`,
+      yourSolution: 'Sizning yechimingiz',
+      solutionPlaceholder: 'Yechimingizni kiriting...',
+      sendSolution: 'Yechim yuborish',
+      sending: 'Yuborilmoqda...',
+      solutionSent: 'Yechim yuborildi',
+      errorEmptySolution: 'Iltimos, yechimingizni kiriting.',
+      successSendSolution: 'Yechim muvaffaqiyatli yuborildi!',
+      errorSendSolution: 'Yechim yuborishda xatolik',
+      errorFetchTasks: 'Topshiriqlarni yuklashda xatolik yuz berdi',
+      loggedOut: 'Siz tizimdan chiqdingiz',
 
-      // Subjects and Questions (Uzbek)
+      // TeacherDashboard Component Translations
+      sendPersonalTask: 'Shaxsiy topshiriq yuborish',
+      selectStudent: 'O‘quvchini tanlang',
+      taskOrMessage: 'Topshiriq yoki xabar',
+      taskPlaceholder: 'Topshiriq yoki xabar kiriting...',
+      sendTask: 'Topshiriq yuborish',
+      sentTasksList: 'Yuborilgan topshiriqlar ro‘yxati',
+      noSentTasks: 'Yuborilgan topshiriqlar yo‘q',
+      taskForStudent: (studentName) => `${studentName} uchun topshiriq`,
+      taskText: 'Topshiriq matni',
+      sent: (date) => `Yuborilgan: ${date}`,
+      taskCompleted: 'Topshiriq bajarildi',
+      taskPending: 'Bajarilishi kutilmoqda',
+      checkSolutions: 'Uy vazifalarini tekshirish',
+      noSolutions: 'O‘quvchilardan yechimlar yo‘q',
+      solutionFromStudent: (studentName) => `${studentName} dan yechim`,
+      solution: 'Yechim',
+      markAsChecked: 'Tekshirildi deb belgilash',
+      checking: 'Tekshirilmoqda...',
+      solutionChecked: 'Yechim tekshirildi',
+      errorSelectStudentAndTask: 'Iltimos, o‘quvchini tanlang va topshiriqni kiriting.',
+      successSendTask: (studentName) => `Topshiriq o‘quvchi ${studentName} ga muvaffaqiyatli yuborildi`,
+      errorSendTask: 'Topshiriq yuborishda xatolik',
+      successCheckSolution: 'Yechim tekshirildi deb belgilandi',
+      errorCheckSolution: 'Yechimni tekshirishda xatolik',
+      errorFetchStudents: 'O‘quvchilarni yuklashda xatolik yuz berdi',
+      errorFetchSolutions: 'Yechimlarni yuklashda xatolik yuz berdi',
+
+      // Subjects for Test Component (Uzbek)
       subjects: {
         javascript: {
           title: 'JavaScript',
@@ -118,7 +161,8 @@ export const LanguageProvider = ({ children }) => {
       },
     },
     ru: {
-      // Existing translations for Login
+      programmingCourses: 'Курсы программирования',
+      // Existing translations for Login, Navbar, Test, and StudentDashboard
       loginTitle: 'Вход в систему',
       registerTitle: 'Регистрация',
       roleLabel: 'Роль',
@@ -148,17 +192,59 @@ export const LanguageProvider = ({ children }) => {
       accessibilityLabel: 'Специальные возможности',
       toggleLanguage: 'Сменить язык на узбекский',
       toggleAccessibility: 'Переключить режим специальных возможностей',
-
-      // New translations for Test component
       selectTest: 'Выберите тест',
-      testProgress: (correct, total) => `Прогресс: ${correct} / ${total}`,
+      testProgress: (correct, total) => `Прогресс: ${correct}/${total}`,
       correctAnswerFeedback: 'Правильно! Готовимся к следующему...',
       incorrectAnswerFeedback: 'К сожалению, неправильно. Попробуйте снова!',
       congratulations: 'Поздравляем!',
-      yourScore: (correct, total) => `Ваш результат: ${correct} / ${total}`,
+      yourScore: (correct, total) => `Ваш результат: ${correct}/${total}`,
       backToTests: 'Вернуться к тестам',
+      welcome: (firstName, lastName) => `Добро пожаловать, ${firstName} ${lastName}`,
+      logout: 'Выйти',
+      yourTasks: 'Ваши задания',
+      noTasks: 'Заданий нет',
+      taskFromTeacher: 'Задание от учителя',
+      received: (date) => `Получено: ${date}`,
+      yourSolution: 'Ваше решение',
+      solutionPlaceholder: 'Введите ваше решение...',
+      sendSolution: 'Отправить решение',
+      sending: 'Отправляется...',
+      solutionSent: 'Решение отправлено',
+      errorEmptySolution: 'Пожалуйста, введите ваше решение.',
+      successSendSolution: 'Решение успешно отправлено!',
+      errorSendSolution: 'Ошибка при отправке решения',
+      errorFetchTasks: 'Произошла ошибка при загрузке заданий',
+      loggedOut: 'Вы вышли из системы',
 
-      // Subjects and Questions (Russian)
+      // TeacherDashboard Component Translations
+      sendPersonalTask: 'Отправить персональное задание',
+      selectStudent: 'Выберите ученика',
+      taskOrMessage: 'Задание или сообщение',
+      taskPlaceholder: 'Введите задание или сообщение...',
+      sendTask: 'Отправить задание',
+      sentTasksList: 'Список отправленных заданий',
+      noSentTasks: 'Отправленных заданий нет',
+      taskForStudent: (studentName) => `Задание для ${studentName}`,
+      taskText: 'Текст задания',
+      sent: (date) => `Отправлено: ${date}`,
+      taskCompleted: 'Задание выполнено',
+      taskPending: 'Ожидает выполнения',
+      checkSolutions: 'Проверить домашние задания',
+      noSolutions: 'Решений от учеников нет',
+      solutionFromStudent: (studentName) => `Решение от ${studentName}`,
+      solution: 'Решение',
+      markAsChecked: 'Отметить как проверенное',
+      checking: 'Проверяется...',
+      solutionChecked: 'Решение проверено',
+      errorSelectStudentAndTask: 'Пожалуйста, выберите ученика и введите задание.',
+      successSendTask: (studentName) => `Задание успешно отправлено ученику ${studentName}`,
+      errorSendTask: 'Ошибка при отправке задания',
+      successCheckSolution: 'Решение отмечено как проверенное',
+      errorCheckSolution: 'Ошибка при проверке решения',
+      errorFetchStudents: 'Произошла ошибка при загрузке учеников',
+      errorFetchSolutions: 'Произошла ошибка при загрузке решений',
+
+      // Subjects for Test Component (Russian)
       subjects: {
         javascript: {
           title: 'JavaScript',
@@ -210,7 +296,7 @@ export const LanguageProvider = ({ children }) => {
           tests: [
             { id: 1, question: 'Какой хук используется для управления состоянием?', options: { a: 'useEffect', b: 'useState', c: 'useContext' }, correctAnswer: 'b' },
             { id: 2, question: 'Что такое JSX?', options: { a: 'Язык', b: 'Синтаксический сахар', c: 'Библиотека' }, correctAnswer: 'b' },
-            { id: 3, question: 'Как можно передать данные в компонент?', options: { a: 'Props', b: 'State', c: 'Хуки' }, correctAnswer: 'a' },
+            { id: 3, question: 'Как передать данные в компонент?', options: { a: 'Props', b: 'State', c: 'Хуки' }, correctAnswer: 'a' },
             { id: 4, question: 'Что делает useEffect?', options: { a: 'Управляет состоянием', b: 'Обрабатывает побочные эффекты', c: 'Передает данные' }, correctAnswer: 'b' },
             { id: 5, question: 'Какой метод жизненного цикла заменяет useEffect?', options: { a: 'componentDidMount', b: 'render', c: 'setState' }, correctAnswer: 'a' },
             { id: 6, question: 'Что такое React.Fragment?', options: { a: 'Компонент', b: 'Обертка без DOM-элементов', c: 'Хук' }, correctAnswer: 'b' },
