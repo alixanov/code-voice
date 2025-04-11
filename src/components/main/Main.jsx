@@ -208,11 +208,10 @@ jsx\nfunction Tugma() {\n  const bosishniBoshqarish = () => alert("Tugma bosildi
     ],
   },
 };
-
 // Услублар (Стили)
 const ScrollContainer = styled(Box)(({ theme }) => ({
   background: 'linear-gradient(135deg, #000000 10%, rgb(18, 18, 18) 90%)',
-  maxHeight: 'calc(100vh - 145px)',
+  maxHeight: 'calc(100vh - 145px)', // Обычный режим
   overflowY: 'auto',
   padding: theme.breakpoints.down('sm') ? '8px' : '15px',
   margin: theme.breakpoints.down('sm') ? '0' : '10px',
@@ -238,6 +237,12 @@ const ScrollContainer = styled(Box)(({ theme }) => ({
   '@keyframes fadeIn': {
     '0%': { opacity: 0, transform: 'translateY(20px)' },
     '100%': { opacity: 1, transform: 'translateY(0)' },
+  },
+
+  // Убираем 145px при мобильном режиме + добавляем margin-bottom 100px
+  [theme.breakpoints.down('sm')]: {
+    maxHeight: '100vh',
+    // marginBottom: '200px',
   },
 }));
 
