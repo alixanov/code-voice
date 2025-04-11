@@ -121,7 +121,7 @@ const subjectsData = {
   },
 };
 
-// Стилизация (без изменений)
+// Стилизация
 const TestContainer = styled(Box)(({ theme }) => ({
   background: '#000000',
   minHeight: '80vh',
@@ -205,6 +205,10 @@ const SubjectCard = styled(Card)(({ theme }) => ({
       height: '6px',
     },
   },
+  '&:focus-within': {
+    outline: '2px solid #FF007A',
+    outlineOffset: '2px',
+  },
   [theme.breakpoints.down('sm')]: {
     padding: '6px',
     borderRadius: '15px',
@@ -236,6 +240,10 @@ const TestCard = styled(Card)(({ theme }) => ({
   },
   '&:hover': {
     boxShadow: '0 15px 45px rgba(0, 0, 0, 0.6), 0 0 25px rgba(255, 255, 255, 0.2)',
+  },
+  '&:focus-within': {
+    outline: '2px solid #FF007A',
+    outlineOffset: '2px',
   },
   [theme.breakpoints.down('sm')]: {
     padding: '8px',
@@ -327,6 +335,10 @@ const OptionLabel = styled(FormControlLabel)(({ isCorrect, isSelected, theme }) 
     transform: 'scale(1.03)',
     boxShadow: '0 6px 20px rgba(0, 0, 0, 0.4), 0 0 10px rgba(255, 255, 255, 0.2)',
   },
+  '&:focus-within': {
+    outline: '2px solid #FF007A',
+    outlineOffset: '2px',
+  },
   [theme.breakpoints.down('sm')]: {
     padding: '5px 8px',
     borderRadius: '10px',
@@ -387,6 +399,10 @@ const ResultCard = styled(Card)(({ theme }) => ({
     height: '100%',
     background: 'radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, transparent 70%)',
     zIndex: 0,
+  },
+  '&:focus-within': {
+    outline: '2px solid #FF007A',
+    outlineOffset: '2px',
   },
   [theme.breakpoints.down('sm')]: {
     padding: '10px',
@@ -450,6 +466,10 @@ const StyledButton = styled(Button)(({ theme }) => ({
   '&:active': {
     transform: 'translateY(1px)',
     boxShadow: '0 5px 15px rgba(255, 255, 255, 0.2)',
+  },
+  '&:focus-within': {
+    outline: '2px solid #FF007A',
+    outlineOffset: '2px',
   },
   [theme.breakpoints.down('sm')]: {
     padding: '5px 12px',
