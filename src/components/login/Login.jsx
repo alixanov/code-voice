@@ -11,6 +11,7 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import { useLanguage } from '../context/LanguageContext'; // Import the useLanguage hook
 
 // API базавий URL
 const API_BASE_URL = 'https://code-voice-server.vercel.app';
@@ -182,7 +183,7 @@ const CustomFormControl = styled(FormControl)(({ theme }) => ({
 
 const Login = () => {
   const [isRegistering, setIsRegistering] = useState(false);
-  const [role, setRole] = useState('teacher'); // Роль: teacher или student
+  const [role, setRole] = useState('teacher');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [login, setLogin] = useState('');
@@ -190,14 +191,13 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const { speakText, stopSpeech } = useContext(AccessibilityContext);
+  const { t } = useLanguage(); // Use the LanguageContext
   const navigate = useNavigate();
 
-  // Check if user is already authenticated
   useEffect(() => {
     const token = localStorage.getItem('token');
     const userRole = localStorage.getItem('role') || 'student';
     if (token) {
-      // Redirect to the appropriate dashboard if already authenticated
       navigate(userRole === 'teacher' ? '/teacher-dashboard' : '/student-dashboard', { replace: true });
     }
   }, [navigate]);
@@ -208,8 +208,8 @@ const Login = () => {
 
   const handleRegister = async () => {
     if (!firstName || !lastName || !login || !password || !role) {
-      setError('Iltimos, barcha maydonlarni to‘ldiring');
-      handleSpeak('Iltimos, barcha maydonlarni to‘ldiring');
+      setError(t('errorFillAllFields'));
+      handleSpeak(t('errorFillAllFields'));
       return;
     }
 
@@ -229,8 +229,8 @@ const Login = () => {
 
       console.log('Serverdan javob:', response.data);
 
-      alert(`${role === 'teacher' ? 'O‘qituvchi' : 'O‘quvchi'} muvaffaqiyatli ro‘yxatdan o‘tdi! Endi tizimga kiring.`);
-      handleSpeak(`${role === 'teacher' ? 'O‘qituvchi' : 'O‘quvchi'} muvaffaqiyatli ro‘yxatdan o‘tdi! Endi tizimga kiring.`);
+      alert(t('successRegister', role));
+      handleSpeak(t('successRegister', role));
       setIsRegistering(false);
       setFirstName('');
       setLastName('');
@@ -239,11 +239,11 @@ const Login = () => {
     } catch (error) {
       console.error('Ro‘yxatdan o‘tishda xatolik:', error);
       if (error.response) {
-        setError(error.response.data.error || 'Ro‘yxatdan o‘tishda xatolik');
-        handleSpeak(error.response.data.error || 'Ro‘yxatdan o‘tishda xatolik');
+        setError(error.response.data.error || t('errorRegister'));
+        handleSpeak(error.response.data.error || t('errorRegister'));
       } else {
-        setError('Xatolik yuz berdi: ' + error.message);
-        handleSpeak('Ro‘yxatdan o‘tishda xatolik yuz berdi');
+        setError(t('errorGeneric', error.message));
+        handleSpeak(t('errorGeneric', error.message));
       }
     } finally {
       setIsLoading(false);
@@ -252,8 +252,8 @@ const Login = () => {
 
   const handleLogin = async () => {
     if (!login || !password || !role) {
-      setError('Iltimos, login, parol va rolni kiriting');
-      handleSpeak('Iltimos, login, parol va rolni kiriting');
+      setError(t('errorLoginFields'));
+      handleSpeak(t('errorLoginFields'));
       return;
     }
 
@@ -272,26 +272,24 @@ const Login = () => {
 
       console.log('Serverdan javob:', response.data);
 
-      // Token va foydalanuvchi ma'lumotlarini saqlash
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
       localStorage.setItem('role', role);
 
-      // Rolga qarab yo‘naltirish
       if (role === 'teacher') {
         navigate('/teacher-dashboard', { replace: true });
       } else {
         navigate('/student-dashboard', { replace: true });
       }
-      handleSpeak('Avtorizatsiya muvaffaqiyatli! Shaxsiy kabinetingizga xush kelibsiz.');
+      handleSpeak(t('successLogin'));
     } catch (error) {
       console.error('Avtorizatsiyada xatolik:', error);
       if (error.response) {
-        setError(error.response.data.error || 'Avtorizatsiyada xatolik');
-        handleSpeak(error.response.data.error || 'Avtorizatsiyada xatolik');
+        setError(error.response.data.error || t('errorLogin'));
+        handleSpeak(error.response.data.error || t('errorLogin'));
       } else {
-        setError('Xatolik yuz berdi: ' + error.message);
-        handleSpeak('Avtorizatsiyada xatolik yuz berdi');
+        setError(t('errorGeneric', error.message));
+        handleSpeak(t('errorGeneric', error.message));
       }
     } finally {
       setIsLoading(false);
@@ -302,40 +300,40 @@ const Login = () => {
     <LoginContainer>
       <LoginCard>
         <Title
-          onMouseEnter={() => handleSpeak(isRegistering ? 'Ro‘yxatdan o‘tish' : 'Tizimga kirish')}
+          onMouseEnter={() => handleSpeak(isRegistering ? t('registerTitle') : t('loginTitle'))}
           onMouseLeave={stopSpeech}
-          onTouchStart={() => handleSpeak(isRegistering ? 'Ro‘yxatdan o‘tish' : 'Tizimga kirish')}
+          onTouchStart={() => handleSpeak(isRegistering ? t('registerTitle') : t('loginTitle'))}
           onTouchEnd={stopSpeech}
-          onFocus={() => handleSpeak(isRegistering ? 'Ro‘yxatdan o‘tish' : 'Tizimga kirish')}
+          onFocus={() => handleSpeak(isRegistering ? t('registerTitle') : t('loginTitle'))}
           onBlur={stopSpeech}
           tabIndex={0}
           role="heading"
           aria-level="1"
         >
-          {isRegistering ? 'Ro‘yxatdan o‘tish' : 'Tizimga kirish'}
+          {isRegistering ? t('registerTitle') : t('loginTitle')}
         </Title>
 
         <CustomFormControl>
           <InputLabel
-            onMouseEnter={() => handleSpeak('Rolni tanlang')}
+            onMouseEnter={() => handleSpeak(t('roleLabel'))}
             onMouseLeave={stopSpeech}
-            onFocus={() => handleSpeak('Rolni tanlang')}
+            onFocus={() => handleSpeak(t('roleLabel'))}
             onBlur={stopSpeech}
           >
-            Rol
+            {t('roleLabel')}
           </InputLabel>
           <Select
             value={role}
             onChange={(e) => setRole(e.target.value)}
-            onMouseEnter={() => handleSpeak('Rolni tanlang')}
+            onMouseEnter={() => handleSpeak(t('roleLabel'))}
             onMouseLeave={stopSpeech}
-            onFocus={() => handleSpeak('Rolni tanlang')}
+            onFocus={() => handleSpeak(t('roleLabel'))}
             onBlur={stopSpeech}
             tabIndex={0}
-            aria-label="Rolni tanlang"
+            aria-label={t('roleLabel')}
           >
-            <MenuItem value="teacher">O‘qituvchi</MenuItem>
-            <MenuItem value="student">O‘quvchi</MenuItem>
+            <MenuItem value="teacher">{t('teacher')}</MenuItem>
+            <MenuItem value="student">{t('student')}</MenuItem>
           </Select>
         </CustomFormControl>
 
@@ -344,48 +342,48 @@ const Login = () => {
             <Box>
               <CustomLabel
                 htmlFor="firstName"
-                onMouseEnter={() => handleSpeak('Ismingizni kiriting')}
+                onMouseEnter={() => handleSpeak(t('firstNameLabel'))}
                 onMouseLeave={stopSpeech}
-                onTouchStart={() => handleSpeak('Ismingizni kiriting')}
+                onTouchStart={() => handleSpeak(t('firstNameLabel'))}
                 onTouchEnd={stopSpeech}
-                onFocus={() => handleSpeak('Ismingizni kiriting')}
+                onFocus={() => handleSpeak(t('firstNameLabel'))}
                 onBlur={stopSpeech}
               >
-                Ism
+                {t('firstNameLabel')}
               </CustomLabel>
               <CustomInput
                 id="firstName"
                 type="text"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
-                placeholder="Ismingizni kiriting..."
-                onFocus={() => handleSpeak('Ismingizni kiriting')}
+                placeholder={t('firstNamePlaceholder')}
+                onFocus={() => handleSpeak(t('firstNameLabel'))}
                 onBlur={stopSpeech}
-                aria-label="Ismingizni kiriting"
+                aria-label={t('firstNameLabel')}
                 tabIndex={0}
               />
             </Box>
             <Box>
               <CustomLabel
                 htmlFor="lastName"
-                onMouseEnter={() => handleSpeak('Familiyangizni kiriting')}
+                onMouseEnter={() => handleSpeak(t('lastNameLabel'))}
                 onMouseLeave={stopSpeech}
-                onTouchStart={() => handleSpeak('Familiyangizni kiriting')}
+                onTouchStart={() => handleSpeak(t('lastNameLabel'))}
                 onTouchEnd={stopSpeech}
-                onFocus={() => handleSpeak('Familiyangizni kiriting')}
+                onFocus={() => handleSpeak(t('lastNameLabel'))}
                 onBlur={stopSpeech}
               >
-                Familiya
+                {t('lastNameLabel')}
               </CustomLabel>
               <CustomInput
                 id="lastName"
                 type="text"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
-                placeholder="Familiyangizni kiriting..."
-                onFocus={() => handleSpeak('Familiyangizni kiriting')}
+                placeholder={t('lastNamePlaceholder')}
+                onFocus={() => handleSpeak(t('lastNameLabel'))}
                 onBlur={stopSpeech}
-                aria-label="Familiyangizni kiriting"
+                aria-label={t('lastNameLabel')}
                 tabIndex={0}
               />
             </Box>
@@ -394,48 +392,48 @@ const Login = () => {
         <Box>
           <CustomLabel
             htmlFor="login"
-            onMouseEnter={() => handleSpeak('Loginingizni kiriting')}
+            onMouseEnter={() => handleSpeak(t('loginLabel'))}
             onMouseLeave={stopSpeech}
-            onTouchStart={() => handleSpeak('Loginingizni kiriting')}
+            onTouchStart={() => handleSpeak(t('loginLabel'))}
             onTouchEnd={stopSpeech}
-            onFocus={() => handleSpeak('Loginingizni kiriting')}
+            onFocus={() => handleSpeak(t('loginLabel'))}
             onBlur={stopSpeech}
           >
-            Login
+            {t('loginLabel')}
           </CustomLabel>
           <CustomInput
             id="login"
             type="text"
             value={login}
             onChange={(e) => setLogin(e.target.value)}
-            placeholder="Loginingizni kiriting..."
-            onFocus={() => handleSpeak('Loginingizni kiriting')}
+            placeholder={t('loginPlaceholder')}
+            onFocus={() => handleSpeak(t('loginLabel'))}
             onBlur={stopSpeech}
-            aria-label="Loginingizni kiriting"
+            aria-label={t('loginLabel')}
             tabIndex={0}
           />
         </Box>
         <Box>
           <CustomLabel
             htmlFor="password"
-            onMouseEnter={() => handleSpeak('Parolingizni kiriting')}
+            onMouseEnter={() => handleSpeak(t('passwordLabel'))}
             onMouseLeave={stopSpeech}
-            onTouchStart={() => handleSpeak('Parolingizni kiriting')}
+            onTouchStart={() => handleSpeak(t('passwordLabel'))}
             onTouchEnd={stopSpeech}
-            onFocus={() => handleSpeak('Parolingizni kiriting')}
+            onFocus={() => handleSpeak(t('passwordLabel'))}
             onBlur={stopSpeech}
           >
-            Parol
+            {t('passwordLabel')}
           </CustomLabel>
           <CustomInput
             id="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Parolingizni kiriting..."
-            onFocus={() => handleSpeak('Parolingizni kiriting')}
+            placeholder={t('passwordPlaceholder')}
+            onFocus={() => handleSpeak(t('passwordLabel'))}
             onBlur={stopSpeech}
-            aria-label="Parolingizni kiriting"
+            aria-label={t('passwordLabel')}
             tabIndex={0}
           />
         </Box>
@@ -462,16 +460,16 @@ const Login = () => {
         <SubmitButton
           onClick={isRegistering ? handleRegister : handleLogin}
           disabled={isLoading}
-          onMouseEnter={() => handleSpeak(isRegistering ? 'Ro‘yxatdan o‘tish' : 'Kirish')}
+          onMouseEnter={() => handleSpeak(isRegistering ? t('registerButton') : t('loginButton'))}
           onMouseLeave={stopSpeech}
-          onTouchStart={() => handleSpeak(isRegistering ? 'Ro‘yxatdan o‘tish' : 'Kirish')}
+          onTouchStart={() => handleSpeak(isRegistering ? t('registerButton') : t('loginButton'))}
           onTouchEnd={stopSpeech}
-          onFocus={() => handleSpeak(isRegistering ? 'Ro‘yxatdan o‘tish' : 'Kirish')}
+          onFocus={() => handleSpeak(isRegistering ? t('registerButton') : t('loginButton'))}
           onBlur={stopSpeech}
           tabIndex={0}
-          aria-label={isRegistering ? 'Ro‘yxatdan o‘tish' : 'Kirish'}
+          aria-label={isRegistering ? t('registerButton') : t('loginButton')}
         >
-          {isLoading ? <CircularProgress size={20} sx={{ color: '#FFFFFF' }} /> : (isRegistering ? 'Ro‘yxatdan o‘tish' : 'Kirish')}
+          {isLoading ? <CircularProgress size={20} sx={{ color: '#FFFFFF' }} /> : (isRegistering ? t('registerButton') : t('loginButton'))}
         </SubmitButton>
         <Button
           onClick={() => setIsRegistering(!isRegistering)}
@@ -486,16 +484,16 @@ const Login = () => {
               outlineOffset: '2px',
             },
           }}
-          onMouseEnter={() => handleSpeak(isRegistering ? 'Akkauntingiz bormi? Kirish' : 'Akkauntingiz yo‘qmi? Ro‘yxatdan o‘ting')}
+          onMouseEnter={() => handleSpeak(isRegistering ? t('toggleToLogin') : t('toggleToRegister'))}
           onMouseLeave={stopSpeech}
-          onTouchStart={() => handleSpeak(isRegistering ? 'Akkauntingiz bormi? Kirish' : 'Akkauntingiz yo‘qmi? Ro‘yxatdan o‘ting')}
+          onTouchStart={() => handleSpeak(isRegistering ? t('toggleToLogin') : t('toggleToRegister'))}
           onTouchEnd={stopSpeech}
-          onFocus={() => handleSpeak(isRegistering ? 'Akkauntingiz bormi? Kirish' : 'Akkauntingiz yo‘qmi? Ro‘yxatdan o‘ting')}
+          onFocus={() => handleSpeak(isRegistering ? t('toggleToLogin') : t('toggleToRegister'))}
           onBlur={stopSpeech}
           tabIndex={0}
-          aria-label={isRegistering ? 'Akkauntingiz bormi? Kirish' : 'Akkauntingiz yo‘qmi? Ro‘yxatdan o‘ting'}
+          aria-label={isRegistering ? t('toggleToLogin') : t('toggleToRegister')}
         >
-          {isRegistering ? 'Akkauntingiz bormi? Kirish' : 'Akkauntingiz yo‘qmi? Ro‘yxatdan o‘ting'}
+          {isRegistering ? t('toggleToLogin') : t('toggleToRegister')}
         </Button>
       </LoginCard>
     </LoginContainer>

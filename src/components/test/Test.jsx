@@ -17,6 +17,7 @@ import succesfuly from "../../audio/succesful.mp3";
 import error from "../../audio/error.mp3";
 import victor from "../../audio/victory.mp3";
 import { AccessibilityContext } from '../voice/AccessibilityContext';
+import { useLanguage } from '../context/LanguageContext'; // Import the useLanguage hook
 
 // Анимации
 const waveAnimation = keyframes`
@@ -52,74 +53,6 @@ const pulseAnimation = keyframes`
   50% { transform: scale(1.05); }
   100% { transform: scale(1); }
 `;
-
-// Обновленные данные тестов с 10 вопросами для каждого предмета
-const subjectsData = {
-  javascript: {
-    title: 'JavaScript',
-    icon: js,
-    tests: [
-      { id: 1, question: 'Massiv oxiriga element qo\'shish uchun qaysi metod ishlatiladi?', options: { a: 'pop', b: 'push', c: 'shift' }, correctAnswer: 'b' },
-      { id: 2, question: 'typeof null nima qaytaradi?', options: { a: 'null', b: 'object', c: 'undefined' }, correctAnswer: 'b' },
-      { id: 3, question: 'Funksiyani qanday e\'lon qilish kerak?', options: { a: 'function myFunc()', b: 'let myFunc = ()', c: 'def myFunc()' }, correctAnswer: 'a' },
-      { id: 4, question: 'Array.prototype.map() metodi nima qiladi?', options: { a: 'Elementlarni o\'chiradi', b: 'Yangi massiv yaratadi', c: 'Massivni tartiblaydi' }, correctAnswer: 'b' },
-      { id: 5, question: 'Qattiq tenglik uchun qaysi operator ishlatiladi?', options: { a: '==', b: '===', c: '=' }, correctAnswer: 'b' },
-      { id: 6, question: 'Yopilish (closure) nima?', options: { a: 'Boshqa funksiya ichidagi funksiya', b: 'Massiv metodi', c: 'Ma\'lumot turi' }, correctAnswer: 'a' },
-      { id: 7, question: 'Massivning oxirgi elementini o\'chirish uchun qaysi metod ishlatiladi?', options: { a: 'shift', b: 'pop', c: 'splice' }, correctAnswer: 'b' },
-      { id: 8, question: 'console.log(0 == "0") nima chiqaradi?', options: { a: 'true', b: 'false', c: 'undefined' }, correctAnswer: 'a' },
-      { id: 9, question: 'Asinxron bajarish uchun qaysi metod ishlatiladi?', options: { a: 'setTimeout', b: 'forEach', c: 'filter' }, correctAnswer: 'a' },
-      { id: 10, question: 'Promise nima?', options: { a: 'Ma\'lumot turi', b: 'Asinxron operatsiyalar uchun obyekt', c: 'Massiv metodi' }, correctAnswer: 'b' },
-    ],
-  },
-  python: {
-    title: 'Python',
-    icon: python,
-    tests: [
-      { id: 1, question: 'Darajaga ko\'tarish uchun qaysi operator ishlatiladi?', options: { a: '//', b: '**', c: '^' }, correctAnswer: 'b' },
-      { id: 2, question: 'Ro\'yxatga element qo\'shish uchun qaysi metod ishlatiladi?', options: { a: 'append', b: 'push', c: 'add' }, correctAnswer: 'a' },
-      { id: 3, question: 'print(2 + "2") nima chiqaradi?', options: { a: '4', b: '22', c: 'Xato' }, correctAnswer: 'c' },
-      { id: 4, question: 'Lug\'atni qanday e\'lon qilish kerak?', options: { a: '[]', b: '{}', c: '()' }, correctAnswer: 'b' },
-      { id: 5, question: 'len() funksiyasi nima qiladi?', options: { a: 'Obyekt uzunligini qaytaradi', b: 'Ro\'yxatni tartiblaydi', c: 'Elementni o\'chiradi' }, correctAnswer: 'a' },
-      { id: 6, question: 'Elementlarni aylanib o\'tish uchun qaysi sikl ishlatiladi?', options: { a: 'while', b: 'for', c: 'do-while' }, correctAnswer: 'b' },
-      { id: 7, question: 'list.pop() metodi nima qiladi?', options: { a: 'Element qo\'shadi', b: 'Oxirgi elementni o\'chiradi', c: 'Ro\'yxatni tartiblaydi' }, correctAnswer: 'b' },
-      { id: 8, question: 'Sana bilan ishlash uchun qaysi modul ishlatiladi?', options: { a: 'math', b: 'datetime', c: 'random' }, correctAnswer: 'b' },
-      { id: 9, question: 'Ro\'yxat generatori nima?', options: { a: 'Funksiya', b: 'Ro\'yxat yaratish uchun sintaksis', c: 'Ma\'lumot turi' }, correctAnswer: 'b' },
-      { id: 10, question: 'Tegishliligini tekshirish uchun qaysi operator ishlatiladi?', options: { a: 'is', b: 'in', c: '==' }, correctAnswer: 'b' },
-    ],
-  },
-  robotics: {
-    title: 'Robototexnika',
-    icon: roboto,
-    tests: [
-      { id: 1, question: 'Masofani o\'lchash uchun qaysi sensor ishlatiladi?', options: { a: 'Infraqizil', b: 'Ultratovush', c: 'Harorat' }, correctAnswer: 'b' },
-      { id: 2, question: 'Robototexnikada qaysi til ko\'p ishlatiladi?', options: { a: 'JavaScript', b: 'Python', c: 'HTML' }, correctAnswer: 'b' },
-      { id: 3, question: 'Robot to\'siqni aniqlaganda nima qiladi?', options: { a: 'To\'xtaydi', b: 'Tezlashadi', c: 'E\'tiborsiz qoldiradi' }, correctAnswer: 'a' },
-      { id: 4, question: 'Robotlarda qaysi turdagi dvigatel ko\'p ishlatiladi?', options: { a: 'Qadamli', b: 'Chiziqli', c: 'Turbinli' }, correctAnswer: 'a' },
-      { id: 5, question: 'Arduino nima?', options: { a: 'Dasturlashtiriladigan plata', b: 'Sensor', c: 'Dasturlash tili' }, correctAnswer: 'a' },
-      { id: 6, question: 'Yorug\'likni aniqlash uchun qaysi sensor ishlatiladi?', options: { a: 'Fotorezistor', b: 'Giroskop', c: 'Akselerometr' }, correctAnswer: 'a' },
-      { id: 7, question: 'Servoprivod nima?', options: { a: 'Sensor', b: 'Burchakni boshqarish mexanizmi', c: 'Quvvat manbai' }, correctAnswer: 'b' },
-      { id: 8, question: 'Aloqa uchun qaysi protokol ko\'p ishlatiladi?', options: { a: 'HTTP', b: 'I2C', c: 'FTP' }, correctAnswer: 'b' },
-      { id: 9, question: 'Giroskop nima o\'lchaydi?', options: { a: 'Haroratni', b: 'Tezlanishni', c: 'Yo\'nalishni' }, correctAnswer: 'c' },
-      { id: 10, question: 'ROS nima?', options: { a: 'Operatsion tizim', b: 'Robototexnika uchun freymvork', c: 'Dasturlash tili' }, correctAnswer: 'b' },
-    ],
-  },
-  react: {
-    title: 'React',
-    icon: react,
-    tests: [
-      { id: 1, question: 'Holatni boshqarish uchun qaysi huk ishlatiladi?', options: { a: 'useEffect', b: 'useState', c: 'useContext' }, correctAnswer: 'b' },
-      { id: 2, question: 'JSX nima?', options: { a: 'Til', b: 'Sintaksik shakar', c: 'Kutubxona' }, correctAnswer: 'b' },
-      { id: 3, question: 'Komponentga ma\'lumotni qanday uzatish mumkin?', options: { a: 'Props', b: 'State', c: 'Huklar' }, correctAnswer: 'a' },
-      { id: 4, question: 'useEffect nima qiladi?', options: { a: 'Holatni boshqaradi', b: 'Yon ta\'sirlarni qayta ishlaydi', c: 'Ma\'lumot uzatadi' }, correctAnswer: 'b' },
-      { id: 5, question: 'useEffect qaysi hayot sikli metodini almashtiradi?', options: { a: 'componentDidMount', b: 'render', c: 'setState' }, correctAnswer: 'a' },
-      { id: 6, question: 'React.Fragment nima?', options: { a: 'Komponent', b: 'DOM elementsiz o\'rov', c: 'Huk' }, correctAnswer: 'b' },
-      { id: 7, question: 'Kontekstga kirish uchun qaysi huk ishlatiladi?', options: { a: 'useState', b: 'useContext', c: 'useReducer' }, correctAnswer: 'b' },
-      { id: 8, question: 'Virtual DOM nima?', options: { a: 'Haqiqiy DOM nusxasi', b: 'Kutubxona', c: 'Komponent' }, correctAnswer: 'a' },
-      { id: 9, question: 'React-da holatni qanday yangilash kerak?', options: { a: 'To\'g\'ridan-to\'g\'ri o\'zgartirish orqali', b: 'setState/useState orqali', c: 'props orqali' }, correctAnswer: 'b' },
-      { id: 10, question: 'React Router nima?', options: { a: 'Marshrutlash uchun kutubxona', b: 'Huk', c: 'Komponent' }, correctAnswer: 'a' },
-    ],
-  },
-};
 
 // Стилизация
 const TestContainer = styled(Box)(({ theme }) => ({
@@ -562,13 +495,22 @@ const Test = () => {
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [showResult, setShowResult] = useState(false);
   const { speakText, stopSpeech } = useContext(AccessibilityContext);
+  const { t, subjects } = useLanguage(); // Use the LanguageContext
+
+  // Map icons to subjects
+  const subjectIcons = {
+    javascript: js,
+    python: python,
+    robotics: roboto,
+    react: react,
+  };
 
   const successSound = new Audio(succesfuly);
   const errorSound = new Audio(error);
   const victorySound = new Audio(victor);
 
-  const totalTests = selectedSubject ? subjectsData[selectedSubject].tests.length : 0;
-  const currentTest = selectedSubject ? subjectsData[selectedSubject].tests[currentTestIndex] : null;
+  const totalTests = selectedSubject ? subjects[selectedSubject].tests.length : 0;
+  const currentTest = selectedSubject ? subjects[selectedSubject].tests[currentTestIndex] : null;
 
   const handleSubjectSelect = (subject) => {
     setSelectedSubject(subject);
@@ -635,26 +577,26 @@ const Test = () => {
       {!selectedSubject && (
         <CenteredContainer sx={{ marginTop: -30 }}>
           <TestHeader
-            onMouseEnter={() => speakText('Testni tanlang')}
+            onMouseEnter={() => speakText(t('selectTest'))}
             onMouseLeave={stopSpeech}
-            onTouchStart={() => speakText('Testni tanlang')}
+            onTouchStart={() => speakText(t('selectTest'))}
             onTouchEnd={stopSpeech}
-            onFocus={() => speakText('Testni tanlang')}
+            onFocus={() => speakText(t('selectTest'))}
             onBlur={stopSpeech}
             tabIndex={0}
           >
-            Testni tanlang
+            {t('selectTest')}
           </TestHeader>
           <SubjectsContainer>
-            {Object.keys(subjectsData).map((subject) => (
+            {Object.keys(subjects).map((subject) => (
               <SubjectCard
                 key={subject}
                 onClick={() => handleSubjectSelect(subject)}
-                onMouseEnter={() => speakText(subjectsData[subject].title)}
+                onMouseEnter={() => speakText(subjects[subject].title)}
                 onMouseLeave={stopSpeech}
-                onTouchStart={() => speakText(subjectsData[subject].title)}
+                onTouchStart={() => speakText(subjects[subject].title)}
                 onTouchEnd={stopSpeech}
-                onFocus={() => speakText(subjectsData[subject].title)}
+                onFocus={() => speakText(subjects[subject].title)}
                 onBlur={stopSpeech}
                 tabIndex={0}
               >
@@ -679,12 +621,12 @@ const Test = () => {
                     }}
                   >
                     <img
-                      src={subjectsData[subject].icon}
-                      alt={subjectsData[subject].title}
+                      src={subjectIcons[subject]}
+                      alt={subjects[subject].title}
                       style={{ width: '30px', height: '30px' }}
                     />
                   </Box>
-                  <SubjectTitle>{subjectsData[subject].title}</SubjectTitle>
+                  <SubjectTitle>{subjects[subject].title}</SubjectTitle>
                 </CardContent>
               </SubjectCard>
             ))}
@@ -698,20 +640,20 @@ const Test = () => {
             <CardContent>
               <SubjectTitle
                 onMouseEnter={() =>
-                  speakText(`${subjectsData[selectedSubject].title} - Test ${currentTestIndex + 1} / ${totalTests}`)
+                  speakText(`${subjects[selectedSubject].title} - Test ${currentTestIndex + 1} / ${totalTests}`)
                 }
                 onMouseLeave={stopSpeech}
                 onTouchStart={() =>
-                  speakText(`${subjectsData[selectedSubject].title} - Test ${currentTestIndex + 1} / ${totalTests}`)
+                  speakText(`${subjects[selectedSubject].title} - Test ${currentTestIndex + 1} / ${totalTests}`)
                 }
                 onTouchEnd={stopSpeech}
                 onFocus={() =>
-                  speakText(`${subjectsData[selectedSubject].title} - Test ${currentTestIndex + 1} / ${totalTests}`)
+                  speakText(`${subjects[selectedSubject].title} - Test ${currentTestIndex + 1} / ${totalTests}`)
                 }
                 onBlur={stopSpeech}
                 tabIndex={0}
               >
-                {subjectsData[selectedSubject].title} - Test {currentTestIndex + 1}/{totalTests}
+                {subjects[selectedSubject].title} - Test {currentTestIndex + 1}/{totalTests}
               </SubjectTitle>
               <TestQuestion
                 onMouseEnter={() => speakText(currentTest.question)}
@@ -753,32 +695,32 @@ const Test = () => {
                   onMouseEnter={() =>
                     speakText(
                       userAnswers[selectedSubject + '-' + currentTest.id].isCorrect
-                        ? 'To\'g\'ri! Keyingisiga tayyorlanamiz...'
-                        : 'Afsus, noto\'g\'ri. Yana urinib ko\'ring!'
+                        ? t('correctAnswerFeedback')
+                        : t('incorrectAnswerFeedback')
                     )
                   }
                   onMouseLeave={stopSpeech}
                   onTouchStart={() =>
                     speakText(
                       userAnswers[selectedSubject + '-' + currentTest.id].isCorrect
-                        ? 'To\'g\'ri! Keyingisiga tayyorlanamiz...'
-                        : 'Afsus, noto\'g\'ri. Yana urinib ko\'ring!'
+                        ? t('correctAnswerFeedback')
+                        : t('incorrectAnswerFeedback')
                     )
                   }
                   onTouchEnd={stopSpeech}
                   onFocus={() =>
                     speakText(
                       userAnswers[selectedSubject + '-' + currentTest.id].isCorrect
-                        ? 'To\'g\'ri! Keyingisiga tayyorlanamiz...'
-                        : 'Afsus, noto\'g\'ri. Yana urinib ko\'ring!'
+                        ? t('correctAnswerFeedback')
+                        : t('incorrectAnswerFeedback')
                     )
                   }
                   onBlur={stopSpeech}
                   tabIndex={0}
                 >
                   {userAnswers[selectedSubject + '-' + currentTest.id].isCorrect
-                    ? 'To\'g\'ri! Keyingisiga tayyorlanamiz...'
-                    : 'Afsus, noto\'g\'ri. Yana urinib ko\'ring!'}
+                    ? t('correctAnswerFeedback')
+                    : t('incorrectAnswerFeedback')}
                 </FeedbackMessage>
               )}
             </CardContent>
@@ -792,15 +734,15 @@ const Test = () => {
                 opacity: 0.8,
                 fontFamily: '"Roboto Mono", monospace',
               }}
-              onMouseEnter={() => speakText(`Jarayon: ${correctAnswers} / ${totalTests}`)}
+              onMouseEnter={() => speakText(t('testProgress', correctAnswers, totalTests))}
               onMouseLeave={stopSpeech}
-              onTouchStart={() => speakText(`Jarayon: ${correctAnswers} / ${totalTests}`)}
+              onTouchStart={() => speakText(t('testProgress', correctAnswers, totalTests))}
               onTouchEnd={stopSpeech}
-              onFocus={() => speakText(`Jarayon: ${correctAnswers} / ${totalTests}`)}
+              onFocus={() => speakText(t('testProgress', correctAnswers, totalTests))}
               onBlur={stopSpeech}
               tabIndex={0}
             >
-              Jarayon: {correctAnswers}/{totalTests}
+              {t('testProgress', correctAnswers, totalTests)}
             </Typography>
             <ProgressLine variant="determinate" value={(correctAnswers / totalTests) * 100} />
           </ProgressContainer>
@@ -810,38 +752,38 @@ const Test = () => {
         <CenteredContainer>
           <ResultCard>
             <ResultTitle
-              onMouseEnter={() => speakText('Tabriklaymiz!')}
+              onMouseEnter={() => speakText(t('congratulations'))}
               onMouseLeave={stopSpeech}
-              onTouchStart={() => speakText('Tabriklaymiz!')}
+              onTouchStart={() => speakText(t('congratulations'))}
               onTouchEnd={stopSpeech}
-              onFocus={() => speakText('Tabriklaymiz!')}
+              onFocus={() => speakText(t('congratulations'))}
               onBlur={stopSpeech}
               tabIndex={0}
             >
-              Tabriklaymiz!
+              {t('congratulations')}
             </ResultTitle>
             <ResultScore
-              onMouseEnter={() => speakText(`Siz to\'plagan ball: ${correctAnswers} / ${totalTests}`)}
+              onMouseEnter={() => speakText(t('yourScore', correctAnswers, totalTests))}
               onMouseLeave={stopSpeech}
-              onTouchStart={() => speakText(`Siz to\'plagan ball: ${correctAnswers} / ${totalTests}`)}
+              onTouchStart={() => speakText(t('yourScore', correctAnswers, totalTests))}
               onTouchEnd={stopSpeech}
-              onFocus={() => speakText(`Siz to\'plagan ball: ${correctAnswers} / ${totalTests}`)}
+              onFocus={() => speakText(t('yourScore', correctAnswers, totalTests))}
               onBlur={stopSpeech}
               tabIndex={0}
             >
-              Siz to\'plagan ball: {correctAnswers}/{totalTests}
+              {t('yourScore', correctAnswers, totalTests)}
             </ResultScore>
             <StyledButton
               onClick={handleBackToSubjects}
-              onMouseEnter={() => speakText('Testlarga qaytish')}
+              onMouseEnter={() => speakText(t('backToTests'))}
               onMouseLeave={stopSpeech}
-              onTouchStart={() => speakText('Testlarga qaytish')}
+              onTouchStart={() => speakText(t('backToTests'))}
               onTouchEnd={stopSpeech}
-              onFocus={() => speakText('Testlarga qaytish')}
+              onFocus={() => speakText(t('backToTests'))}
               onBlur={stopSpeech}
               tabIndex={0}
             >
-              Testlarga qaytish
+              {t('backToTests')}
             </StyledButton>
           </ResultCard>
         </CenteredContainer>

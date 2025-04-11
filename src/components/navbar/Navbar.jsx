@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -10,6 +10,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import LanguageIcon from '@mui/icons-material/Language';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import { AccessibilityContext } from '../voice/AccessibilityContext';
+import { useLanguage } from '../context/LanguageContext'; // Import the useLanguage hook
 
 const colors = {
   background: 'linear-gradient(135deg, #000000 10%,rgb(18, 18, 18) 90%)',
@@ -175,12 +176,12 @@ const AccessibilitySwitch = styled(FormControlLabel)(({ theme, isMobile }) => ({
 
 const Navbar = ({ sidebarOpen, setSidebarOpen, isMobile }) => {
   const location = useLocation();
-  const [language, setLanguage] = useState('uz');
   const { isAccessibilityMode, setIsAccessibilityMode, speakText, stopSpeech, isSpeechSupported } = useContext(AccessibilityContext);
+  const { language, setLanguage, t } = useLanguage(); // Use the LanguageContext
 
   // Check authentication and role
   const isAuthenticated = !!localStorage.getItem('token');
-  const userRole = localStorage.getItem('role') || 'student'; // Default to 'student' if role is not found
+  const userRole = localStorage.getItem('role') || 'student';
   const dashboardPath = userRole === 'teacher' ? '/teacher-dashboard' : '/student-dashboard';
 
   useEffect(() => {
@@ -250,7 +251,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isMobile }) => {
       if (!newMode) {
         stopSpeech();
       } else if (isSpeechSupported) {
-        speakText(language === 'uz' ? 'Maxsus imkoniyatlar yoqildi' : 'Специальные возможности включены');
+        speakText(t(newMode ? 'accessibilityOn' : 'accessibilityOff'));
       }
       return newMode;
     });
@@ -302,7 +303,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isMobile }) => {
             onBlur={stopSpeech}
             tabIndex={0}
             role="button"
-            aria-label={language === 'uz' ? 'Сменить язык на русский' : 'Сменить язык на узбекский'}
+            aria-label={t('toggleLanguage')}
           >
             <Typography
               sx={{
@@ -320,15 +321,11 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isMobile }) => {
             control={<Switch checked={isAccessibilityMode} onChange={toggleAccessibilityMode} />}
             label=""
             isMobile={true}
-            onMouseEnter={() =>
-              isAccessibilityMode && speakText(language === 'uz' ? 'Maxsus imkoniyatlar' : 'Специальные возможности')
-            }
+            onMouseEnter={() => isAccessibilityMode && speakText(t('accessibilityLabel'))}
             onMouseLeave={stopSpeech}
-            onFocus={() =>
-              speakText(language === 'uz' ? 'Maxsus imkoniyatlar' : 'Специальные возможности')
-            }
+            onFocus={() => speakText(t('accessibilityLabel'))}
             onBlur={stopSpeech}
-            aria-label={language === 'uz' ? 'Переключить режим доступности' : 'Переключить режим специальных возможностей'}
+            aria-label={t('toggleAccessibility')}
           />
         </NavItems>
       </FooterContainer>
@@ -362,7 +359,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isMobile }) => {
           onBlur={stopSpeech}
           tabIndex={0}
           role="button"
-          aria-label={language === 'uz' ? 'Сменить язык на русский' : 'Сменить язык на узбекский'}
+          aria-label={t('toggleLanguage')}
         >
           <Typography
             sx={{
@@ -378,17 +375,13 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isMobile }) => {
         </LanguageToggle>
         <AccessibilitySwitch
           control={<Switch checked={isAccessibilityMode} onChange={toggleAccessibilityMode} />}
-          label={language === 'uz' ? 'Maxsus imkoniyatlar' : 'Специальные возможности'}
+          label={t('accessibilityLabel')}
           isMobile={false}
-          onMouseEnter={() =>
-            isAccessibilityMode && speakText(language === 'uz' ? 'Maxsus imkoniyatlar' : 'Специальные возможности')
-          }
+          onMouseEnter={() => isAccessibilityMode && speakText(t('accessibilityLabel'))}
           onMouseLeave={stopSpeech}
-          onFocus={() =>
-            speakText(language === 'uz' ? 'Maxsus imkoniyatlar' : 'Специальные возможности')
-          }
+          onFocus={() => speakText(t('accessibilityLabel'))}
           onBlur={stopSpeech}
-          aria-label={language === 'uz' ? 'Переключить режим доступности' : 'Переключить режим специальных возможностей'}
+          aria-label={t('toggleAccessibility')}
         />
       </NavItems>
     </NavbarContainer>
