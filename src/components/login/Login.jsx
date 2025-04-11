@@ -12,10 +12,10 @@ import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 
-// Базовый URL API
+// API базавий URL
 const API_BASE_URL = 'http://localhost:5000';
 
-// Анимации
+// Анимациялар
 const fadeIn = keyframes`
   0% { opacity: 0; transform: translateY(20px); }
   100% { opacity: 1; transform: translateY(0); }
@@ -27,7 +27,7 @@ const pulseAnimation = keyframes`
   100% { box-shadow: 0 0 5px rgba(255, 0, 122, 0.5); }
 `;
 
-// Стили
+// Услублар (Стили)
 const LoginContainer = styled(Box)(({ theme }) => ({
   background: '#000000',
   minHeight: '80vh',
@@ -95,6 +95,10 @@ const CustomInput = styled('input')(({ theme }) => ({
     border: '1px solid rgba(255, 0, 122, 0.8)',
     boxShadow: '0 0 10px rgba(255, 0, 122, 0.5)',
   },
+  '&:focus-within': {
+    outline: '2px solid #FF007A',
+    outlineOffset: '2px',
+  },
   [theme.breakpoints.down('sm')]: {
     fontSize: '14px',
     padding: '8px',
@@ -142,6 +146,38 @@ const SubmitButton = styled(Button)(({ theme }) => ({
     boxShadow: 'none',
     animation: 'none',
   },
+  '&:focus-within': {
+    outline: '2px solid #FF007A',
+    outlineOffset: '2px',
+  },
+}));
+
+const CustomFormControl = styled(FormControl)(({ theme }) => ({
+  width: '100%',
+  marginBottom: '15px',
+  '& .MuiInputLabel-root': {
+    color: '#FFFFFF',
+    textShadow: '0 0 5px rgba(255, 0, 122, 0.5)',
+  },
+  '& .MuiSelect-root': {
+    color: '#FFFFFF',
+    background: 'rgba(255, 255, 255, 0.03)',
+    borderRadius: '15px',
+    border: '1px solid rgba(255, 0, 122, 0.3)',
+  },
+  '& .MuiSvgIcon-root': {
+    color: '#FFFFFF',
+  },
+  '&:hover .MuiOutlinedInput-notchedOutline': {
+    border: '1px solid rgba(255, 0, 122, 0.5)',
+  },
+  '& .Mui-focused .MuiOutlinedInput-notchedOutline': {
+    border: '1px solid rgba(255, 0, 122, 0.8)',
+  },
+  '&:focus-within': {
+    outline: '2px solid #FF007A',
+    outlineOffset: '2px',
+  },
 }));
 
 const Login = () => {
@@ -162,8 +198,8 @@ const Login = () => {
 
   const handleRegister = async () => {
     if (!firstName || !lastName || !login || !password || !role) {
-      setError('Пожалуйста, заполните все поля');
-      handleSpeak('Пожалуйста, заполните все поля');
+      setError('Iltimos, barcha maydonlarni to‘ldiring');
+      handleSpeak('Iltimos, barcha maydonlarni to‘ldiring');
       return;
     }
 
@@ -171,7 +207,7 @@ const Login = () => {
     setError('');
 
     const url = role === 'teacher' ? `${API_BASE_URL}/register-teacher` : `${API_BASE_URL}/register-student`;
-    console.log('Отправка запроса на:', url);
+    console.log('So‘rov yuborilmoqda:', url);
 
     try {
       const response = await axios.post(url, {
@@ -181,23 +217,23 @@ const Login = () => {
         password,
       });
 
-      console.log('Ответ сервера:', response.data);
+      console.log('Serverdan javob:', response.data);
 
-      alert(`${role === 'teacher' ? 'Учитель' : 'Ученик'} успешно зарегистрирован! Теперь войдите.`);
-      handleSpeak(`${role === 'teacher' ? 'Учитель' : 'Ученик'} успешно зарегистрирован! Теперь войдите.`);
+      alert(`${role === 'teacher' ? 'O‘qituvchi' : 'O‘quvchi'} muvaffaqiyatli ro‘yxatdan o‘tdi! Endi tizimga kiring.`);
+      handleSpeak(`${role === 'teacher' ? 'O‘qituvchi' : 'O‘quvchi'} muvaffaqiyatli ro‘yxatdan o‘tdi! Endi tizimga kiring.`);
       setIsRegistering(false);
       setFirstName('');
       setLastName('');
       setLogin('');
       setPassword('');
     } catch (error) {
-      console.error('Ошибка при регистрации:', error);
+      console.error('Ro‘yxatdan o‘tishda xatolik:', error);
       if (error.response) {
-        setError(error.response.data.error || 'Ошибка регистрации');
-        handleSpeak(error.response.data.error || 'Ошибка регистрации');
+        setError(error.response.data.error || 'Ro‘yxatdan o‘tishda xatolik');
+        handleSpeak(error.response.data.error || 'Ro‘yxatdan o‘tishda xatolik');
       } else {
-        setError('Произошла ошибка: ' + error.message);
-        handleSpeak('Произошла ошибка при регистрации');
+        setError('Xatolik yuz berdi: ' + error.message);
+        handleSpeak('Ro‘yxatdan o‘tishda xatolik yuz berdi');
       }
     } finally {
       setIsLoading(false);
@@ -206,8 +242,8 @@ const Login = () => {
 
   const handleLogin = async () => {
     if (!login || !password || !role) {
-      setError('Пожалуйста, введите логин, пароль и выберите роль');
-      handleSpeak('Пожалуйста, введите логин, пароль и выберите роль');
+      setError('Iltimos, login, parol va rolni kiriting');
+      handleSpeak('Iltimos, login, parol va rolni kiriting');
       return;
     }
 
@@ -215,7 +251,7 @@ const Login = () => {
     setError('');
 
     const url = `${API_BASE_URL}/login`;
-    console.log('Отправка запроса на:', url);
+    console.log('So‘rov yuborilmoqda:', url);
 
     try {
       const response = await axios.post(url, {
@@ -224,28 +260,28 @@ const Login = () => {
         role,
       });
 
-      console.log('Ответ сервера:', response.data);
+      console.log('Serverdan javob:', response.data);
 
-      // Сохраняем токен и данные пользователя
+      // Token va foydalanuvchi ma'lumotlarini saqlash
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
       localStorage.setItem('role', role);
 
-      // Перенаправляем в зависимости от роли
+      // Rolga qarab yo‘naltirish
       if (role === 'teacher') {
         navigate('/teacher-dashboard');
       } else {
         navigate('/student-dashboard');
       }
-      handleSpeak('Авторизация успешна! Добро пожаловать в личный кабинет.');
+      handleSpeak('Avtorizatsiya muvaffaqiyatli! Shaxsiy kabinetingizga xush kelibsiz.');
     } catch (error) {
-      console.error('Ошибка при авторизации:', error);
+      console.error('Avtorizatsiyada xatolik:', error);
       if (error.response) {
-        setError(error.response.data.error || 'Ошибка авторизации');
-        handleSpeak(error.response.data.error || 'Ошибка авторизации');
+        setError(error.response.data.error || 'Avtorizatsiyada xatolik');
+        handleSpeak(error.response.data.error || 'Avtorizatsiyada xatolik');
       } else {
-        setError('Произошла ошибка: ' + error.message);
-        handleSpeak('Произошла ошибка при авторизации');
+        setError('Xatolik yuz berdi: ' + error.message);
+        handleSpeak('Avtorizatsiyada xatolik yuz berdi');
       }
     } finally {
       setIsLoading(false);
@@ -256,88 +292,90 @@ const Login = () => {
     <LoginContainer>
       <LoginCard>
         <Title
-          onMouseEnter={() => handleSpeak(isRegistering ? 'Регистрация' : 'Авторизация')}
+          onMouseEnter={() => handleSpeak(isRegistering ? 'Ro‘yxatdan o‘tish' : 'Tizimga kirish')}
           onMouseLeave={stopSpeech}
-          onTouchStart={() => handleSpeak(isRegistering ? 'Регистрация' : 'Авторизация')}
+          onTouchStart={() => handleSpeak(isRegistering ? 'Ro‘yxatdan o‘tish' : 'Tizimga kirish')}
           onTouchEnd={stopSpeech}
-          onFocus={() => handleSpeak(isRegistering ? 'Регистрация' : 'Авторизация')}
+          onFocus={() => handleSpeak(isRegistering ? 'Ro‘yxatdan o‘tish' : 'Tizimga kirish')}
           onBlur={stopSpeech}
           tabIndex={0}
+          role="heading"
+          aria-level="1"
         >
-          {isRegistering ? 'Регистрация' : 'Авторизация'}
+          {isRegistering ? 'Ro‘yxatdan o‘tish' : 'Tizimga kirish'}
         </Title>
 
-        <Box mb={2}>
-          <FormControl fullWidth>
-            <InputLabel
-              sx={{ color: '#FFFFFF', textShadow: '0 0 5px rgba(255, 0, 122, 0.5)' }}
-              onMouseEnter={() => handleSpeak('Выберите роль')}
-              onMouseLeave={stopSpeech}
-            >
-              Роль
-            </InputLabel>
-            <Select
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-              sx={{
-                color: '#FFFFFF',
-                background: 'rgba(255, 255, 255, 0.03)',
-                borderRadius: '15px',
-                border: '1px solid rgba(255, 0, 122, 0.3)',
-                '& .MuiSvgIcon-root': { color: '#FFFFFF' },
-              }}
-              onFocus={() => handleSpeak('Выберите роль')}
-              onBlur={stopSpeech}
-            >
-              <MenuItem value="teacher">Учитель</MenuItem>
-              <MenuItem value="student">Ученик</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
+        <CustomFormControl>
+          <InputLabel
+            onMouseEnter={() => handleSpeak('Rolni tanlang')}
+            onMouseLeave={stopSpeech}
+            onFocus={() => handleSpeak('Rolni tanlang')}
+            onBlur={stopSpeech}
+          >
+            Rol
+          </InputLabel>
+          <Select
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            onMouseEnter={() => handleSpeak('Rolni tanlang')}
+            onMouseLeave={stopSpeech}
+            onFocus={() => handleSpeak('Rolni tanlang')}
+            onBlur={stopSpeech}
+            tabIndex={0}
+            aria-label="Rolni tanlang"
+          >
+            <MenuItem value="teacher">O‘qituvchi</MenuItem>
+            <MenuItem value="student">O‘quvchi</MenuItem>
+          </Select>
+        </CustomFormControl>
 
         {isRegistering && (
           <>
             <Box>
               <CustomLabel
                 htmlFor="firstName"
-                onMouseEnter={() => handleSpeak('Введите ваше имя')}
+                onMouseEnter={() => handleSpeak('Ismingizni kiriting')}
                 onMouseLeave={stopSpeech}
-                onTouchStart={() => handleSpeak('Введите ваше имя')}
+                onTouchStart={() => handleSpeak('Ismingizni kiriting')}
                 onTouchEnd={stopSpeech}
+                onFocus={() => handleSpeak('Ismingizni kiriting')}
+                onBlur={stopSpeech}
               >
-                Имя
+                Ism
               </CustomLabel>
               <CustomInput
                 id="firstName"
                 type="text"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
-                placeholder="Введите ваше имя..."
-                onFocus={() => handleSpeak('Введите ваше имя')}
+                placeholder="Ismingizni kiriting..."
+                onFocus={() => handleSpeak('Ismingizni kiriting')}
                 onBlur={stopSpeech}
-                aria-label="Имя"
+                aria-label="Ismingizni kiriting"
                 tabIndex={0}
               />
             </Box>
             <Box>
               <CustomLabel
                 htmlFor="lastName"
-                onMouseEnter={() => handleSpeak('Введите вашу фамилию')}
+                onMouseEnter={() => handleSpeak('Familiyangizni kiriting')}
                 onMouseLeave={stopSpeech}
-                onTouchStart={() => handleSpeak('Введите вашу фамилию')}
+                onTouchStart={() => handleSpeak('Familiyangizni kiriting')}
                 onTouchEnd={stopSpeech}
+                onFocus={() => handleSpeak('Familiyangizni kiriting')}
+                onBlur={stopSpeech}
               >
-                Фамилия
+                Familiya
               </CustomLabel>
               <CustomInput
                 id="lastName"
                 type="text"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
-                placeholder="Введите вашу фамилию..."
-                onFocus={() => handleSpeak('Введите вашу фамилию')}
+                placeholder="Familiyangizni kiriting..."
+                onFocus={() => handleSpeak('Familiyangizni kiriting')}
                 onBlur={stopSpeech}
-                aria-label="Фамилия"
+                aria-label="Familiyangizni kiriting"
                 tabIndex={0}
               />
             </Box>
@@ -346,44 +384,48 @@ const Login = () => {
         <Box>
           <CustomLabel
             htmlFor="login"
-            onMouseEnter={() => handleSpeak('Введите ваш логин')}
+            onMouseEnter={() => handleSpeak('Loginingizni kiriting')}
             onMouseLeave={stopSpeech}
-            onTouchStart={() => handleSpeak('Введите ваш логин')}
+            onTouchStart={() => handleSpeak('Loginingizni kiriting')}
             onTouchEnd={stopSpeech}
+            onFocus={() => handleSpeak('Loginingizni kiriting')}
+            onBlur={stopSpeech}
           >
-            Логин
+            Login
           </CustomLabel>
           <CustomInput
             id="login"
             type="text"
             value={login}
             onChange={(e) => setLogin(e.target.value)}
-            placeholder="Введите ваш логин..."
-            onFocus={() => handleSpeak('Введите ваш логин')}
+            placeholder="Loginingizni kiriting..."
+            onFocus={() => handleSpeak('Loginingizni kiriting')}
             onBlur={stopSpeech}
-            aria-label="Логин"
+            aria-label="Loginingizni kiriting"
             tabIndex={0}
           />
         </Box>
         <Box>
           <CustomLabel
             htmlFor="password"
-            onMouseEnter={() => handleSpeak('Введите ваш пароль')}
+            onMouseEnter={() => handleSpeak('Parolingizni kiriting')}
             onMouseLeave={stopSpeech}
-            onTouchStart={() => handleSpeak('Введите ваш пароль')}
+            onTouchStart={() => handleSpeak('Parolingizni kiriting')}
             onTouchEnd={stopSpeech}
+            onFocus={() => handleSpeak('Parolingizni kiriting')}
+            onBlur={stopSpeech}
           >
-            Пароль
+            Parol
           </CustomLabel>
           <CustomInput
             id="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Введите ваш пароль..."
-            onFocus={() => handleSpeak('Введите ваш пароль')}
+            placeholder="Parolingizni kiriting..."
+            onFocus={() => handleSpeak('Parolingizni kiriting')}
             onBlur={stopSpeech}
-            aria-label="Пароль"
+            aria-label="Parolingizni kiriting"
             tabIndex={0}
           />
         </Box>
@@ -397,6 +439,12 @@ const Login = () => {
               fontFamily: "'Roboto', sans-serif",
               textAlign: 'center',
             }}
+            onMouseEnter={() => handleSpeak(error)}
+            onMouseLeave={stopSpeech}
+            onFocus={() => handleSpeak(error)}
+            onBlur={stopSpeech}
+            tabIndex={0}
+            role="alert"
           >
             {error}
           </Typography>
@@ -404,15 +452,16 @@ const Login = () => {
         <SubmitButton
           onClick={isRegistering ? handleRegister : handleLogin}
           disabled={isLoading}
-          onMouseEnter={() => handleSpeak(isRegistering ? 'Зарегистрироваться' : 'Войти')}
+          onMouseEnter={() => handleSpeak(isRegistering ? 'Ro‘yxatdan o‘tish' : 'Kirish')}
           onMouseLeave={stopSpeech}
-          onTouchStart={() => handleSpeak(isRegistering ? 'Зарегистрироваться' : 'Войти')}
+          onTouchStart={() => handleSpeak(isRegistering ? 'Ro‘yxatdan o‘tish' : 'Kirish')}
           onTouchEnd={stopSpeech}
-          onFocus={() => handleSpeak(isRegistering ? 'Зарегистрироваться' : 'Войти')}
+          onFocus={() => handleSpeak(isRegistering ? 'Ro‘yxatdan o‘tish' : 'Kirish')}
           onBlur={stopSpeech}
           tabIndex={0}
+          aria-label={isRegistering ? 'Ro‘yxatdan o‘tish' : 'Kirish'}
         >
-          {isLoading ? <CircularProgress size={20} sx={{ color: '#FFFFFF' }} /> : (isRegistering ? 'Зарегистрироваться' : 'Войти')}
+          {isLoading ? <CircularProgress size={20} sx={{ color: '#FFFFFF' }} /> : (isRegistering ? 'Ro‘yxatdan o‘tish' : 'Kirish')}
         </SubmitButton>
         <Button
           onClick={() => setIsRegistering(!isRegistering)}
@@ -422,16 +471,21 @@ const Login = () => {
             fontFamily: "'Roboto', sans-serif",
             width: '100%',
             textAlign: 'center',
+            '&:focus-within': {
+              outline: '2px solid #FF007A',
+              outlineOffset: '2px',
+            },
           }}
-          onMouseEnter={() => handleSpeak(isRegistering ? 'Уже есть аккаунт? Войти' : 'Нет аккаунта? Зарегистрироваться')}
+          onMouseEnter={() => handleSpeak(isRegistering ? 'Akkauntingiz bormi? Kirish' : 'Akkauntingiz yo‘qmi? Ro‘yxatdan o‘ting')}
           onMouseLeave={stopSpeech}
-          onTouchStart={() => handleSpeak(isRegistering ? 'Уже есть аккаунт? Войти' : 'Нет аккаунта? Зарегистрироваться')}
+          onTouchStart={() => handleSpeak(isRegistering ? 'Akkauntingiz bormi? Kirish' : 'Akkauntingiz yo‘qmi? Ro‘yxatdan o‘ting')}
           onTouchEnd={stopSpeech}
-          onFocus={() => handleSpeak(isRegistering ? 'Уже есть аккаунт? Войти' : 'Нет аккаунта? Зарегистрироваться')}
+          onFocus={() => handleSpeak(isRegistering ? 'Akkauntingiz bormi? Kirish' : 'Akkauntingiz yo‘qmi? Ro‘yxatdan o‘ting')}
           onBlur={stopSpeech}
           tabIndex={0}
+          aria-label={isRegistering ? 'Akkauntingiz bormi? Kirish' : 'Akkauntingiz yo‘qmi? Ro‘yxatdan o‘ting'}
         >
-          {isRegistering ? 'Уже есть аккаунт? Войти' : 'Нет аккаунта? Зарегистрироваться'}
+          {isRegistering ? 'Akkauntingiz bormi? Kirish' : 'Akkauntingiz yo‘qmi? Ro‘yxatdan o‘ting'}
         </Button>
       </LoginCard>
     </LoginContainer>
